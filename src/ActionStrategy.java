@@ -1,0 +1,3 @@
+interface ActionStrategy {
+    void execute();
+}
