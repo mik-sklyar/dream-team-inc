@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 import static java.lang.System.out;
 
-public class DreamTeamIncApp {
+public class Main {
     public static void main(String[] args) {
 
         out.println("Добро пожаловать в Dream-Team inc.");
