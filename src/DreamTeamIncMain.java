@@ -13,6 +13,7 @@ public class DreamTeamIncMain {
         while (true) {
             out.println("1 - устроить партию сотрудников из файла биржи труда");
             out.println("2 - устроить сотрудников по очереди вручную");
+            out.println("3 - взять сотрудников из параллельной вселенной \"Рандомии\"");
             out.println("0 - отказаться от амбиций и выйти");
             out.print("Введите номер действия: ");
 
@@ -24,6 +25,9 @@ public class DreamTeamIncMain {
                     break;
                 case 2:
                     handleManualInput();
+                    break;
+                case 3:
+                    handleRandomInput();
                     break;
                 case 0:
                     out.println("Ну а что, тоже вариант ¯\\_(ツ)_/¯");
@@ -42,5 +46,10 @@ public class DreamTeamIncMain {
     private static void handleFileInput() {
         out.println("task 2 - пока не готово");
         // передать управление классу, который просит ввести имя файла, передаёт управление парсеру, возвращает управление с набором данных
+    }
+
+    private static void handleRandomInput() {
+        out.println("task 4 - пока не готово");
+        // передать управление классу, который наделает объектов с произвольным сочетанием полей
     }
 }
