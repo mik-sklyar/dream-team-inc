@@ -15,7 +15,6 @@ public class RandomDataPerformStrategy implements ActionStrategy {
 
     @Override
     public void execute() {
-        System.out.println("[task 4] Under construction");
         try {
             List<String> maleNames = writeFileToList("male-names-list.txt");
             List<String> femaleNames = writeFileToList("female-names-list.txt");
