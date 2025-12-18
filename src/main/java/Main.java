@@ -1,4 +1,4 @@
-
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.System.out;
@@ -38,6 +38,15 @@ public class Main {
                     continue;
             }
             context.perform();
+        }
+    }
+
+    public static void handleEmployees(List<Employee> employees) {
+        if (employees.isEmpty()) {
+            out.println("А никто не пришёл... Попробуем ещё раз?");
+        } else {
+            out.println("Новых сотрудников " + employees.size());
+            //[task6] передать управление классу с меню обработки данных
         }
     }
 }
