@@ -9,6 +9,7 @@ import java.util.Random;
 public class Converter {
     public static List<String> fileToList(Path directory, String fileName) {
         List<String> list = null;
+
         try {
             list = Files.readAllLines(
                     Paths.get(System.getProperty("user.dir"), directory.toString(), fileName).normalize()

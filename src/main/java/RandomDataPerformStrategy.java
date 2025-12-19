@@ -3,6 +3,7 @@ import java.util.*;
 
 public class RandomDataPerformStrategy implements ActionStrategy {
     List<Employee> employees;
+
     @Override
     public void execute() {
         int count;
@@ -10,10 +11,8 @@ public class RandomDataPerformStrategy implements ActionStrategy {
 
         do {
             try {
-
                 System.out.print("Введите количество сотрудников для призыва:");
                 count = Integer.parseInt(scanner.nextLine());
-
                 if (count > 0) break;
                 else throw new InputMismatchException();
             } catch (NumberFormatException e) {

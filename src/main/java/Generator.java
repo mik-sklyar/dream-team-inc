@@ -43,7 +43,9 @@ public class Generator {
 
     public static List<Employee> randomEmployees(int employeesCount) {
         try {
-            if (employeesCount < 1) {throw new IllegalArgumentException("Число сотрудников меньше 1");}
+            if (employeesCount < 1) {
+                throw new IllegalArgumentException("Число сотрудников меньше 1");
+            }
 
             Path directory = Path.of("src", "main", "resources");
 
