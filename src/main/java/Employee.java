@@ -1,4 +1,8 @@
+import java.security.SecureRandom;
+
 public final class Employee {
+    private final Integer order;
+    private final Long id;
     private final String name;
     private final String email;
     private final String password;
@@ -7,6 +11,16 @@ public final class Employee {
         this.name = builder.name;
         this.email = builder.email;
         this.password = builder.password;
+        this.id = builder.getId();
+        this.order = builder.getOrder();
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -23,13 +37,24 @@ public final class Employee {
 
     @Override
     public String toString() {
-        return "Сотрудник {" + "имя :'" + name + '\'' + ", email :'" + email + '\'' + '}';
+        return "Сотрудник №" + order + " {id: " + id + ", имя: '" + name + "', email: " + email + "}";
     }
 
     public static class Builder {
+        static private Integer order = -1;
+        static private final SecureRandom uidProvider = new SecureRandom();
         private String name;
         private String email;
         private String password;
+
+        private Integer getOrder() {
+            order += 1;
+            return order;
+        }
+
+        private Long getId() {
+            return Integer.toUnsignedLong(uidProvider.nextInt());
+        }
 
         public Builder setName(String name) {
             if (name == null || name.trim().isEmpty()) {
