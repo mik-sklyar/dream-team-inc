@@ -21,6 +21,18 @@ class EmployeeTest {
             assertEquals("secure123", employee.getPassword());
             assertTrue(employee.toString().contains("Анна Петрова"));
         }
+
+        @Test
+        @DisplayName("Порядок сотрудников должен быть правильным")
+        void shouldCreateEmployeeWithValidOrder() {
+            Employee employee1 = new Employee.Builder().setName("Анна Петрова").setEmail("anna@company.com").setPassword("secure123").build();
+            Employee employee2 = new Employee.Builder().setName("Анна Петрова").setEmail("anna@company.com").setPassword("secure123").build();
+
+            assertNotNull(employee1);
+            assertNotNull(employee2);
+            assertEquals(0, employee1.getOrder());
+            assertEquals(1, employee2.getOrder());
+        }
     }
 
     @Nested
