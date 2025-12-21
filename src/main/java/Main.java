@@ -25,7 +25,7 @@ public class Main {
                     context.setStrategy(new FileDataPerformStrategy());
                     break;
                 case "2":
-                    context.setStrategy(new ManualDataPerformStrategy());
+                    context.setStrategy(new ManualDataPerformStrategy(Main::handleEmployees));
                     break;
                 case "3":
                     context.setStrategy(new RandomDataPerformStrategy());
