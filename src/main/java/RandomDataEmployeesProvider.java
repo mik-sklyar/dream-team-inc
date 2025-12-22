@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class RandomDataEmployeesProvider {
 
-    public static String provideRandomEmail(List<String> domains, List<String> works) {
+    protected static String provideRandomEmail(List<String> domains, List<String> works) {
         Random random = new Random();
 
         int w = random.nextInt(works.size());
@@ -17,7 +17,7 @@ public class RandomDataEmployeesProvider {
                 .toString();
     }
 
-    public static String provideRandomPassword(int minLength, int maxLength) {
+    protected static String provideRandomPassword(int minLength, int maxLength) {
         try {
             if (minLength < 6 || minLength > maxLength) {
                 throw new IllegalArgumentException("Ошибка в соответствии входящих значений");
@@ -41,7 +41,7 @@ public class RandomDataEmployeesProvider {
         return null;
     }
 
-    public static List<Employee> provideRandomEmployees(int employeesCount) {
+    protected static List<Employee> provideRandomEmployees(int employeesCount) {
         try {
             if (employeesCount < 1) {
                 throw new IllegalArgumentException("Число сотрудников меньше 1");
