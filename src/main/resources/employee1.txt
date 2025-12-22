@@ -1,0 +1,19 @@
+# Файл сотрудников Dream-Team Inc. - КОРРЕКТНЫЙ ФОРМАТ
+# Формат: Имя;Email;Пароль
+
+Иван Иванов;ivan@dreamteam.com;1353
+Мария Петрова;maria@company.com;2468
+Алексей Сидоров;alex@dreamteam.com;7890
+Екатерина Волкова;katya@company.com;1111
+Дмитрий Козлов;dmitry@dreamteam.com;2222
+Анна Смирнова;anna@company.com;3333
+Сергей Николаев;sergey@dreamteam.com;4444
+Ольга Кузнецова;olga@company.com;5555
+Павел Белов;pavel@dreamteam.com;6666
+Татьяна Григорьева;tatyana@company.com;7777
+Михаил Орлов;mikhail@dreamteam.com;8888
+Надежда Соколова;nadezhda@company.com;9999
+Андрей Павлов;andrey@dreamteam.com;0000
+Юлия Ковалева;julia@company.com;1212
+Артем Морозов;artem@dreamteam.com;1313
+Светлана Захарова;svetlana@company.com;1414
