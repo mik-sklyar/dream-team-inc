@@ -56,18 +56,13 @@ public class RandomDataEmployeesProvider {
         return null;
     }
 
-    static List<Employee> provideRandomEmployees(int employeesCount) {
+    static List<Employee> provideRandomEmployees(List<String> maleNames, List<String> femaleNames,
+                                                 List<String> domains, List<String> works,
+                                                 int employeesCount) {
         try {
             if (employeesCount == 0) {
                 return new ArrayList<>();
             }
-
-            Path directory = Path.of("src", "main", "resources");
-
-            List<String> maleNames = RandomDataResourceLoader.loadFileToList(directory, "male-names-list.txt");
-            List<String> femaleNames = RandomDataResourceLoader.loadFileToList(directory, "female-names-list.txt");
-            List<String> domains = RandomDataResourceLoader.loadFileToList(directory, "domain-list.txt");
-            List<String> works = RandomDataResourceLoader.loadFileToList(directory, "work-list.txt");
 
             int passwordCount = maleNames.size() + femaleNames.size();
             int emailsCount = maleNames.size() + femaleNames.size();
