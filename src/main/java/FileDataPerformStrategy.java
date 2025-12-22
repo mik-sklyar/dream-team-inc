@@ -1,26 +1,42 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
-public class FileDataPerformStrategy implements ActionStrategy {
+public class FileDataPerformStrategy extends EmployeeOperationStrategy {
     
     private final EmployeeFileReader fileReader;
+    private final Scanner scanner;
     
-    public FileDataPerformStrategy() {
+    // Конструктор для ручного ввода (с callback)
+    public FileDataPerformStrategy(Consumer<List<Employee>> callback) {
+        super(callback);
         this.fileReader = new EmployeeFileReader();
+        this.scanner = new Scanner(System.in);
     }
     
+    // Конструктор для автоматического тестирования (с входными данными и callback)
+    public FileDataPerformStrategy(List<Employee> inputData, Consumer<List<Employee>> callback) {
+        super(inputData, callback);
+        this.fileReader = new EmployeeFileReader();
+        this.scanner = new Scanner(System.in);
+    }
+    
+    // Конструктор по умолчанию (просто выводит результат)
+    public FileDataPerformStrategy() {
+        super();
+        this.fileReader = new EmployeeFileReader();
+        this.scanner = new Scanner(System.in);
+    }
+
     @Override
-    public void execute() {
-        Scanner scanner = new Scanner(System.in);
+    protected List<Employee> performOperation() {
+        System.out.println("\n=== ЗАГРУЗКА СОТРУДНИКОВ ИЗ ФАЙЛА ===");
         
         while (true) {
-            System.out.println("\n=== ЗАГРУЗКА СОТРУДНИКОВ ИЗ ФАЙЛА ===");
-            System.out.println("Введите имя файла (например: employees.txt)");
-            System.out.println("Или полный путь к файлу");
-            System.out.print(">> ");
-            
+            System.out.print("Введите имя файла: ");
             String filename = scanner.nextLine().trim();
             
             if (filename.isEmpty()) {
@@ -28,69 +44,45 @@ public class FileDataPerformStrategy implements ActionStrategy {
                 continue;
             }
             
-            
             File file = fileReader.findFile(filename);
             
             if (file == null || !file.exists()) {
                 System.out.println("ФАЙЛ НЕ НАЙДЕН: " + filename);
-                System.out.println("Убедитесь, что файл находится в одном из мест:");
-                System.out.println("1. Папка 'src/main/resources/' (для Maven/Gradle проектов)");
-                System.out.println("2. Папка 'src/resources/'");
-                System.out.println("3. Папка 'resources/' в корне проекта");
-                System.out.println("4. Корень проекта");
-                System.out.println("5. Или укажите полный путь к файлу");
                 
-                if (!askForRetry(scanner)) {
-                    System.out.println("Возвращаемся в главное меню...");
-                    return;
-                }
-                continue;
-            }
-            
-            if (!file.canRead()) {
-                System.out.println("ОШИБКА: Нет прав на чтение файла: " + file.getAbsolutePath());
-                if (!askForRetry(scanner)) {
-                    System.out.println("Возвращаемся в главное меню...");
-                    return;
+                if (!askForRetry()) {
+                    return new ArrayList<>(); // Возвращаем пустой список
                 }
                 continue;
             }
             
             try {
-                
                 List<Employee> employees = fileReader.readEmployeesFromFile(file);
                 
                 if (employees.isEmpty()) {
-                    System.out.println("ПРЕДУПРЕЖДЕНИЕ: Не удалось загрузить ни одного сотрудника.");
-                    System.out.println("Проверьте формат файла. Ожидается: Имя;email;пароль");
+                    System.out.println("ПРЕДУПРЕЖДЕНИЕ: Не удалось загрузить сотрудников.");
                     
-                    if (!askForRetry(scanner)) {
-                        System.out.println("Возвращаемся в главное меню...");
-                        return;
+                    if (!askForRetry()) {
+                        return new ArrayList<>();
                     }
                 } else {
-                    displayLoadedEmployees(employees);
-                    waitForEnter(scanner);
-                    System.out.println("Возвращаемся в главное меню...");
-                    return;
+                    System.out.println("УСПЕШНО: Загружено " + employees.size() + " сотрудников");
+                    return employees; // Возвращаем результат операции
                 }
                 
             } catch (IOException e) {
-                System.out.println("ОШИБКА ЧТЕНИЯ ФАЙЛА: " + e.getMessage());
+                System.out.println("ОШИБКА ЧТЕНИЯ: " + e.getMessage());
                 
-                if (!askForRetry(scanner)) {
-                    System.out.println("Возвращаемся в главное меню...");
-                    return;
+                if (!askForRetry()) {
+                    return new ArrayList<>();
                 }
             }
         }
     }
     
-    private boolean askForRetry(Scanner scanner) {
-        System.out.println("\nВыберите действие:");
-        System.out.println("1 - Ввести другое имя файла");
-        System.out.println("2 - Вернуться в главное меню");
-        System.out.print("Ваш выбор [1-2]: ");
+    private boolean askForRetry() {
+        System.out.println("\n1 - Ввести другой файл");
+        System.out.println("2 - Вернуться в меню");
+        System.out.print("Выбор: ");
         
         while (true) {
             String choice = scanner.nextLine().trim();
@@ -98,31 +90,8 @@ public class FileDataPerformStrategy implements ActionStrategy {
                 return true;
             } else if (choice.equals("2")) {
                 return false;
-            } else {
-                System.out.print("Неверный выбор. Введите 1 или 2: ");
             }
+            System.out.print("Неверный выбор. Введите 1 или 2: ");
         }
-    }
-    
-    private void displayLoadedEmployees(List<Employee> employees) {
-        System.out.println("\n==========================================");
-        System.out.println("УСПЕШНО ЗАГРУЖЕНО СОТРУДНИКОВ: " + employees.size());
-        System.out.println("==========================================");
-        System.out.println();
-        System.out.println("СПИСОК ЗАГРУЖЕННЫХ СОТРУДНИКОВ:");
-        System.out.println("------------------------------------------");
-        
-        for (int i = 0; i < employees.size(); i++) {
-            Employee emp = employees.get(i);
-            System.out.printf("%3d. Имя: %-20s Email: %-25s%n", 
-                            i + 1, emp.getName(), emp.getEmail());
-        }
-        
-        System.out.println("------------------------------------------");
-    }
-    
-    private void waitForEnter(Scanner scanner) {
-        System.out.println("\nНажмите Enter для продолжения...");
-        scanner.nextLine();
     }
 }
