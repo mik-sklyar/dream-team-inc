@@ -5,36 +5,50 @@ import java.util.Random;
 
 public class RandomDataEmployeesProvider {
 
-    protected static String provideRandomEmail(List<String> domains, List<String> works) {
+    private static List<String> provideRandomEmails(List<String> domains, List<String> works, int count) {
         Random random = new Random();
 
-        int w = random.nextInt(works.size());
-        int d = random.nextInt(domains.size());
+        int w, d;
 
-        return new StringBuilder()
-                .append(works.get(w))
-                .append("@")
-                .append(domains.get(d))
-                .toString();
+        List<String> emails = new ArrayList<>(count);
+
+        while (emails.size() < count) {
+            w = random.nextInt(works.size());
+            d = random.nextInt(domains.size());
+
+            emails.add(new StringBuilder()
+                    .append(works.get(w))
+                    .append("@")
+                    .append(domains.get(d))
+                    .toString()
+            );
+        }
+
+        return emails;
     }
 
-    protected static String provideRandomPassword(int minLength, int maxLength) {
+    private static List<String> provideRandomPasswords(int minLength, int maxLength, int count) {
         try {
             if (minLength < 6 || minLength > maxLength) {
                 throw new IllegalArgumentException("Ошибка в соответствии входящих значений");
             }
 
+            List<String> passwords = new ArrayList<>(count);
             StringBuilder builder = new StringBuilder();
 
             char[] symbols = passwordSymbols();
 
-            maxLength = (int) (Math.random() * (maxLength - minLength) + minLength);
+            while (passwords.size() < count) {
+                while (builder.length() < maxLength) {
+                    maxLength = (int) (Math.random() * (maxLength - minLength) + minLength);
+                    builder.append(symbols[(int) (Math.random() * symbols.length - 1)]);
+                }
 
-            while (builder.length() < maxLength) {
-                builder.append(symbols[(int) (Math.random() * symbols.length - 1)]);
+                passwords.add(builder.toString());
+                builder.setLength(0);
             }
 
-            return builder.toString();
+            return passwords;
         } catch (IllegalArgumentException e) {
             System.err.println(e);
         }
@@ -42,7 +56,7 @@ public class RandomDataEmployeesProvider {
         return null;
     }
 
-    protected static List<Employee> provideRandomEmployees(int employeesCount) {
+    static List<Employee> provideRandomEmployees(int employeesCount) {
         try {
             if (employeesCount == 0) {
                 return new ArrayList<>();
@@ -58,13 +72,40 @@ public class RandomDataEmployeesProvider {
             int passwordCount = maleNames.size() + femaleNames.size();
             int emailsCount = maleNames.size() + femaleNames.size();
 
-            List<String> passwords = RandomDataResourceLoader.loadPasswordsToList(6, 20, passwordCount);
-            List<String> emails = RandomDataResourceLoader.loadEmailsToList(domains, works, emailsCount);
+            List<String> passwords = RandomDataEmployeesProvider.provideRandomPasswords(6, 20, passwordCount);
+            List<String> emails = RandomDataEmployeesProvider.provideRandomEmails(domains, works, emailsCount);
 
-            return RandomDataResourceLoader.loadAllDataToEmployeesList(maleNames, femaleNames, passwords, emails, employeesCount);
-        } catch (IllegalArgumentException e) {
-            System.err.println(e);
-        } catch (NullPointerException e) {
+            Employee.Builder builder = new Employee.Builder();
+            List<Employee> list = new ArrayList<>(employeesCount);
+
+            Random random = new Random();
+
+            int i, j;
+
+            while (list.size() < employeesCount) {
+                i = random.nextInt(2);
+                if (i == 1) {
+                    j = random.nextInt(maleNames.size());
+
+                    list.add(builder
+                            .setName(maleNames.get(j))
+                            .setEmail(maleNames.get(j) + emails.get(j))
+                            .setPassword(passwords.get(j))
+                            .build());
+                } else {
+                    j = random.nextInt(femaleNames.size());
+
+                    list.add(builder
+                            .setName(femaleNames.get(j))
+                            .setEmail(femaleNames.get(j) + emails.get(j))
+                            .setPassword(passwords.get(j))
+                            .build());
+                }
+            }
+
+            return list;
+
+        } catch (IllegalArgumentException | NullPointerException e) {
             System.err.println("Пустой List, причина файл не найден");
         }
         return null;

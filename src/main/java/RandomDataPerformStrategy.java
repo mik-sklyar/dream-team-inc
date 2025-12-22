@@ -25,4 +25,10 @@ public class RandomDataPerformStrategy implements ActionStrategy {
         System.out.println("Богиня жизни \"Гея\" призвала новых сотрудников");
         employees = RandomDataEmployeesProvider.provideRandomEmployees(count);
     }
+
+    public static void main(String[] args) {
+        RandomDataPerformStrategy strategy = new RandomDataPerformStrategy();
+        strategy.execute();
+        System.out.println(strategy.employees);
+    }
 }
