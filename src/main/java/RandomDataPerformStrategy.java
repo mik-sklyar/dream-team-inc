@@ -11,14 +11,12 @@ public class RandomDataPerformStrategy implements ActionStrategy {
 
         do {
             try {
-                System.out.print("Введите количество сотрудников для призыва:");
+                System.out.print("Введите количество сотрудников для призыва(больше 0):");
                 count = Integer.parseInt(scanner.nextLine());
                 if (count > 0) break;
                 else throw new InputMismatchException();
-            } catch (NumberFormatException e) {
-                System.out.println("Неверный тип данных, попробуйте еще раз");
-            } catch (InputMismatchException e) {
-                System.out.println("Неверное число, попробуйте еще раз");
+            } catch (NumberFormatException | InputMismatchException e) {
+                System.out.println("Неверный тип данных или число сотрудников, попробуйте еще раз");
             }
         } while (true);
 
