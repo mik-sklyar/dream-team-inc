@@ -68,7 +68,7 @@ public class FileDataPerformStrategy implements ActionStrategy {
                         System.out.println("Возвращаемся в главное меню...");
                         return;
                     }
-                } else 
+                } else {
                     displayLoadedEmployees(employees);
                     waitForEnter(scanner);
                     System.out.println("Возвращаемся в главное меню...");
