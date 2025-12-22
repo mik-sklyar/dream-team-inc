@@ -45,9 +45,8 @@ public class Main {
         if (employees.isEmpty()) {
             out.println("А никто не пришёл... Попробуем ещё раз?");
         } else {
-            out.println("Новых сотрудников " + employees.size());
-            //[task6] передать управление классу с меню обработки данных
+            DataActionsMenu menu = new DataActionsMenu(employees);
+            menu.display();
         }
     }
 }
-
