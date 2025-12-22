@@ -2,7 +2,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 
-public class Generator {
+public class RandomDataEmployeesProvider {
 
     public static String randomEmail(List<String> domains, List<String> works) {
         Random random = new Random();

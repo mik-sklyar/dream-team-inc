@@ -25,7 +25,7 @@ public class Converter {
         List<String> passwords = new ArrayList<>(count);
 
         while (passwords.size() < count) {
-            passwords.add(Generator.randomPassword(minLength, maxLength));
+            passwords.add(RandomDataEmployeesProvider.randomPassword(minLength, maxLength));
         }
 
         return passwords;
@@ -35,7 +35,7 @@ public class Converter {
         List<String> emails = new ArrayList<>(count);
 
         while (emails.size() < count) {
-            emails.add(Generator.randomEmail(domains, works));
+            emails.add(RandomDataEmployeesProvider.randomEmail(domains, works));
         }
 
         return emails;

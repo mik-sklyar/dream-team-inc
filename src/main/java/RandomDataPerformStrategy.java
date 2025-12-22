@@ -25,6 +25,6 @@ public class RandomDataPerformStrategy implements ActionStrategy {
         scanner.close();
 
         System.out.println("Богиня жизни \"Гея\" призвала новых сотрудников");
-        employees = Generator.randomEmployees(count);
+        employees = RandomDataEmployeesProvider.randomEmployees(count);
     }
 }
