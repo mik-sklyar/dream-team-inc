@@ -1,4 +1,5 @@
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -43,8 +44,8 @@ public class RandomDataEmployeesProvider {
 
     protected static List<Employee> provideRandomEmployees(int employeesCount) {
         try {
-            if (employeesCount < 1) {
-                throw new IllegalArgumentException("Число сотрудников меньше 1");
+            if (employeesCount == 0) {
+                return new ArrayList<>();
             }
 
             Path directory = Path.of("src", "main", "resources");
