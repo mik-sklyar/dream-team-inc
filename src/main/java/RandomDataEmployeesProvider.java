@@ -49,18 +49,18 @@ public class RandomDataEmployeesProvider {
 
             Path directory = Path.of("src", "main", "resources");
 
-            List<String> maleNames = Converter.fileToList(directory, "male-names-list.txt");
-            List<String> femaleNames = Converter.fileToList(directory, "female-names-list.txt");
-            List<String> domains = Converter.fileToList(directory, "domain-list.txt");
-            List<String> works = Converter.fileToList(directory, "work-list.txt");
+            List<String> maleNames = RandomDataResourceLoader.loadFileToList(directory, "male-names-list.txt");
+            List<String> femaleNames = RandomDataResourceLoader.loadFileToList(directory, "female-names-list.txt");
+            List<String> domains = RandomDataResourceLoader.loadFileToList(directory, "domain-list.txt");
+            List<String> works = RandomDataResourceLoader.loadFileToList(directory, "work-list.txt");
 
             int passwordCount = maleNames.size() + femaleNames.size();
             int emailsCount = maleNames.size() + femaleNames.size();
 
-            List<String> passwords = Converter.passwordsToList(6, 20, passwordCount);
-            List<String> emails = Converter.emailsToList(domains, works, emailsCount);
+            List<String> passwords = RandomDataResourceLoader.loadPasswordsToList(6, 20, passwordCount);
+            List<String> emails = RandomDataResourceLoader.loadEmailsToList(domains, works, emailsCount);
 
-            return Converter.allDataToEmployeesList(maleNames, femaleNames, passwords, emails, employeesCount);
+            return RandomDataResourceLoader.loadAllDataToEmployeesList(maleNames, femaleNames, passwords, emails, employeesCount);
         } catch (IllegalArgumentException e) {
             System.err.println(e);
         } catch (NullPointerException e) {

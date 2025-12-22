@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Converter {
-    public static List<String> fileToList(Path directory, String fileName) {
+public class RandomDataResourceLoader {
+    public static List<String> loadFileToList(Path directory, String fileName) {
         List<String> list = null;
 
         try {
@@ -21,7 +21,7 @@ public class Converter {
         return list;
     }
 
-    public static List<String> passwordsToList(int minLength, int maxLength, int count) {
+    public static List<String> loadPasswordsToList(int minLength, int maxLength, int count) {
         List<String> passwords = new ArrayList<>(count);
 
         while (passwords.size() < count) {
@@ -31,7 +31,7 @@ public class Converter {
         return passwords;
     }
 
-    public static List<String> emailsToList(List<String> domains, List<String> works, int count) {
+    public static List<String> loadEmailsToList(List<String> domains, List<String> works, int count) {
         List<String> emails = new ArrayList<>(count);
 
         while (emails.size() < count) {
@@ -41,8 +41,8 @@ public class Converter {
         return emails;
     }
 
-    public static List<Employee> allDataToEmployeesList(List<String> male, List<String> female,
-                                                        List<String> passwords, List<String> emails, int count) {
+    public static List<Employee> loadAllDataToEmployeesList(List<String> male, List<String> female,
+                                                            List<String> passwords, List<String> emails, int count) {
         try {
 
             Employee.Builder builder = new Employee.Builder();
