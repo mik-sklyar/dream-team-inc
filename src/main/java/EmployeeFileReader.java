@@ -24,12 +24,11 @@ public class EmployeeFileReader {
                 lineNumber++;
                 line = line.trim();
                 
-                // Пропускаем пустые строки и комментарии
+                
                 if (line.isEmpty() || line.startsWith("#")) {
                     continue;
                 }
                 
-                // Разделяем строку по различным разделителям
                 String[] parts = line.split("[;,\\t]");
                 
                 if (parts.length != 3) {
@@ -56,7 +55,7 @@ public class EmployeeFileReader {
                 }
             }
             
-            // Выводим статистику
+            
             System.out.println("--------------------------------------------------");
             System.out.println("СТАТИСТИКА ЧТЕНИЯ ФАЙЛА:");
             System.out.println("   Успешно загружено: " + successfulCount + " сотрудников");
@@ -73,14 +72,14 @@ public class EmployeeFileReader {
     }
     
     public File findFile(String filename) {
-        // Сначала проверяем, не является ли ввод абсолютным путем
+        
         File file = new File(filename);
         if (file.exists() && file.isFile()) {
             System.out.println("Файл найден по указанному пути: " + file.getAbsolutePath());
             return file;
         }
         
-        // Ищем файл в ресурсах проекта (через classpath)
+        
         System.out.println("Поиск файла в ресурсах проекта...");
         ClassLoader classLoader = getClass().getClassLoader();
         URL resourceUrl = classLoader.getResource(filename);
@@ -95,7 +94,6 @@ public class EmployeeFileReader {
             }
         }
         
-        // Проверяем возможные пути в проекте
         String[] possiblePaths = {
             "src/main/resources/" + filename,  // Maven/Gradle структура
             "src/resources/" + filename,       // Простая структура
