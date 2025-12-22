@@ -28,7 +28,7 @@ public class FileDataPerformStrategy implements ActionStrategy {
                 continue;
             }
             
-            // Ищем файл
+            
             File file = fileReader.findFile(filename);
             
             if (file == null || !file.exists()) {
@@ -57,7 +57,7 @@ public class FileDataPerformStrategy implements ActionStrategy {
             }
             
             try {
-                // Читаем сотрудников из файла
+                
                 List<Employee> employees = fileReader.readEmployeesFromFile(file);
                 
                 if (employees.isEmpty()) {
@@ -68,8 +68,7 @@ public class FileDataPerformStrategy implements ActionStrategy {
                         System.out.println("Возвращаемся в главное меню...");
                         return;
                     }
-                } else {
-                    // Успешная загрузка
+                } else 
                     displayLoadedEmployees(employees);
                     waitForEnter(scanner);
                     System.out.println("Возвращаемся в главное меню...");
