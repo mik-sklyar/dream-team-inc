@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomDataResourceLoader {
-    public static List<String> loadFileToList(Path directory, String fileName) {
+    protected static List<String> loadFileToList(Path directory, String fileName) {
         List<String> list = null;
 
         try {
@@ -21,7 +21,7 @@ public class RandomDataResourceLoader {
         return list;
     }
 
-    public static List<String> loadPasswordsToList(int minLength, int maxLength, int count) {
+    protected static List<String> loadPasswordsToList(int minLength, int maxLength, int count) {
         List<String> passwords = new ArrayList<>(count);
 
         while (passwords.size() < count) {
@@ -31,7 +31,7 @@ public class RandomDataResourceLoader {
         return passwords;
     }
 
-    public static List<String> loadEmailsToList(List<String> domains, List<String> works, int count) {
+    protected static List<String> loadEmailsToList(List<String> domains, List<String> works, int count) {
         List<String> emails = new ArrayList<>(count);
 
         while (emails.size() < count) {
@@ -41,7 +41,7 @@ public class RandomDataResourceLoader {
         return emails;
     }
 
-    public static List<Employee> loadAllDataToEmployeesList(List<String> male, List<String> female,
+    protected static List<Employee> loadAllDataToEmployeesList(List<String> male, List<String> female,
                                                             List<String> passwords, List<String> emails, int count) {
         try {
 
