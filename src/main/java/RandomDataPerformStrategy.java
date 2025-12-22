@@ -1,10 +1,19 @@
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Consumer;
 
 
-public class RandomDataPerformStrategy implements ActionStrategy {
+public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
+    public RandomDataPerformStrategy() {
+        super();
+    }
+
+    public RandomDataPerformStrategy(Consumer<List<Employee>> callback) {
+        super(callback);
+    }
+
     @Override
-    public List<Employee> execute() {
+    protected List<Employee> performOperation() {
         int count;
         Scanner scanner = new Scanner(System.in);
 
@@ -24,15 +33,14 @@ public class RandomDataPerformStrategy implements ActionStrategy {
             }
         } while (true);
 
-        Path directory = Path.of("src", "main", "resources");
-
-        List<String> maleNames = RandomDataResourceLoader.loadFileToList(directory, "male-names-list.txt");
-        List<String> femaleNames = RandomDataResourceLoader.loadFileToList(directory, "female-names-list.txt");
-        List<String> domains = RandomDataResourceLoader.loadFileToList(directory, "domain-list.txt");
-        List<String> works = RandomDataResourceLoader.loadFileToList(directory, "work-list.txt");
-
         System.out.println("Богиня жизни \"Гея\" призвала новых сотрудников");
 
-        return RandomDataEmployeesProvider.provideRandomEmployees(maleNames, femaleNames, domains, works, count);
+        return RandomDataEmployeesProvider.provideRandomEmployees(
+                RandomDataResourceLoader.getMaleNames(),
+                RandomDataResourceLoader.getFemaleNames(),
+                RandomDataResourceLoader.getDomains(),
+                RandomDataResourceLoader.getWorks(),
+                count
+        );
     }
 }
