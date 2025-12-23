@@ -3,95 +3,69 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Consumer;
 
 public class FileDataPerformStrategy extends EmployeeOperationStrategy {
     
     private final EmployeeFileReader fileReader;
     private final Scanner scanner;
     
-    // Конструктор для ручного ввода (с callback)
-    public FileDataPerformStrategy(Consumer<List<Employee>> callback) {
-        super(callback);
-        this.fileReader = new EmployeeFileReader();
-        this.scanner = new Scanner(System.in);
-    }
-    
-    // Конструктор для автоматического тестирования (с входными данными и callback)
-    public FileDataPerformStrategy(List<Employee> inputData, Consumer<List<Employee>> callback) {
-        super(inputData, callback);
-        this.fileReader = new EmployeeFileReader();
-        this.scanner = new Scanner(System.in);
-    }
-    
-    // Конструктор по умолчанию (просто выводит результат)
     public FileDataPerformStrategy() {
         super();
         this.fileReader = new EmployeeFileReader();
         this.scanner = new Scanner(System.in);
     }
-
+    
     @Override
     protected List<Employee> performOperation() {
         System.out.println("\n=== ЗАГРУЗКА СОТРУДНИКОВ ИЗ ФАЙЛА ===");
+        System.out.println("Введите имя файла или 0 для выхода в меню");
+        System.out.print(">> ");
         
-        while (true) {
-            System.out.print("Введите имя файла: ");
-            String filename = scanner.nextLine().trim();
+        String filename = scanner.nextLine().trim();
+        
+        if (filename.equals("0")) {
+            System.out.println("Возвращаемся в меню...");
+            return new ArrayList<>();
+        }
+        
+        if (filename.isEmpty()) {
+            System.out.println("Ошибка: имя файла не может быть пустым");
+            return new ArrayList<>();
+        }
+        
+        File file = fileReader.findFile(filename);
+        
+        if (file == null || !file.exists()) {
+            System.out.println("Ошибка: файл '" + filename + "' не найден");
+            System.out.println("Поместите файл в папку resources/ проекта");
+            return new ArrayList<>();
+        }
+        
+        try {
+            List<Employee> employees = fileReader.readEmployeesFromFile(file);
             
-            if (filename.isEmpty()) {
-                System.out.println("ОШИБКА: Имя файла не может быть пустым.");
-                continue;
+            if (employees.isEmpty()) {
+                System.out.println("Ошибка: в файле нет корректных данных");
+                return new ArrayList<>();
             }
             
-            File file = fileReader.findFile(filename);
+            System.out.println("Успешно загружено: " + employees.size() + " сотрудников");
+            return employees; 
             
-            if (file == null || !file.exists()) {
-                System.out.println("ФАЙЛ НЕ НАЙДЕН: " + filename);
-                
-                if (!askForRetry()) {
-                    return new ArrayList<>(); // Возвращаем пустой список
-                }
-                continue;
-            }
-            
-            try {
-                List<Employee> employees = fileReader.readEmployeesFromFile(file);
-                
-                if (employees.isEmpty()) {
-                    System.out.println("ПРЕДУПРЕЖДЕНИЕ: Не удалось загрузить сотрудников.");
-                    
-                    if (!askForRetry()) {
-                        return new ArrayList<>();
-                    }
-                } else {
-                    System.out.println("УСПЕШНО: Загружено " + employees.size() + " сотрудников");
-                    return employees; // Возвращаем результат операции
-                }
-                
-            } catch (IOException e) {
-                System.out.println("ОШИБКА ЧТЕНИЯ: " + e.getMessage());
-                
-                if (!askForRetry()) {
-                    return new ArrayList<>();
-                }
-            }
+        } catch (IOException e) {
+            System.out.println("Ошибка чтения файла: " + e.getMessage());
+            return new ArrayList<>();
         }
     }
     
-    private boolean askForRetry() {
-        System.out.println("\n1 - Ввести другой файл");
-        System.out.println("2 - Вернуться в меню");
-        System.out.print("Выбор: ");
+    @Override
+    protected void handleResult(List<Employee> result) {
         
-        while (true) {
-            String choice = scanner.nextLine().trim();
-            if (choice.equals("1")) {
-                return true;
-            } else if (choice.equals("2")) {
-                return false;
-            }
-            System.out.print("Неверный выбор. Введите 1 или 2: ");
+        if (result != null && !result.isEmpty()) {
+            System.out.println("Файл обработан успешно");
         }
+        
+        System.out.print("Нажмите Enter для продолжения...");
+        scanner.nextLine();
     }
 }
