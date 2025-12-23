@@ -1,4 +1,3 @@
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -12,20 +11,13 @@ import java.util.Scanner;
  */
 public class DataActionsMenu {
 
-    private final List<Employee> employees;
+    private List<Employee> employees;
+    private final ActionContext context = new ActionContext();
 
-    /**
-     * Конструктор меню действий.
-     *
-     * @param employees Список сотрудников для обработки.
-     */
     public DataActionsMenu(List<Employee> employees) {
         this.employees = employees;
     }
 
-    /**
-     * Отображает меню и обрабатывает выбор пользователя.
-     */
     public void display() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -45,13 +37,13 @@ public class DataActionsMenu {
                     printEmployees();
                     break;
                 case "2":
-                    sortByName();
+                    setSortStrategy(Comparator.comparing(Employee::getName));
                     break;
                 case "3":
-                    sortByEmail();
+                    setSortStrategy(Comparator.comparing(Employee::getEmail));
                     break;
                 case "4":
-                    sortByPassword();
+                    setSortStrategy(Comparator.comparing(Employee::getPassword));
                     break;
                 case "0":
                     System.out.println("Возврат в главное меню...");
@@ -63,57 +55,30 @@ public class DataActionsMenu {
     }
 
     /**
-     * Выводит список сотрудников на экран.
+     * Устанавливает и выполняет стратегию сортировки.
+     *
+     * @param comparator Компаратор, определяющий поле для сортировки.
      */
+    private void setSortStrategy(Comparator<Employee> comparator) {
+        // TODO: Устанавливаем стратегию сортировки
+        System.out.println("Выполняется сортировка...");
+        context.perform();
+        System.out.println("Сортировка завершена.");
+        printEmployees();
+    }
+
+    private void handleSortResult(List<Employee> sortedEmployees) {
+        this.employees = sortedEmployees;
+    }
+
     private void printEmployees() {
         if (employees.isEmpty()) {
             System.out.println("Список сотрудников пуст.");
             return;
         }
-        System.out.println("\n--- Список сотрудников ---");
+        System.out.println("\n--- Текущий список сотрудников ---");
         for (Employee employee : employees) {
             System.out.println(employee);
         }
-    }
-
-    /**
-     * Заглушка для сортировки списка сотрудников по имени.
-     */
-    private void sortByName() {
-        System.out.println("Сортировка по имени (в разработке)...");
-        // TODO: Реализовать алгоритм сортировки без использования готовых методов.
-        printEmployees();
-    }
-
-    /**
-     * Заглушка для сортировки списка сотрудников по email.
-     */
-    private void sortByEmail() {
-        System.out.println("Сортировка по email (в разработке)...");
-        // TODO: Реализовать алгоритм сортировки без использования готовых методов.
-        // Пример использования компаратора:
-        // manualSort(employees, Comparator.comparing(Employee::getEmail));
-        printEmployees();
-    }
-
-    /**
-     * Заглушка для сортировки списка сотрудников по паролю.
-     */
-    private void sortByPassword() {
-        System.out.println("Сортировка по паролю (в разработке)...");
-        // TODO: Реализовать алгоритм сортировки без использования готовых методов.
-        printEmployees();
-    }
-
-    /**
-     * Метод для ручной реализации алгоритма сортировки (например, пузырьком или вставками).
-     *
-     * @param list       Список для сортировки.
-     * @param comparator Компаратор для сравнения элементов.
-     * @param <T>        Тип элементов в списке.
-     */
-    private <T> void manualSort(List<T> list, Comparator<T> comparator) {
-        // TODO: Реализовать собственный алгоритм сортировки.
-        System.out.println("Здесь будет реализован собственный алгоритм сортировки.");
     }
 }
