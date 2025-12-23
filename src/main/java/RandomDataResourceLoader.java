@@ -5,37 +5,45 @@ import java.nio.file.Paths;
 import java.util.List;
 
 final class RandomDataResourceLoader {
-    private final static Path directory = Path.of("src", "main", "resources");
+    private Path directory;
+    private List<String> maleNames;
+    private List<String> femaleNames;
+    private List<String> domains;
+    private List<String> works;
 
-    private final static List<String> maleNames;
-    private final static List<String> femaleNames;
-    private final static List<String> domains;
-    private final static List<String> works;
-
-    static {
-        maleNames = RandomDataResourceLoader.loadFileToList("male-names-list.txt");
-        femaleNames = RandomDataResourceLoader.loadFileToList("female-names-list.txt");
-        domains = RandomDataResourceLoader.loadFileToList("domain-list.txt");
-        works = RandomDataResourceLoader.loadFileToList("work-list.txt");
+    RandomDataResourceLoader(Path directory) {
+        this.directory = directory;
+        maleNames = loadFileToList("male-names-list.txt");
+        femaleNames = loadFileToList("female-names-list.txt");
+        domains = loadFileToList("domain-list.txt");
+        works = loadFileToList("work-list.txt");
     }
 
-    static List<String> getMaleNames() {
+    RandomDataResourceLoader(Path directory, String maleNames, String femaleNames, String domains, String works) {
+        this.directory = directory;
+        this.maleNames = loadFileToList(maleNames);
+        this.femaleNames = loadFileToList(femaleNames);
+        this.domains = loadFileToList(domains);
+        this.works = loadFileToList(works);
+    }
+
+    List<String> getMaleNames() {
         return maleNames;
     }
 
-    static List<String> getFemaleNames() {
+    List<String> getFemaleNames() {
         return femaleNames;
     }
 
-    static List<String> getDomains() {
+    List<String> getDomains() {
         return domains;
     }
 
-    static List<String> getWorks() {
+    List<String> getWorks() {
         return works;
     }
 
-    private static List<String> loadFileToList(String fileName) {
+    private List<String> loadFileToList(String fileName) {
         List<String> list = null;
 
         try {

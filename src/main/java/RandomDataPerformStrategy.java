@@ -1,3 +1,4 @@
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -20,10 +21,9 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
             try {
                 System.out.print("Введите количество сотрудников для призыва(больше 0):");
                 count = Integer.parseInt(scanner.nextLine());
-                if (count > 0){
+                if (count > 0) {
                     break;
-                }
-                else {
+                } else {
                     throw new InputMismatchException();
                 }
             } catch (NumberFormatException | InputMismatchException e) {
@@ -33,11 +33,15 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
 
         System.out.println("Богиня жизни \"Гея\" призвала новых сотрудников");
 
+        RandomDataResourceLoader loader = new RandomDataResourceLoader(
+                Path.of("src", "main", "resources", "random")
+        );
+
         return RandomDataEmployeesProvider.provideRandomEmployees(
-                RandomDataResourceLoader.getMaleNames(),
-                RandomDataResourceLoader.getFemaleNames(),
-                RandomDataResourceLoader.getDomains(),
-                RandomDataResourceLoader.getWorks(),
+                loader.getMaleNames(),
+                loader.getFemaleNames(),
+                loader.getDomains(),
+                loader.getWorks(),
                 count
         );
     }
