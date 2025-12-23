@@ -1,4 +1,3 @@
-import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -22,7 +21,6 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
                 System.out.print("Введите количество сотрудников для призыва(больше 0):");
                 count = Integer.parseInt(scanner.nextLine());
                 if (count > 0){
-                    scanner.close();
                     break;
                 }
                 else {
