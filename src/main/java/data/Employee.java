@@ -1,3 +1,5 @@
+package data;
+
 import java.security.SecureRandom;
 
 public final class Employee {

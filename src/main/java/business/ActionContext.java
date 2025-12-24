@@ -1,4 +1,6 @@
-class ActionContext {
+package business;
+
+public class ActionContext {
     public static class StrategyNotSetException extends IllegalStateException {
         public StrategyNotSetException() {
             super("Стратегия не установлена. Вызовите setStrategy() перед выполнением.");

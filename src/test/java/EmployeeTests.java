@@ -1,10 +1,11 @@
+import data.Employee;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Тесты Builder для Employee")
+@DisplayName("Тесты Builder для data.Employee")
 class EmployeeTest {
 
     @Nested
