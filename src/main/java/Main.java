@@ -1,4 +1,5 @@
 import business.ActionContext;
+import business.ExitStrategy;
 import data.Employee;
 
 import java.util.List;
@@ -34,8 +35,8 @@ public class Main {
                     context.setStrategy(new RandomDataPerformStrategy(Main::handleEmployees));
                     break;
                 case "0":
-                    out.println("Ну а что, тоже вариант ¯\\_(ツ)_/¯");
-                    System.exit(0);
+                    context.setStrategy(new ExitStrategy());
+                    break;
                 default:
                     out.println("Неверный выбор, попробуйте снова.");
                     continue;
