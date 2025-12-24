@@ -28,7 +28,7 @@ public class Main {
                     context.setStrategy(new ManualDataPerformStrategy(Main::handleEmployees));
                     break;
                 case "3":
-                    context.setStrategy(new RandomDataPerformStrategy());
+                    context.setStrategy(new RandomDataPerformStrategy(Main::handleEmployees));
                     break;
                 case "0":
                     out.println("Ну а что, тоже вариант ¯\\_(ツ)_/¯");

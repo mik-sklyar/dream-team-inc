@@ -1,6 +1,47 @@
-public class RandomDataPerformStrategy implements ActionStrategy {
+import java.nio.file.Path;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
+import java.util.function.Consumer;
+
+
+public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
+
+    public RandomDataPerformStrategy(Consumer<List<Employee>> callback) {
+        super(callback);
+    }
+
     @Override
-    public void execute() {
-        System.out.println("[task 4] Under construction");
+    protected List<Employee> performOperation() {
+        int count;
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            try {
+                System.out.print("Введите количество сотрудников для призыва(больше 0):");
+                count = Integer.parseInt(scanner.nextLine());
+                if (count > 0) {
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+            } catch (NumberFormatException | InputMismatchException e) {
+                System.out.println("Неверный тип данных или число сотрудников, попробуйте еще раз");
+            }
+        } while (true);
+
+        System.out.println("Богиня жизни \"Гея\" призвала новых сотрудников");
+
+        RandomDataResourceLoader loader = new RandomDataResourceLoader(
+                Path.of("src", "main", "resources", "random")
+        );
+
+        return RandomDataEmployeesProvider.provideRandomEmployees(
+                loader.getMaleNames(),
+                loader.getFemaleNames(),
+                loader.getDomains(),
+                loader.getWorks(),
+                count
+        );
     }
 }
