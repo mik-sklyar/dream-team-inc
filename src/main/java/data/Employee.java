@@ -22,16 +22,16 @@ public final class Employee {
         return order;
     }
 
-    public String getOrderString() {
-        return Integer.toString(getOrder());
+    public String getOrderSortingString() {
+        return String.format("%10d", getOrder());
     }
 
     public long getId() {
         return id;
     }
 
-    public String getIdString() {
-        return Long.toString(getId());
+    public String getIdSortingString() {
+        return String.format("%019d", getId());
     }
 
     public String getName() {
@@ -52,8 +52,8 @@ public final class Employee {
     }
 
     public enum SortingFields {
-        ORDER("order", Employee::getOrderString, "Порядковый номер сотрудника"),
-        ID("id", Employee::getIdString, "Уникальный идентификатор"),
+        ORDER("order", Employee::getOrderSortingString, "Порядковый номер сотрудника"),
+        ID("id", Employee::getIdSortingString, "Уникальный идентификатор"),
         NAME("name", Employee::getName, "Имя"),
         EMAIL("email", Employee::getEmail, "Электронная почта"),
         PASSWORD("password", Employee::getPassword, "Пароль");
