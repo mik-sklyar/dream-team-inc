@@ -3,8 +3,8 @@ package data;
 import java.security.SecureRandom;
 
 public final class Employee {
-    private final Integer order;
-    private final Long id;
+    private final int order;
+    private final long id;
     private final String name;
     private final String email;
     private final String password;
@@ -17,12 +17,20 @@ public final class Employee {
         this.order = builder.getOrder();
     }
 
-    public Integer getOrder() {
+    public int getOrder() {
         return order;
     }
 
-    public Long getId() {
+    public String getOrderString() {
+        return Integer.toString(getOrder());
+    }
+
+    public long getId() {
         return id;
+    }
+
+    public String getIdString() {
+        return Long.toString(getId());
     }
 
     public String getName() {
@@ -43,18 +51,18 @@ public final class Employee {
     }
 
     public static class Builder {
-        static private Integer order = -1;
         static private final SecureRandom uidProvider = new SecureRandom();
+        static private int order = -1;
         private String name;
         private String email;
         private String password;
 
-        private Integer getOrder() {
+        private int getOrder() {
             order += 1;
             return order;
         }
 
-        private Long getId() {
+        private long getId() {
             return Integer.toUnsignedLong(uidProvider.nextInt());
         }
 
