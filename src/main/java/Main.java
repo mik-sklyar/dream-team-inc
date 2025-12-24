@@ -16,6 +16,7 @@ public class Main {
         ActionContext context = new ActionContext();
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            out.println("\n--- Меню получения данных ---");
             out.println("1 - устроить партию сотрудников из файла биржи труда");
             out.println("2 - устроить сотрудников по очереди вручную");
             out.println("3 - взять сотрудников из параллельной вселенной \"Рандомии\"");

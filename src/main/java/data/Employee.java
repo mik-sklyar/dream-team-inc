@@ -52,7 +52,7 @@ public final class Employee {
 
     public static class Builder {
         static private final SecureRandom uidProvider = new SecureRandom();
-        static private int order = -1;
+        static private int order = 0;
         private String name;
         private String email;
         private String password;
