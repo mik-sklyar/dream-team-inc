@@ -1,9 +1,9 @@
 import business.ActionContext;
 import business.EmployeePrintStrategy;
 import business.ExitStrategy;
-import business.sorting.EmployeeQuickSortStrategy;
+import business.sorting.EmployeeSortStrategy;
 import data.Employee;
-import data.EmployeeSortingField;
+import data.Employee.SortingFields;
 
 import java.util.*;
 
@@ -41,16 +41,16 @@ public class DataActionsMenu {
                     context.setStrategy(new EmployeePrintStrategy(employees));
                     break;
                 case SORT_BY_ORDER:
-                    context.setStrategy(new EmployeeQuickSortStrategy(employees, EmployeeSortingField.ORDER, this::handleSortResult));
+                    context.setStrategy(new EmployeeSortStrategy(employees, SortingFields.ORDER, this::handleSortResult));
                     break;
                 case SORT_BY_ID:
-                    context.setStrategy(new EmployeeQuickSortStrategy(employees, EmployeeSortingField.ID, this::handleSortResult));
+                    context.setStrategy(new EmployeeSortStrategy(employees, SortingFields.ID, this::handleSortResult));
                     break;
                 case SORT_BY_NAME:
-                    context.setStrategy(new EmployeeQuickSortStrategy(employees, EmployeeSortingField.NAME, this::handleSortResult));
+                    context.setStrategy(new EmployeeSortStrategy(employees, SortingFields.NAME, this::handleSortResult));
                     break;
                 case SORT_BY_EMAIL:
-                    context.setStrategy(new EmployeeQuickSortStrategy(employees, EmployeeSortingField.EMAIL, this::handleSortResult));
+                    context.setStrategy(new EmployeeSortStrategy(employees, SortingFields.EMAIL, this::handleSortResult));
                     break;
                 case EXIT:
                     context.setStrategy(new ExitStrategy());

@@ -2,16 +2,16 @@ package business.sorting;
 
 import business.EmployeeOperationStrategy;
 import data.Employee;
-import data.EmployeeSortingField;
+import data.Employee.SortingFields;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EmployeeQuickSortStrategy extends EmployeeOperationStrategy {
-    final protected EmployeeSortingField sortingField;
+public class EmployeeSortStrategy extends EmployeeOperationStrategy {
+    final protected SortingFields sortingField;
 
-    public EmployeeQuickSortStrategy(List<Employee> input, EmployeeSortingField sortingField, Consumer<List<Employee>> callback) {
+    public EmployeeSortStrategy(List<Employee> input, SortingFields sortingField, Consumer<List<Employee>> callback) {
         super(input, callback);
         this.sortingField = sortingField;
     }
