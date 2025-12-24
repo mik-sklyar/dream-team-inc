@@ -1,12 +1,11 @@
 import java.nio.file.Path;
-import java.util.*;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
 import java.util.function.Consumer;
 
 
 public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
-    public RandomDataPerformStrategy() {
-        super();
-    }
 
     public RandomDataPerformStrategy(Consumer<List<Employee>> callback) {
         super(callback);

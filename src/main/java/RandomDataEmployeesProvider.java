@@ -1,4 +1,3 @@
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,12 +15,7 @@ public class RandomDataEmployeesProvider {
             w = random.nextInt(works.size());
             d = random.nextInt(domains.size());
 
-            emails.add(new StringBuilder()
-                    .append(works.get(w))
-                    .append("@")
-                    .append(domains.get(d))
-                    .toString()
-            );
+            emails.add(works.get(w) + "@" + domains.get(d));
         }
 
         return emails;

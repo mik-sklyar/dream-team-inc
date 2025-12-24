@@ -5,11 +5,11 @@ import java.nio.file.Paths;
 import java.util.List;
 
 final class RandomDataResourceLoader {
-    private Path directory;
-    private List<String> maleNames;
-    private List<String> femaleNames;
-    private List<String> domains;
-    private List<String> works;
+    private final Path directory;
+    private final List<String> maleNames;
+    private final List<String> femaleNames;
+    private final List<String> domains;
+    private final List<String> works;
 
     RandomDataResourceLoader(Path directory) {
         this.directory = directory;
@@ -17,14 +17,6 @@ final class RandomDataResourceLoader {
         femaleNames = loadFileToList("female-names-list.txt");
         domains = loadFileToList("domain-list.txt");
         works = loadFileToList("work-list.txt");
-    }
-
-    RandomDataResourceLoader(Path directory, String maleNames, String femaleNames, String domains, String works) {
-        this.directory = directory;
-        this.maleNames = loadFileToList(maleNames);
-        this.femaleNames = loadFileToList(femaleNames);
-        this.domains = loadFileToList(domains);
-        this.works = loadFileToList(works);
     }
 
     List<String> getMaleNames() {
