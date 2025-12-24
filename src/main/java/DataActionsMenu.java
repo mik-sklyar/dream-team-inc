@@ -68,20 +68,8 @@ public class DataActionsMenu {
     private void handleSortResult(List<Employee> sortedEmployees) {
         System.out.println("\n--- Обработано " + sortedEmployees.size() + " сотрудников ---");
         this.employees = sortedEmployees;
-        printEmployees();
     }
-
-    private void printEmployees() {
-        if (employees.isEmpty()) {
-            System.out.println("Список сотрудников пуст.");
-            return;
-        }
-        System.out.println("\n--- Текущий список сотрудников ---");
-        for (Employee employee : employees) {
-            System.out.println(employee);
-        }
-    }
-
+    
     public enum DataAction {
 
         PRINT("1", "Вывести список на экран"),
