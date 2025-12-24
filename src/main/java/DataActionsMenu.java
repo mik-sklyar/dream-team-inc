@@ -1,7 +1,8 @@
 import business.ActionContext;
+import business.sorting.EmployeeQuickSortStrategy;
 import data.Employee;
+import data.EmployeeSortingField;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,8 +15,8 @@ import java.util.Scanner;
  */
 public class DataActionsMenu {
 
-    private List<Employee> employees;
     private final ActionContext context = new ActionContext();
+    private List<Employee> employees;
 
     public DataActionsMenu(List<Employee> employees) {
         this.employees = employees;
@@ -40,13 +41,13 @@ public class DataActionsMenu {
                     printEmployees();
                     break;
                 case "2":
-                    setSortStrategy(Comparator.comparing(Employee::getName));
+                    context.setStrategy(new EmployeeQuickSortStrategy(employees, EmployeeSortingField.NAME, this::handleSortResult));
                     break;
                 case "3":
-                    setSortStrategy(Comparator.comparing(Employee::getEmail));
+                    context.setStrategy(new EmployeeQuickSortStrategy(employees, EmployeeSortingField.EMAIL, this::handleSortResult));
                     break;
                 case "4":
-                    setSortStrategy(Comparator.comparing(Employee::getPassword));
+                    context.setStrategy(new EmployeeQuickSortStrategy(employees, EmployeeSortingField.PASSWORD, this::handleSortResult));
                     break;
                 case "0":
                     System.out.println("Возврат в главное меню...");
@@ -54,24 +55,14 @@ public class DataActionsMenu {
                 default:
                     System.out.println("Неверный выбор, попробуйте снова.");
             }
+            context.perform();
         }
     }
 
-    /**
-     * Устанавливает и выполняет стратегию сортировки.
-     *
-     * @param comparator Компаратор, определяющий поле для сортировки.
-     */
-    private void setSortStrategy(Comparator<Employee> comparator) {
-        // TODO: Устанавливаем стратегию сортировки
-        System.out.println("Выполняется сортировка...");
-        context.perform();
-        System.out.println("Сортировка завершена.");
-        printEmployees();
-    }
-
     private void handleSortResult(List<Employee> sortedEmployees) {
+        System.out.println("\n--- Обработано " + sortedEmployees.size() + " сотрудников ---");
         this.employees = sortedEmployees;
+        printEmployees();
     }
 
     private void printEmployees() {
