@@ -1,66 +1,102 @@
-package business.perform;
+package data.perform;
 
 import data.Employee;
-import data.perform.EmployeeFileReader;
-import business.EmployeeOperationStrategy;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.function.Consumer;
 
-public class FileDataPerformStrategy extends EmployeeOperationStrategy {
+public class EmployeeFileReader {
 
-    private final EmployeeFileReader fileReader;
-    private final Scanner scanner;
+    public List<Employee> readEmployeesFromFile(File file) throws IOException {
+        List<Employee> employees = new ArrayList<>();
 
-    public FileDataPerformStrategy(Consumer<List<Employee>> callback) {
-        super(callback);
-        this.fileReader = new EmployeeFileReader();
-        this.scanner = new Scanner(System.in);
-    }
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            int lineNumber = 0;
+            int successfulCount = 0;
+            int errorCount = 0;
 
-    @Override
-    protected List<Employee> performOperation() {
-        System.out.println("\n=== ЗАГРУЗКА СОТРУДНИКОВ ИЗ ФАЙЛА ===");
-        System.out.println("Введите имя файла или 0 для выхода в меню");
-        System.out.print(">> ");
+            System.out.println("Начинаем чтение файла: " + file.getAbsolutePath());
+            System.out.println("--------------------------------------------------");
 
-        String filename = scanner.nextLine().trim();
+            while ((line = reader.readLine()) != null) {
+                lineNumber++;
+                line = line.trim();
 
-        if (filename.equals("0")) {
-            System.out.println("Возвращаемся в меню...");
-            return new ArrayList<>();
-        }
+                if (line.isEmpty() || line.startsWith("#")) {
+                    continue;
+                }
 
-        if (filename.isEmpty()) {
-            System.out.println("Ошибка: имя файла не может быть пустым");
-            return new ArrayList<>();
-        }
+                String[] parts = line.split("[;,\\t]");
 
-        File file = fileReader.findFile(filename);
+                if (parts.length != 3) {
+                    System.out.println("Ошибка в строке " + lineNumber +
+                            ": неверный формат. Ожидается: Имя;email;пароль");
+                    System.out.println("   Содержимое строки: " + line);
+                    errorCount++;
+                    continue;
+                }
 
-        if (file == null || !file.exists()) {
-            System.out.println("Ошибка: файл '" + filename + "' не найден");
-            System.out.println("Поместите файл в папку resources/ проекта");
-            return new ArrayList<>();
-        }
+                try {
+                    Employee employee = new Employee.Builder()
+                            .setName(parts[0].trim())
+                            .setEmail(parts[1].trim())
+                            .setPassword(parts[2].trim())
+                            .build();
+                    employees.add(employee);
+                    successfulCount++;
 
-        try {
-            List<Employee> employees = fileReader.readEmployeesFromFile(file);
-
-            if (employees.isEmpty()) {
-                System.out.println("Ошибка: в файле нет корректных данных");
-                return new ArrayList<>();
+                } catch (IllegalArgumentException | IllegalStateException e) {
+                    System.out.println("Ошибка в строке " + lineNumber + ": " + e.getMessage());
+                    System.out.println("   Содержимое строки: " + line);
+                    errorCount++;
+                }
             }
 
-            System.out.println("Успешно загружено: " + employees.size() + " сотрудников");
-            return employees;
+            System.out.println("--------------------------------------------------");
+            System.out.println("СТАТИСТИКА ЧТЕНИЯ ФАЙЛА:");
+            System.out.println("   Успешно загружено: " + successfulCount + " сотрудников");
+            System.out.println("   Ошибок при чтении: " + errorCount + " строк");
+            System.out.println("   Всего обработано строк: " + lineNumber);
+            System.out.println("--------------------------------------------------");
 
         } catch (IOException e) {
-            System.out.println("Ошибка чтения файла: " + e.getMessage());
-            return new ArrayList<>();
+            System.out.println("Ошибка при чтении файла: " + e.getMessage());
+            throw e;
         }
+
+        return employees;
+    }
+
+    public File findFile(String filename) {
+        File file = new File(filename);
+
+        if (file.exists() && file.isFile()) {
+            System.out.println("Файл найден по указанному пути: " + file.getAbsolutePath());
+            return file;
+        }
+
+        String[] possiblePaths = {
+                "src/main/resources/" + filename,  
+                "resources/" + filename,           
+                "src/resources/" + filename,       
+                filename                           
+        };
+
+        System.out.println("Поиск файла в проекте...");
+
+        for (String path : possiblePaths) {
+            file = new File(path);
+            if (file.exists() && file.isFile()) {
+                System.out.println("Файл найден: " + file.getAbsolutePath());
+                return file;
+            }
+        }
+
+        System.out.println("Файл не найден в проекте: " + filename);
+        return null;
     }
 }
