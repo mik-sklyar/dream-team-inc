@@ -1,10 +1,10 @@
 package data;
 
-class CustomLinkedList {
-    private ListNode head;
-    private ListNode current;
-    private ListNode tail;
-    private ListNode buffer;
+class CustomLinkedList<T> {
+    private ListNode<T> head;
+    private ListNode<T> current;
+    private ListNode<T> tail;
+    private ListNode<T> buffer;
 
     private int size;
 
@@ -21,7 +21,7 @@ class CustomLinkedList {
         return head == null;
     }
 
-    public void addAtHead(int val) {
+    public <T> void addAtHead(T val) {
         if (head != null) {
             head = new ListNode(val, head);
         } else {
@@ -30,7 +30,7 @@ class CustomLinkedList {
         size++;
     }
 
-    public void addAtTail(int val) {
+    public <T> void addAtTail(T val) {
         if (tail != null) {
             tail = tail.next = new ListNode(val);
         } else {
@@ -40,7 +40,7 @@ class CustomLinkedList {
         size++;
     }
 
-    public void addAtIndex(int index, int val) {
+    public <T> void addAtIndex(int index, T val) {
         if (index > 0 && index < size){
             current = head;
 
@@ -103,8 +103,8 @@ class CustomLinkedList {
         }
     }
 
-    public int get(int index) {
-        if (index < 0 || index >= size){return -1;}
+    public Object get(int index) {
+        if (index < 0 || index >= size){return null;}
 
         current = head;
 
@@ -115,15 +115,15 @@ class CustomLinkedList {
         return current.val;
     }
 
-    private final static class ListNode {
-        ListNode next;
-        int val;
+    private final static class ListNode<T> {
+        ListNode<T> next;
+        T val;
 
-        ListNode(int val) {
+        ListNode(T val) {
             this.val = val;
         }
 
-        ListNode(int val, ListNode next) {
+        ListNode(T val, ListNode<T> next) {
             this.val = val;
             this.next = next;
         }
