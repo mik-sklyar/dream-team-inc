@@ -1,57 +1,15 @@
-import business.ActionContext;
-import business.ExitStrategy;
-import data.Employee;
-
-import java.util.List;
-import java.util.Scanner;
+import presentation.DataPerformMenu;
 
 import static java.lang.System.out;
 
 public class Main {
+    private static final DataPerformMenu menu = new DataPerformMenu();
+
     public static void main(String[] args) {
 
         out.println("Добро пожаловать в Dream-Team inc.");
         out.println("Амбициозный стартап набирает сотрудников для захвата мира.");
 
-        ActionContext context = new ActionContext();
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            out.println("\n--- Меню получения данных ---");
-            out.println("1 - устроить партию сотрудников из файла биржи труда");
-            out.println("2 - устроить сотрудников по очереди вручную");
-            out.println("3 - взять сотрудников из параллельной вселенной \"Рандомии\"");
-            out.println("0 - отказаться от амбиций и выйти");
-            out.print("Введите номер действия: ");
-
-            String choice = scanner.nextLine();
-
-            switch (choice) {
-                case "1":
-                    context.setStrategy(new FileDataPerformStrategy());
-                    break;
-                case "2":
-                    context.setStrategy(new ManualDataPerformStrategy(Main::handleEmployees));
-                    break;
-                case "3":
-                    context.setStrategy(new RandomDataPerformStrategy(Main::handleEmployees));
-                    break;
-                case "0":
-                    context.setStrategy(new ExitStrategy());
-                    break;
-                default:
-                    out.println("Неверный выбор, попробуйте снова.");
-                    continue;
-            }
-            context.perform();
-        }
-    }
-
-    public static void handleEmployees(List<Employee> employees) {
-        if (employees.isEmpty()) {
-            out.println("А никто не пришёл... Попробуем ещё раз?");
-        } else {
-            DataActionsMenu menu = new DataActionsMenu(employees);
-            menu.display();
-        }
+        menu.display();
     }
 }

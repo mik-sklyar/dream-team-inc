@@ -1,3 +1,5 @@
+package presentation;
+
 import business.ActionContext;
 import business.EmployeePrintStrategy;
 import business.ExitStrategy;
@@ -5,7 +7,12 @@ import business.sorting.EmployeeSortStrategy;
 import data.Employee;
 import data.Employee.SortingFields;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static presentation.Utils.INPUT;
 
 /**
  * Реализует меню для интерактивной работы со списком сотрудников.
@@ -23,19 +30,17 @@ public class DataActionsMenu {
     }
 
     public void display() {
-        ActionContext context = new ActionContext();
-        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n--- Меню обработки данных ---");
             System.out.println("К работе готовы " + employees.size() + " сотрудников.");
-            for (DataAction action : DataAction.values()) {
-                if (action == DataAction.UNKNOWN) continue;
+            for (DataActionMenuItems action : DataActionMenuItems.values()) {
+                if (action == DataActionMenuItems.UNKNOWN) continue;
                 System.out.println(action);
             }
             System.out.print("Выберите действие: ");
 
-            DataAction choice = DataAction.fromString(scanner.nextLine().strip());
-
+            ActionContext context = new ActionContext();
+            DataActionMenuItems choice = DataActionMenuItems.fromString(INPUT.nextLine().strip());
             switch (choice) {
                 case PRINT:
                     context.setStrategy(new EmployeePrintStrategy(employees));
@@ -69,8 +74,8 @@ public class DataActionsMenu {
         System.out.println("\n--- Обработано " + sortedEmployees.size() + " сотрудников ---");
         this.employees = sortedEmployees;
     }
-    
-    public enum DataAction {
+
+    private enum DataActionMenuItems {
 
         PRINT("1", "Вывести список на экран"),
         SORT_BY_ORDER("2", "Сортировать по порядку"),
@@ -81,10 +86,10 @@ public class DataActionsMenu {
         EXIT("0", "Отказаться от всего этого и уйти"),
         UNKNOWN("", "");
 
-        private static final Map<String, DataAction> MAP = new HashMap<>();
+        private static final Map<String, DataActionMenuItems> MAP = new HashMap<>();
 
         static {
-            for (DataAction action : DataAction.values()) {
+            for (DataActionMenuItems action : DataActionMenuItems.values()) {
                 MAP.put(action.key, action);
             }
         }
@@ -92,13 +97,13 @@ public class DataActionsMenu {
         private final String key;
         private final String description;
 
-        DataAction(String key, String description) {
+        DataActionMenuItems(String key, String description) {
             this.key = key;
             this.description = description;
 
         }
 
-        static public DataAction fromString(String input) {
+        static private DataActionMenuItems fromString(String input) {
             return Objects.requireNonNullElse(MAP.get(input), UNKNOWN);
         }
 
