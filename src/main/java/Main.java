@@ -1,3 +1,7 @@
+import business.ActionContext;
+import business.ExitStrategy;
+import data.Employee;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,6 +16,7 @@ public class Main {
         ActionContext context = new ActionContext();
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            out.println("\n--- Меню получения данных ---");
             out.println("1 - устроить партию сотрудников из файла биржи труда");
             out.println("2 - устроить сотрудников по очереди вручную");
             out.println("3 - взять сотрудников из параллельной вселенной \"Рандомии\"");
@@ -31,8 +36,8 @@ public class Main {
                     context.setStrategy(new RandomDataPerformStrategy(Main::handleEmployees));
                     break;
                 case "0":
-                    out.println("Ну а что, тоже вариант ¯\\_(ツ)_/¯");
-                    System.exit(0);
+                    context.setStrategy(new ExitStrategy());
+                    break;
                 default:
                     out.println("Неверный выбор, попробуйте снова.");
                     continue;
@@ -45,9 +50,8 @@ public class Main {
         if (employees.isEmpty()) {
             out.println("А никто не пришёл... Попробуем ещё раз?");
         } else {
-            out.println("Новых сотрудников " + employees.size());
-            //[task6] передать управление классу с меню обработки данных
+            DataActionsMenu menu = new DataActionsMenu(employees);
+            menu.display();
         }
     }
 }
-

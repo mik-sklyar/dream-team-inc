@@ -1,8 +1,11 @@
+package data;
+
 import java.security.SecureRandom;
+import java.util.function.Function;
 
 public final class Employee {
-    private final Integer order;
-    private final Long id;
+    private final int order;
+    private final long id;
     private final String name;
     private final String email;
     private final String password;
@@ -15,11 +18,11 @@ public final class Employee {
         this.order = builder.getOrder();
     }
 
-    public Integer getOrder() {
+    public int getOrder() {
         return order;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -40,19 +43,51 @@ public final class Employee {
         return "Сотрудник №" + order + " {id: " + id + ", имя: '" + name + "', email: " + email + "}";
     }
 
+    @SuppressWarnings({"rawtypes", "unused"})
+    public enum SortingFields {
+        ORDER("order", Employee::getOrder, "Порядковый номер сотрудника"),
+        ID("id", Employee::getId, "Уникальный идентификатор"),
+        NAME("name", Employee::getName, "Имя"),
+        EMAIL("email", Employee::getEmail, "Электронная почта"),
+        PASSWORD("password", Employee::getPassword, "Пароль");
+
+        private final String key;
+        private final String description;
+        private final Function<Employee, Comparable> method;
+
+        SortingFields(String key, Function<Employee, Comparable> method, String description) {
+            this.key = key;
+            this.method = method;
+            this.description = description;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public Function<Employee, Comparable> getMethod() {
+            return method;
+        }
+
+        @Override
+        public String toString() {
+            return this.description;
+        }
+    }
+
     public static class Builder {
-        static private Integer order = -1;
         static private final SecureRandom uidProvider = new SecureRandom();
+        static private int order = 0;
         private String name;
         private String email;
         private String password;
 
-        private Integer getOrder() {
+        private int getOrder() {
             order += 1;
             return order;
         }
 
-        private Long getId() {
+        private long getId() {
             return Integer.toUnsignedLong(uidProvider.nextInt());
         }
 
