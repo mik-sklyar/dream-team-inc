@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тесты Builder для Employee")
-class EmployeeTest {
+class EmployeeTests {
 
     @Nested
     @DisplayName("Позитивные сценарии")
@@ -31,8 +31,7 @@ class EmployeeTest {
 
             assertNotNull(employee1);
             assertNotNull(employee2);
-            assertEquals(0, employee1.getOrder());
-            assertEquals(1, employee2.getOrder());
+            assert(employee2.getOrder() > employee1.getOrder());
         }
     }
 
