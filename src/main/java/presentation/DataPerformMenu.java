@@ -30,7 +30,7 @@ public class DataPerformMenu {
             DataPerformMenuItems choice = DataPerformMenuItems.fromString(INPUT.nextLine().strip());
             switch (choice) {
                 case FILE:
-                    context.setStrategy(new FileDataPerformStrategy());
+                    context.setStrategy(new FileDataPerformStrategy(this::handleEmployees));
                     break;
                 case MANUAL:
                     context.setStrategy(new ManualDataPerformStrategy(this::handleEmployees));
