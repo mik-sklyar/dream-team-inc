@@ -1,5 +1,8 @@
 import business.ActionContext;
 import business.ExitStrategy;
+import business.perform.FileDataPerformStrategy;
+import business.perform.ManualDataPerformStrategy;
+import business.perform.RandomDataPerformStrategy;
 import data.Employee;
 
 import java.util.List;
@@ -15,6 +18,8 @@ public class Main {
 
         ActionContext context = new ActionContext();
         Scanner scanner = new Scanner(System.in);
+
+        //noinspection InfiniteLoopStatement
         while (true) {
             out.println("\n--- Меню получения данных ---");
             out.println("1 - устроить партию сотрудников из файла биржи труда");

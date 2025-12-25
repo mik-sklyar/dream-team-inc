@@ -1,17 +1,19 @@
+package data.perform;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-final class RandomDataResourceLoader {
+public final class RandomDataResourceLoader {
     private final Path directory;
     private final List<String> maleNames;
     private final List<String> femaleNames;
     private final List<String> domains;
     private final List<String> works;
 
-    RandomDataResourceLoader(Path directory) {
+    public RandomDataResourceLoader(Path directory) {
         this.directory = directory;
         maleNames = loadFileToList("male-names-list.txt");
         femaleNames = loadFileToList("female-names-list.txt");

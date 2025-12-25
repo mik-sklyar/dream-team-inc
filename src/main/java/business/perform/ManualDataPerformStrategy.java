@@ -1,3 +1,5 @@
+package business.perform;
+
 import business.EmployeeOperationStrategy;
 import data.Employee;
 
@@ -13,7 +15,7 @@ import java.util.function.Function;
  * Пользователю последовательно предлагается ввести данные для каждого сотрудника.
  * В случае ошибки ввода для какого-либо поля, запрос повторяется до корректного ввода.
  */
-class ManualDataPerformStrategy extends EmployeeOperationStrategy {
+public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
 
     /**
      * Конструктор для стратегии ручного ввода.

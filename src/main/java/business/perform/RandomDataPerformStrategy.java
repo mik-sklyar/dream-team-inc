@@ -1,7 +1,9 @@
+package business.perform;
+
 import business.EmployeeOperationStrategy;
 import data.Employee;
+import data.perform.RandomDataEmployeesProvider;
 
-import java.nio.file.Path;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -35,16 +37,6 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
 
         System.out.println("Богиня жизни \"Гея\" призвала новых сотрудников");
 
-        RandomDataResourceLoader loader = new RandomDataResourceLoader(
-                Path.of("src", "main", "resources", "random")
-        );
-
-        return RandomDataEmployeesProvider.provideRandomEmployees(
-                loader.getMaleNames(),
-                loader.getFemaleNames(),
-                loader.getDomains(),
-                loader.getWorks(),
-                count
-        );
+        return RandomDataEmployeesProvider.provideRandomEmployees(count);
     }
 }
