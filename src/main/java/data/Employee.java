@@ -22,16 +22,8 @@ public final class Employee {
         return order;
     }
 
-    public String getOrderSortingString() {
-        return String.format("%10d", getOrder());
-    }
-
     public long getId() {
         return id;
-    }
-
-    public String getIdSortingString() {
-        return String.format("%019d", getId());
     }
 
     public String getName() {
@@ -51,18 +43,19 @@ public final class Employee {
         return "Сотрудник №" + order + " {id: " + id + ", имя: '" + name + "', email: " + email + "}";
     }
 
+    @SuppressWarnings({"rawtypes", "unused"})
     public enum SortingFields {
-        ORDER("order", Employee::getOrderSortingString, "Порядковый номер сотрудника"),
-        ID("id", Employee::getIdSortingString, "Уникальный идентификатор"),
+        ORDER("order", Employee::getOrder, "Порядковый номер сотрудника"),
+        ID("id", Employee::getId, "Уникальный идентификатор"),
         NAME("name", Employee::getName, "Имя"),
         EMAIL("email", Employee::getEmail, "Электронная почта"),
         PASSWORD("password", Employee::getPassword, "Пароль");
 
         private final String key;
         private final String description;
-        private final Function<Employee, String> method;
+        private final Function<Employee, Comparable> method;
 
-        SortingFields(String key, Function<Employee, String> method, String description) {
+        SortingFields(String key, Function<Employee, Comparable> method, String description) {
             this.key = key;
             this.method = method;
             this.description = description;
@@ -72,7 +65,7 @@ public final class Employee {
             return key;
         }
 
-        public Function<Employee, String> getMethod() {
+        public Function<Employee, Comparable> getMethod() {
             return method;
         }
 

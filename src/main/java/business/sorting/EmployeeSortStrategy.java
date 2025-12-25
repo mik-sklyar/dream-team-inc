@@ -31,8 +31,9 @@ public class EmployeeSortStrategy extends EmployeeOperationStrategy {
         }
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private int partition(List<Employee> list, int low, int high) {
-        String pivot = sortingField.getMethod().apply(list.get(high));
+        Comparable pivot = sortingField.getMethod().apply(list.get(high));
         int i = low - 1;
 
         for (int j = low; j < high; j++) {
