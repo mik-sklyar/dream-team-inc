@@ -5,7 +5,12 @@ import business.sorting.EmployeeSortStrategy;
 import data.Employee;
 import data.Employee.SortingFields;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static presentation.Utils.INPUT;
 
 /**
  * Реализует меню для интерактивной работы со списком сотрудников.
@@ -23,8 +28,6 @@ public class DataActionsMenu {
     }
 
     public void display() {
-        ActionContext context = new ActionContext();
-        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n--- Меню обработки данных ---");
             System.out.println("К работе готовы " + employees.size() + " сотрудников.");
@@ -34,8 +37,8 @@ public class DataActionsMenu {
             }
             System.out.print("Выберите действие: ");
 
-            DataAction choice = DataAction.fromString(scanner.nextLine().strip());
-
+            ActionContext context = new ActionContext();
+            DataAction choice = DataAction.fromString(INPUT.nextLine().strip());
             switch (choice) {
                 case PRINT:
                     context.setStrategy(new EmployeePrintStrategy(employees));
@@ -69,7 +72,7 @@ public class DataActionsMenu {
         System.out.println("\n--- Обработано " + sortedEmployees.size() + " сотрудников ---");
         this.employees = sortedEmployees;
     }
-    
+
     public enum DataAction {
 
         PRINT("1", "Вывести список на экран"),

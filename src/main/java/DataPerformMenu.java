@@ -1,12 +1,18 @@
 import business.ActionContext;
 import business.ExitStrategy;
-import business.perform.*;
+import business.perform.FileDataPerformStrategy;
+import business.perform.ManualDataPerformStrategy;
+import business.perform.RandomDataPerformStrategy;
 import data.Employee;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static presentation.Utils.INPUT;
 
 public class DataPerformMenu {
-    private final ActionContext context = new ActionContext();
 
     public void display() {
         //noinspection InfiniteLoopStatement
@@ -18,9 +24,8 @@ public class DataPerformMenu {
             }
             System.out.print("Выберите действие: ");
 
-            Scanner scanner = new Scanner(System.in);
-            DataPerformMenuItems choice = DataPerformMenuItems.fromString(scanner.nextLine().strip());
-
+            ActionContext context = new ActionContext();
+            DataPerformMenuItems choice = DataPerformMenuItems.fromString(INPUT.nextLine().strip());
             switch (choice) {
                 case FILE:
                     context.setStrategy(new FileDataPerformStrategy());

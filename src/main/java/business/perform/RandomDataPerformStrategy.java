@@ -6,9 +6,9 @@ import data.perform.RandomDataEmployeesProvider;
 
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.Consumer;
 
+import static presentation.Utils.INPUT;
 
 public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
 
@@ -19,12 +19,10 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
     @Override
     protected List<Employee> performOperation() {
         int count;
-        Scanner scanner = new Scanner(System.in);
-
         do {
             try {
                 System.out.print("Введите количество сотрудников для призыва(больше 0):");
-                count = Integer.parseInt(scanner.nextLine());
+                count = Integer.parseInt(INPUT.nextLine());
                 if (count > 0) {
                     break;
                 } else {
