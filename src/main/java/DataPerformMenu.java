@@ -1,10 +1,57 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import business.ActionContext;
+import business.ExitStrategy;
+import business.perform.*;
+import data.Employee;
+
+import java.util.*;
 
 public class DataPerformMenu {
+    private final ActionContext context = new ActionContext();
 
-    public enum DataPerform {
+    public void display() {
+        //noinspection InfiniteLoopStatement
+        while (true) {
+            System.out.println("\n--- Меню получения данных ---");
+            for (DataPerformMenuItems value : DataPerformMenuItems.values()) {
+                if (value == DataPerformMenuItems.UNKNOWN) continue;
+                System.out.println(value);
+            }
+            System.out.print("Выберите действие: ");
+
+            Scanner scanner = new Scanner(System.in);
+            DataPerformMenuItems choice = DataPerformMenuItems.fromString(scanner.nextLine().strip());
+
+            switch (choice) {
+                case FILE:
+                    context.setStrategy(new FileDataPerformStrategy());
+                    break;
+                case MANUAL:
+                    context.setStrategy(new ManualDataPerformStrategy(this::handleEmployees));
+                    break;
+                case RANDOM:
+                    context.setStrategy(new RandomDataPerformStrategy(this::handleEmployees));
+                    break;
+                case EXIT:
+                    context.setStrategy(new ExitStrategy());
+                    break;
+                default:
+                    System.out.println("Неверный выбор, попробуйте снова.");
+                    continue;
+            }
+            context.perform();
+        }
+    }
+
+    private void handleEmployees(List<Employee> employees) {
+        if (employees.isEmpty()) {
+            System.out.println("А никто не пришёл... Попробуем ещё раз?");
+        } else {
+            DataActionsMenu menu = new DataActionsMenu(employees);
+            menu.display();
+        }
+    }
+
+    private enum DataPerformMenuItems {
 
         FILE("1", "Устроить партию сотрудников из файла биржи труда"),
         MANUAL("2", "Заполнить сотрудников по очереди вручную"),
@@ -12,10 +59,10 @@ public class DataPerformMenu {
         EXIT("0", "Отказаться от амбиций и выйти"),
         UNKNOWN("", "");
 
-        private static final Map<String, DataPerformMenu.DataPerform> MAP = new HashMap<>();
+        private static final Map<String, DataPerformMenuItems> MAP = new HashMap<>();
 
         static {
-            for (DataPerformMenu.DataPerform value : DataPerformMenu.DataPerform.values()) {
+            for (DataPerformMenuItems value : DataPerformMenuItems.values()) {
                 MAP.put(value.key, value);
             }
         }
@@ -23,13 +70,13 @@ public class DataPerformMenu {
         private final String key;
         private final String description;
 
-        DataPerform(String key, String description) {
+        DataPerformMenuItems(String key, String description) {
             this.key = key;
             this.description = description;
 
         }
 
-        static public DataPerformMenu.DataPerform fromString(String input) {
+        static private DataPerformMenuItems fromString(String input) {
             return Objects.requireNonNullElse(MAP.get(input), UNKNOWN);
         }
 
