@@ -9,17 +9,17 @@ class CustomLinkedList<E> implements List<E> {
 
     private int size;
 
-    //@Override
+    @Override
     public int size() {
         return size;
     }
 
-    //@Override
+    @Override
     public boolean isEmpty() {
         return head == null;
     }
 
-    //@Override
+    @Override
     public boolean contains(Object o) {
         ListNode current = head;
 
@@ -32,12 +32,12 @@ class CustomLinkedList<E> implements List<E> {
         return false;
     }
 
-    //@Override
+    @Override
     public Iterator<E> iterator() {
         return new CustomIterator();
     }
 
-    //@Override
+    @Override
     public Object[] toArray() {
         Object[] arr = new Object[size];
 
@@ -51,7 +51,7 @@ class CustomLinkedList<E> implements List<E> {
         return arr;
     }
 
-    //@Override
+    @Override
     public <T> T[] toArray(T[] arr) {
         if (arr.length < this.size) {
             return (T[]) Arrays.copyOf(toArray(), this.size, arr.getClass());
@@ -65,7 +65,7 @@ class CustomLinkedList<E> implements List<E> {
         }
     }
 
-    //@Override
+    @Override
     public boolean add(E val) {
         if (tail != null) {
             tail = tail.next = new ListNode(val);
@@ -77,7 +77,7 @@ class CustomLinkedList<E> implements List<E> {
         return true;
     }
 
-    //@Override
+    @Override
     public boolean remove(Object obj) {
         if (head == null) {
             return false;
@@ -102,7 +102,7 @@ class CustomLinkedList<E> implements List<E> {
         }
     }
 
-    //@Override
+    @Override
     public boolean containsAll(Collection<?> collection) {
         if (collection == null) {return false;}
 
@@ -124,7 +124,7 @@ class CustomLinkedList<E> implements List<E> {
         return !set.contains(0);
     }
 
-    //@Override
+    @Override
     public boolean addAll(Collection<? extends E> someCollection) {
         if (someCollection == null) {
             return false;
@@ -137,7 +137,7 @@ class CustomLinkedList<E> implements List<E> {
         return true;
     }
 
-    //@Override
+    @Override
     public boolean addAll(int i, Collection<? extends E> someCollection) {
         if (someCollection == null || i < 0 || i >= size) {return false;}
 
@@ -159,7 +159,7 @@ class CustomLinkedList<E> implements List<E> {
         return true;
     }
 
-    //@Override
+    @Override
     public E set(int i, E e) {
         if (i < 0 || i >= size) {return null;}
 
@@ -282,7 +282,7 @@ class CustomLinkedList<E> implements List<E> {
     }
 
 
-    //@Override
+    @Override
     public boolean removeAll(Collection<?> someCollection) {
         boolean b = false;
 
@@ -293,7 +293,7 @@ class CustomLinkedList<E> implements List<E> {
         return b;
     }
 
-    //Override
+    Override
     public boolean retainAll(Collection<?> someCollection) {
         boolean isRetain = false;
         ListNode current = head;
@@ -323,7 +323,7 @@ class CustomLinkedList<E> implements List<E> {
         return isRetain;
     }
 
-    //@Override
+    @Override
     public void clear() {
         head = tail = null;
         size = 0;
@@ -401,7 +401,8 @@ class CustomLinkedList<E> implements List<E> {
             size = 0;
         }
     }
-
+    
+    @Override
     public E get(int index) {
         if (index < 0 || index >= size) {
             return null;
