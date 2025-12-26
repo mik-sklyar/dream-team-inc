@@ -1,9 +1,6 @@
 package data;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 class CustomLinkedList<T> {
     private ListNode head;
@@ -98,6 +95,17 @@ class CustomLinkedList<T> {
             deleteAtIndex(i);
             return true;
         }
+    }
+    
+    //@Override
+    boolean addAll(Collection<? extends T> someCollection) {
+        if (someCollection == null) {return false;}
+
+        for (T i : someCollection) {
+            add(i);
+        }
+
+        return true;
     }
 
     //@Override
