@@ -117,13 +117,13 @@ class CustomLinkedList<T> {
 
     public void addAtIndex(int index, T val) {
         if (index > 0 && index < size) {
-            current = head;
+            ListNode current = head;
 
             for (int i = 0; i < index - 1; i++) {
                 current = current.next;
             }
 
-            buffer = current.next;
+            ListNode buffer = current.next;
             current = current.next = new ListNode(val);
             current.next = buffer;
 
