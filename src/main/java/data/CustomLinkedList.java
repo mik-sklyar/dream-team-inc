@@ -125,6 +125,41 @@ class CustomLinkedList<E> implements List<E> {
     }
 
     //@Override
+    public boolean addAll(Collection<? extends E> someCollection) {
+        if (someCollection == null) {
+            return false;
+        }
+
+        for (E i : someCollection) {
+            add(i);
+        }
+
+        return true;
+    }
+
+    //@Override
+    public boolean addAll(int i, Collection<? extends E> someCollection) {
+        if (someCollection == null || i < 0 || i >= size) {return false;}
+
+        ListNode current = head;
+
+        for (int j = 0; j < i; j++) {
+            current = current.next;
+        }
+
+        ListNode afterShiftNode = current;
+
+        for (var j : someCollection) {
+            current.next = new ListNode(j);
+            current = current.next;
+        }
+
+        current.next = afterShiftNode;
+
+        return true;
+    }
+
+    //@Override
     public boolean removeAll(Collection<?> someCollection) {
         boolean b = false;
 
