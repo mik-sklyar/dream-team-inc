@@ -1,27 +1,53 @@
 package data;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 class CustomLinkedList<T> {
-    private ListNode<T> head;
-    private ListNode<T> current;
-    private ListNode<T> tail;
-    private ListNode<T> buffer;
+    private ListNode head;
+    private ListNode current;
+    private ListNode tail;
+    private ListNode buffer;
 
     private int size;
 
+    //@Override
     public int size() {
         return size;
     }
 
+    //@Override
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    //@Override
+    public boolean contains(Object o){
+        current = head;
+
+        for (int i = 0; i < size; i++) {
+            if (current.val.equals(o)) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    public Iterator<T> iterator(){
+        return new CustomIterator();
+    }
+
+    //@Override
     public void clear() {
         head = tail = buffer = current = null;
         size = 0;
     }
 
-    public boolean isEmpty() {
-        return head == null;
-    }
 
-    public <T> void addAtHead(T val) {
+
+    public void addAtHead(T val) {
         if (head != null) {
             head = new ListNode(val, head);
         } else {
@@ -30,7 +56,7 @@ class CustomLinkedList<T> {
         size++;
     }
 
-    public <T> void addAtTail(T val) {
+    public void addAtTail(T val) {
         if (tail != null) {
             tail = tail.next = new ListNode(val);
         } else {
@@ -40,8 +66,8 @@ class CustomLinkedList<T> {
         size++;
     }
 
-    public <T> void addAtIndex(int index, T val) {
-        if (index > 0 && index < size){
+    public void addAtIndex(int index, T val) {
+        if (index > 0 && index < size) {
             current = head;
 
             for (int i = 0; i < index - 1; i++) {
@@ -53,7 +79,7 @@ class CustomLinkedList<T> {
             current.next = buffer;
 
             size++;
-        } else if (index == size){
+        } else if (index == size) {
             addAtTail(val);
         } else if (index == 0) {
             addAtHead(val);
@@ -85,6 +111,7 @@ class CustomLinkedList<T> {
             size--;
         }
     }
+
     public void deleteAtTail() {
         if (size > 1) {
             current = head;
@@ -103,8 +130,10 @@ class CustomLinkedList<T> {
         }
     }
 
-    public Object get(int index) {
-        if (index < 0 || index >= size){return null;}
+    public T get(int index) {
+        if (index < 0 || index >= size) {
+            return null;
+        }
 
         current = head;
 
@@ -115,17 +144,36 @@ class CustomLinkedList<T> {
         return current.val;
     }
 
-    private final static class ListNode<T> {
-        ListNode<T> next;
+    private final class ListNode {
+        ListNode next;
         T val;
 
         ListNode(T val) {
             this.val = val;
         }
 
-        ListNode(T val, ListNode<T> next) {
+        ListNode(T val, ListNode next) {
             this.val = val;
             this.next = next;
+        }
+    }
+
+    private class CustomIterator implements Iterator<T> {
+        private ListNode current;
+
+        CustomIterator() {
+            current = head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+        @Override
+        public T next() {
+            T data = current.val;
+            current = current.next;
+            return data;
         }
     }
 }
