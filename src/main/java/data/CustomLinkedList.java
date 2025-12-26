@@ -253,6 +253,17 @@ class CustomLinkedList<E> implements List<E> {
         return index;
     }
 
+    @Override
+    public ListIterator<E> listIterator() {
+        return new CustomListIterator(0);
+    }
+
+    @Override
+    public ListIterator<E> listIterator(int i) {
+        return new CustomListIterator(i);
+    }
+
+
 
     //@Override
     public boolean removeAll(Collection<?> someCollection) {
@@ -403,22 +414,84 @@ class CustomLinkedList<E> implements List<E> {
     }
 
     private class CustomIterator implements Iterator<E> {
-        private ListNode current;
+        ListNode current;
+        ListNode previous;
+
+        int cursor;
 
         CustomIterator() {
+            cursor = 0;
+            previous = null;
             current = head;
         }
 
         @Override
         public boolean hasNext() {
-            return current != null;
+            return this.cursor != size;
         }
 
         @Override
         public E next() {
-            E data = current.val;
-            current = current.next;
-            return data;
+            if (cursor >= size) {
+                throw new NoSuchElementException();
+            } else {
+                E data = current.val;
+                previous = current;
+                current = current.next;
+                cursor++;
+                return data;
+            }
+        }
+    }
+
+    private class CustomListIterator extends CustomLinkedList<E>.CustomIterator implements ListIterator<E> {
+
+        CustomListIterator(int index) {
+            if (index < 0 || index > size()) {
+                throw new IndexOutOfBoundsException();
+            }
+            this.cursor = index;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return this.cursor != 0;
+        }
+
+        @Override
+        public int nextIndex() {
+            return this.cursor;
+        }
+
+        @Override
+        public int previousIndex() {
+            return this.cursor - 1;
+        }
+
+        @Override
+        public E previous() {
+            return previous.val;
+        }
+
+        @Override
+        public void set(E e) {
+            ListNode current = head;
+
+            for (int j = 0; j < cursor; j++) {
+                current = current.next;
+            }
+
+            current.val = e;
+        }
+
+        @Override
+        public void add(E e) {
+            addAtIndex(cursor, e);
+        }
+
+        @Override
+        public void remove() {
+            deleteAtIndex(cursor);
         }
     }
 }
