@@ -7,27 +7,38 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.Consumer;
+import presentation.EmployeeNumberPrompt;
+import presentation.Utils;
 
 public class FileDataPerformStrategy extends EmployeeOperationStrategy {
 
-    private final EmployeeFileReader fileReader;
-    private final Scanner scanner;
+    private final EmployeeNumberPrompt numberPrompt;
 
     public FileDataPerformStrategy(Consumer<List<Employee>> callback) {
         super(callback);
-        this.fileReader = new EmployeeFileReader();
-        this.scanner = new Scanner(System.in);
+        this.numberPrompt = new EmployeeNumberPrompt(
+                "Введите количество сотрудников для загрузки (0 - выйти в предыдущее меню): "
+        );
     }
 
     @Override
     protected List<Employee> performOperation() {
+
+        EmployeeFileReader fileReader = new EmployeeFileReader();
+
         System.out.println("\n=== ЗАГРУЗКА СОТРУДНИКОВ ИЗ ФАЙЛА ===");
+
+        int count = numberPrompt.getCount();
+
+        if (count == 0) {
+            System.out.println("Возвращаемся в меню...");
+            return new ArrayList<>();
+        }
+
         System.out.println("Введите имя файла или 0 для выхода в меню");
         System.out.print(">> ");
-
-        String filename = scanner.nextLine().trim();
+        String filename = Utils.INPUT.nextLine().trim();
 
         if (filename.equals("0")) {
             System.out.println("Возвращаемся в меню...");
@@ -48,15 +59,24 @@ public class FileDataPerformStrategy extends EmployeeOperationStrategy {
         }
 
         try {
-            List<Employee> employees = fileReader.readEmployeesFromFile(file);
+            List<Employee> allEmployees = fileReader.readEmployeesFromFile(file);
 
-            if (employees.isEmpty()) {
+            if (allEmployees.isEmpty()) {
                 System.out.println("Ошибка: в файле нет корректных данных");
                 return new ArrayList<>();
             }
 
-            System.out.println("Успешно загружено: " + employees.size() + " сотрудников");
-            return employees;
+            List<Employee> selectedEmployees;
+            if (count <= allEmployees.size()) {
+                selectedEmployees = allEmployees.subList(0, count);
+                System.out.println("Загружено: " + count + " сотрудников из файла");
+            } else {
+                selectedEmployees = allEmployees;
+                System.out.println("В файле только " + allEmployees.size() +
+                        " сотрудников. Загружены все.");
+            }
+
+            return selectedEmployees;
 
         } catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + e.getMessage());
