@@ -58,7 +58,7 @@ public class EmployeeFileReader {
 
             System.out.println("--------------------------------------------------");
             System.out.println("СТАТИСТИКА ЧТЕНИЯ ФАЙЛА:");
-            System.out.println("   Успешно загружено: " + successfulCount + " сотрудников");
+            System.out.println("   Успешно распознано: " + successfulCount + " сотрудников");
             System.out.println("   Ошибок при чтении: " + errorCount + " строк");
             System.out.println("   Всего обработано строк: " + lineNumber);
             System.out.println("--------------------------------------------------");
@@ -80,10 +80,10 @@ public class EmployeeFileReader {
         }
 
         String[] possiblePaths = {
-                "src/main/resources/" + filename,  
-                "resources/" + filename,           
-                "src/resources/" + filename,       
-                filename                           
+                "src/main/resources/" + filename,
+                "resources/" + filename,
+                "src/resources/" + filename,
+                filename
         };
 
         System.out.println("Поиск файла в проекте...");
