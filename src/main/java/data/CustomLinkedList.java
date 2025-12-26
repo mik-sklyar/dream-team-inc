@@ -225,6 +225,21 @@ class CustomLinkedList<E> implements List<E> {
         return old;
     }
 
+    @Override
+    public int indexOf(Object obj) {
+        ListNode current = head;
+
+        for (int i = 0; i < size; i++) {
+            if (obj.equals(current.val)) {
+                return i;
+            }
+            current = current.next;
+        }
+
+        return 0;
+    }
+
+
     //@Override
     public boolean removeAll(Collection<?> someCollection) {
         boolean b = false;
