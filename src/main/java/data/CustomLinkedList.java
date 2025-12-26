@@ -108,6 +108,16 @@ class CustomLinkedList<E>{
         return true;
     }
 
+    public boolean removeAll(Collection<?> someCollection) {
+        boolean b = false;
+
+        for (var i : someCollection) {
+            b = remove(i);
+        }
+
+        return b;
+    }
+
     //@Override
     public void clear() {
         head = tail = null;
