@@ -7,16 +7,12 @@ import business.perform.ManualDataPerformStrategy;
 import business.perform.RandomDataPerformStrategy;
 import data.Employee;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import static presentation.Utils.INPUT;
+import java.util.*;
 
 public class DataPerformMenu {
 
     public void display() {
+        Scanner scanner = new Scanner(System.in);
         //noinspection InfiniteLoopStatement
         while (true) {
             System.out.println("\n--- Меню получения данных ---");
@@ -27,7 +23,7 @@ public class DataPerformMenu {
             System.out.print("Выберите действие: ");
 
             ActionContext context = new ActionContext();
-            DataPerformMenuItems choice = DataPerformMenuItems.fromString(INPUT.nextLine().strip());
+            DataPerformMenuItems choice = DataPerformMenuItems.fromString(scanner.nextLine().strip());
             switch (choice) {
                 case FILE:
                     context.setStrategy(new FileDataPerformStrategy(this::handleEmployees));

@@ -6,10 +6,9 @@ import data.Employee;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
-import static presentation.Utils.INPUT;
 
 /**
  * Реализует стратегию для ручного ввода данных о сотрудниках через консоль.
@@ -34,9 +33,10 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
      */
     @Override
     protected List<Employee> performOperation() {
-        int arrayLength = getArrayLength();
 
-        // Если пользователь ввел 0, отменяем операцию и возвращаем пустой список.
+        Scanner scanner = new Scanner(System.in);
+        int arrayLength = getArrayLength(scanner);
+
         if (arrayLength == 0) {
             System.out.println("Отмена операции. Возврат в предыдущее меню.");
             return Collections.emptyList();
@@ -49,17 +49,17 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
             System.out.println("\n--- Ввод данных для сотрудника №" + (i + 1) + " ---");
             Employee.Builder builder = new Employee.Builder();
 
-            inputValidField("Введите имя: ", value -> {
+            inputValidField(scanner, "Введите имя: ", value -> {
                 builder.setName(value);
                 return true;
             });
 
-            inputValidField("Введите email: ", value -> {
+            inputValidField(scanner, "Введите email: ", value -> {
                 builder.setEmail(value);
                 return true;
             });
 
-            inputValidField("Введите пароль (не менее 6 символов): ", value -> {
+            inputValidField(scanner, "Введите пароль (не менее 6 символов): ", value -> {
                 builder.setPassword(value);
                 return true;
             });
@@ -79,14 +79,15 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
     /**
      * Запрашивает у пользователя ввод данных до тех пор, пока они не пройдут валидацию.
      *
+     * @param scanner   Экземпляр Scanner для чтения ввода.
      * @param prompt    Сообщение для пользователя.
      * @param validator Функция-валидатор, которая применяет значение.
      */
-    private void inputValidField(String prompt, Function<String, Boolean> validator) {
+    private void inputValidField(Scanner scanner, String prompt, Function<String, Boolean> validator) {
         while (true) {
             try {
                 System.out.print(prompt);
-                String value = INPUT.nextLine();
+                String value = scanner.nextLine();
                 if (validator.apply(value)) {
                     return;
                 }
@@ -100,13 +101,14 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
     /**
      * Запрашивает у пользователя количество сотрудников для ввода.
      *
+     * @param scanner Экземпляр Scanner для чтения ввода.
      * @return Количество сотрудников или 0 для отмены.
      */
-    private int getArrayLength() {
+    private int getArrayLength(Scanner scanner) {
         int length;
         while (true) {
             System.out.print("Введите количество сотрудников для ввода (или 0 для выхода): ");
-            String line = INPUT.nextLine();
+            String line = scanner.nextLine();
             try {
                 length = Integer.parseInt(line);
                 if (length >= 0) {

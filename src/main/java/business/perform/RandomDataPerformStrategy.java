@@ -2,14 +2,13 @@ package business.perform;
 
 import business.EmployeeOperationStrategy;
 import data.Employee;
-import data.perform.RandomDataEmployeesProvider;
 
-import java.util.InputMismatchException;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
-import static presentation.Utils.INPUT;
-
+/**
+ * Реализует стратегию создания случайного количества сотрудников со случайными данными.
+ */
 public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
 
     public RandomDataPerformStrategy(Consumer<List<Employee>> callback) {
@@ -18,23 +17,37 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
 
     @Override
     protected List<Employee> performOperation() {
-        int count;
-        do {
+        int count = getEmployeeCount();
+        List<Employee> employees = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            employees.add(generateRandomEmployee());
+        }
+        return employees;
+    }
+
+    private int getEmployeeCount() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.print("Введите количество случайных сотрудников для создания: ");
             try {
-                System.out.print("Введите количество сотрудников для призыва(больше 0):");
-                count = Integer.parseInt(INPUT.nextLine());
+                int count = Integer.parseInt(scanner.nextLine());
                 if (count > 0) {
-                    break;
+                    return count;
                 } else {
-                    throw new InputMismatchException();
+                    System.out.println("Количество должно быть больше нуля.");
                 }
             } catch (NumberFormatException | InputMismatchException e) {
-                System.out.println("Неверный тип данных или число сотрудников, попробуйте еще раз");
+                System.out.println("Неверный ввод. Пожалуйста, введите целое число.");
             }
-        } while (true);
+        }
+    }
 
-        System.out.println("Богиня жизни \"Гея\" призвала новых сотрудников");
-
-        return RandomDataEmployeesProvider.provideRandomEmployees(count);
+    private Employee generateRandomEmployee() {
+        String randomUUID = UUID.randomUUID().toString();
+        return new Employee.Builder()
+                .setName("Random " + randomUUID.substring(0, 8))
+                .setEmail(randomUUID.substring(9, 13) + "@random.com")
+                .setPassword(randomUUID.substring(14, 23))
+                .build();
     }
 }
