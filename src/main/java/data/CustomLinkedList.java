@@ -236,7 +236,21 @@ class CustomLinkedList<E> implements List<E> {
             current = current.next;
         }
 
-        return 0;
+        return -1;
+    }
+
+    @Override
+    public int lastIndexOf(Object obj) {
+        ListNode current = head;
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (obj.equals(current.val)) {
+                index = i;
+            }
+            current = current.next;
+        }
+
+        return index;
     }
 
 
