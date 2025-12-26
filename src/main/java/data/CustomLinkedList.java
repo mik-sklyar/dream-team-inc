@@ -7,9 +7,7 @@ import java.util.List;
 
 class CustomLinkedList<T> {
     private ListNode head;
-    private ListNode current;
     private ListNode tail;
-    private ListNode buffer;
 
     private int size;
 
@@ -25,7 +23,7 @@ class CustomLinkedList<T> {
 
     //@Override
     public boolean contains(Object o) {
-        current = head;
+        ListNode current = head;
 
         for (int i = 0; i < size; i++) {
             if (current.val.equals(o)) {
@@ -45,7 +43,7 @@ class CustomLinkedList<T> {
     public Object[] toArray() {
         Object[] arr = new Object[size];
 
-        current = head;
+        ListNode current = head;
 
         for (int i = 0; i < size; i++) {
             arr[i] = current;
@@ -104,10 +102,9 @@ class CustomLinkedList<T> {
 
     //@Override
     public void clear() {
-        head = tail = buffer = current = null;
+        head = tail = null;
         size = 0;
     }
-
 
     public void addAtHead(T val) {
         if (head != null) {
@@ -140,7 +137,7 @@ class CustomLinkedList<T> {
 
     public void deleteAtIndex(int index) {
         if (index > 0 && index < size - 1) {
-            current = head;
+            ListNode current = head;
 
             for (int i = 0; i < index - 1; i++) {
                 current = current.next;
@@ -166,7 +163,7 @@ class CustomLinkedList<T> {
 
     public void deleteAtTail() {
         if (size > 1) {
-            current = head;
+            ListNode current = head;
 
             while (current.next.next != null) {
                 current = current.next;
@@ -187,7 +184,7 @@ class CustomLinkedList<T> {
             return null;
         }
 
-        current = head;
+        ListNode current = head;
 
         for (int i = 0; i < index; i++) {
             current = current.next;
