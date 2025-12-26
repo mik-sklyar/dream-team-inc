@@ -160,6 +160,22 @@ class CustomLinkedList<E> implements List<E> {
     }
 
     //@Override
+    public E set(int i, E e) {
+        if (i < 0 || i >= size) {return null;}
+
+        ListNode current = head;
+
+        for (int j = 0; j < i; j++) {
+            current = current.next;
+        }
+
+        E oldValue = current.val;
+        current.val = e;
+
+        return oldValue;
+    }
+
+    //@Override
     public boolean removeAll(Collection<?> someCollection) {
         boolean b = false;
 
