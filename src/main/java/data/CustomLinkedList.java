@@ -1,8 +1,9 @@
 package data;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-class CustomLinkedList<E> {
+class CustomLinkedList<E> implements List<E> {
     private ListNode head;
     private ListNode tail;
 
@@ -102,16 +103,25 @@ class CustomLinkedList<E> {
     }
 
     //@Override
-    public boolean addAll(Collection<? extends E> someCollection) {
-        if (someCollection == null) {
-            return false;
+    public boolean containsAll(Collection<?> collection) {
+        if (collection == null) {return false;}
+
+        HashMap<Object, Integer> map = new HashMap<>();
+        for (var i : collection) {
+            map.put(i, 0);
         }
 
-        for (E i : someCollection) {
-            add(i);
+        ListNode current = head;
+        for (int i = 0; i < size; i++) {
+            if (map.containsKey(current.val)) {
+                map.put(current.val, map.get(current.val) + 1);
+            }
+            current = current.next;
         }
 
-        return true;
+        HashSet<Integer> set = new HashSet<>(map.values());
+
+        return !set.contains(0);
     }
 
     //@Override
