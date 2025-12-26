@@ -70,6 +70,18 @@ class CustomLinkedList<T> {
     }
 
     //@Override
+    boolean add(T val) {
+        if (tail != null) {
+            tail = tail.next = new ListNode(val);
+        } else {
+            tail = head = new ListNode(val);
+        }
+
+        size++;
+        return true;
+    }
+
+    //@Override
     public void clear() {
         head = tail = buffer = current = null;
         size = 0;
