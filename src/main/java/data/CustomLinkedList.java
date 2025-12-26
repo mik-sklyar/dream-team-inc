@@ -175,6 +175,56 @@ class CustomLinkedList<E> implements List<E> {
         return oldValue;
     }
 
+    @Override
+    public void add(int i, E e) {
+        addAtIndex(i, e);
+    }
+
+    @Override
+    public E remove(int index) {
+        E old = null;
+        if (index > 0 && index < size - 1) {
+            ListNode current = head;
+
+            for (int i = 0; i < index - 1; i++) {
+                current = current.next;
+            }
+
+            old = current.next.val;
+
+            current.next = current.next.next;
+            size--;
+        } else if (index == 0) {
+            if (size == 1) {
+                old = head.val;
+                clear();
+            } else if (head != null) {
+                old = head.val;
+                head = head.next;
+                size--;
+            }
+        } else if (index == size - 1) {
+            if (size > 1) {
+                ListNode current = head;
+
+                while (current.next.next != null) {
+                    current = current.next;
+                }
+
+                old = current.next.val;
+                current.next = null;
+
+                tail = current;
+                size--;
+            } else if (size == 1) {
+                old = head.val;
+                clear();
+                size = 0;
+            }
+        }
+        return old;
+    }
+
     //@Override
     public boolean removeAll(Collection<?> someCollection) {
         boolean b = false;
