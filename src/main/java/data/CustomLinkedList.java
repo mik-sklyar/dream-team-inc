@@ -2,7 +2,7 @@ package data;
 
 import java.util.*;
 
-class CustomLinkedList<T> {
+class CustomLinkedList<E>{
     private ListNode head;
     private ListNode tail;
 
@@ -32,7 +32,7 @@ class CustomLinkedList<T> {
     }
 
     //@Override
-    public Iterator<T> iterator() {
+    public Iterator<E> iterator() {
         return new CustomIterator();
     }
 
@@ -65,7 +65,7 @@ class CustomLinkedList<T> {
     }
 
     //@Override
-    boolean add(T val) {
+    public boolean add(E val) {
         if (tail != null) {
             tail = tail.next = new ListNode(val);
         } else {
@@ -96,12 +96,12 @@ class CustomLinkedList<T> {
             return true;
         }
     }
-    
+
     //@Override
-    boolean addAll(Collection<? extends T> someCollection) {
+    public boolean addAll(Collection<? extends E> someCollection) {
         if (someCollection == null) {return false;}
 
-        for (T i : someCollection) {
+        for (E i : someCollection) {
             add(i);
         }
 
@@ -114,7 +114,7 @@ class CustomLinkedList<T> {
         size = 0;
     }
 
-    public void addAtHead(T val) {
+    public void addAtHead(E val) {
         if (head != null) {
             head = new ListNode(val, head);
         } else {
@@ -123,7 +123,7 @@ class CustomLinkedList<T> {
         size++;
     }
 
-    public void addAtIndex(int index, T val) {
+    public void addAtIndex(int index, E val) {
         if (index > 0 && index < size) {
             ListNode current = head;
 
@@ -187,7 +187,7 @@ class CustomLinkedList<T> {
         }
     }
 
-    public T get(int index) {
+    public E get(int index) {
         if (index < 0 || index >= size) {
             return null;
         }
@@ -203,19 +203,19 @@ class CustomLinkedList<T> {
 
     private final class ListNode {
         ListNode next;
-        T val;
+        E val;
 
-        ListNode(T val) {
+        ListNode(E val) {
             this.val = val;
         }
 
-        ListNode(T val, ListNode next) {
+        ListNode(E val, ListNode next) {
             this.val = val;
             this.next = next;
         }
     }
 
-    private class CustomIterator implements Iterator<T> {
+    private class CustomIterator implements Iterator<E> {
         private ListNode current;
 
         CustomIterator() {
@@ -228,8 +228,8 @@ class CustomLinkedList<T> {
         }
 
         @Override
-        public T next() {
-            T data = current.val;
+        public E next() {
+            E data = current.val;
             current = current.next;
             return data;
         }
