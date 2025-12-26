@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,7 +24,7 @@ class CustomLinkedList<T> {
     }
 
     //@Override
-    public boolean contains(Object o){
+    public boolean contains(Object o) {
         current = head;
 
         for (int i = 0; i < size; i++) {
@@ -35,8 +36,37 @@ class CustomLinkedList<T> {
         return false;
     }
 
-    public Iterator<T> iterator(){
+    //@Override
+    public Iterator<T> iterator() {
         return new CustomIterator();
+    }
+
+    //@Override
+    public Object[] toArray() {
+        Object[] arr = new Object[size];
+
+        current = head;
+
+        for (int i = 0; i < size; i++) {
+            arr[i] = current;
+            current = current.next;
+        }
+
+        return arr;
+    }
+
+    //@Override
+    public <T> T[] toArray(T[] arr) {
+        if (arr.length < this.size) {
+            return (T[]) Arrays.copyOf(toArray(), this.size, arr.getClass());
+        } else {
+            System.arraycopy(toArray(), 0, arr, 0, this.size);
+            if (arr.length > this.size) {
+                arr[this.size] = null;
+            }
+
+            return arr;
+        }
     }
 
     //@Override
@@ -44,7 +74,6 @@ class CustomLinkedList<T> {
         head = tail = buffer = current = null;
         size = 0;
     }
-
 
 
     public void addAtHead(T val) {
@@ -169,6 +198,7 @@ class CustomLinkedList<T> {
         public boolean hasNext() {
             return current != null;
         }
+
         @Override
         public T next() {
             T data = current.val;
