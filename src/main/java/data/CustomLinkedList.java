@@ -263,6 +263,23 @@ class CustomLinkedList<E> implements List<E> {
         return new CustomListIterator(i);
     }
 
+    @Override
+    public List<E> subList(int start, int end) {
+        CustomLinkedList<E> list = new CustomLinkedList<>();
+
+        ListNode current = head;
+
+        for (int i = 0; i < start; i++) {
+            current = current.next;
+        }
+
+        for (;start <= end; start++) {
+            list.add(current.val);
+            current = current.next;
+        }
+
+        return list;
+    }
 
 
     //@Override
