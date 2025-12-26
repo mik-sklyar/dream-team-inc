@@ -293,7 +293,7 @@ class CustomLinkedList<E> implements List<E> {
         return b;
     }
 
-    Override
+    @Override
     public boolean retainAll(Collection<?> someCollection) {
         boolean isRetain = false;
         ListNode current = head;
@@ -401,7 +401,7 @@ class CustomLinkedList<E> implements List<E> {
             size = 0;
         }
     }
-    
+
     @Override
     public E get(int index) {
         if (index < 0 || index >= size) {
