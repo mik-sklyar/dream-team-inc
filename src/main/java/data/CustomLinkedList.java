@@ -82,6 +82,27 @@ class CustomLinkedList<T> {
     }
 
     //@Override
+    public boolean remove(Object obj) {
+        if (head == null) {return false;}
+
+        ListNode currentIn = head;
+
+        int i = 0;
+
+        for (; i < size; i++) {
+            if (obj.equals(currentIn.val)){break;}
+            currentIn = currentIn.next;
+        }
+
+        if (currentIn == null) {
+            return false;
+        } else {
+            deleteAtIndex(i);
+            return true;
+        }
+    }
+
+    //@Override
     public void clear() {
         head = tail = buffer = current = null;
         size = 0;
@@ -94,16 +115,6 @@ class CustomLinkedList<T> {
         } else {
             tail = head = new ListNode(val);
         }
-        size++;
-    }
-
-    public void addAtTail(T val) {
-        if (tail != null) {
-            tail = tail.next = new ListNode(val);
-        } else {
-            tail = head = new ListNode(val);
-        }
-
         size++;
     }
 
@@ -121,7 +132,7 @@ class CustomLinkedList<T> {
 
             size++;
         } else if (index == size) {
-            addAtTail(val);
+            add(val);
         } else if (index == 0) {
             addAtHead(val);
         }
@@ -166,7 +177,7 @@ class CustomLinkedList<T> {
             tail = current;
             size--;
         } else if (size == 1) {
-            head = null;
+            clear();
             size = 0;
         }
     }
