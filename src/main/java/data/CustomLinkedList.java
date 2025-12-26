@@ -2,7 +2,7 @@ package data;
 
 import java.util.*;
 
-class CustomLinkedList<E>{
+class CustomLinkedList<E> {
     private ListNode head;
     private ListNode tail;
 
@@ -78,14 +78,18 @@ class CustomLinkedList<E>{
 
     //@Override
     public boolean remove(Object obj) {
-        if (head == null) {return false;}
+        if (head == null) {
+            return false;
+        }
 
         ListNode currentIn = head;
 
         int i = 0;
 
         for (; i < size; i++) {
-            if (obj.equals(currentIn.val)){break;}
+            if (obj.equals(currentIn.val)) {
+                break;
+            }
             currentIn = currentIn.next;
         }
 
@@ -99,7 +103,9 @@ class CustomLinkedList<E>{
 
     //@Override
     public boolean addAll(Collection<? extends E> someCollection) {
-        if (someCollection == null) {return false;}
+        if (someCollection == null) {
+            return false;
+        }
 
         for (E i : someCollection) {
             add(i);
@@ -108,6 +114,7 @@ class CustomLinkedList<E>{
         return true;
     }
 
+    //@Override
     public boolean removeAll(Collection<?> someCollection) {
         boolean b = false;
 
@@ -116,6 +123,36 @@ class CustomLinkedList<E>{
         }
 
         return b;
+    }
+
+    //Override
+    public boolean retainAll(Collection<?> someCollection) {
+        boolean isRetain = false;
+        ListNode current = head;
+        //some = 3,2,1 this = 1.2,4,5
+
+        for (int i = 0; i < size; i++) {
+            for (var safe : someCollection) {
+                if (current.val.equals(safe)) {
+                    isRetain = true;
+                    break;
+                }
+            }
+            if (!isRetain) {
+                if (i > 0 && i < size - 1) {
+                    current.next = current.next.next;
+                    size--;
+                } else if (i == 0) {
+                    deleteAtStart();
+                } else if (i == size - 1) {
+                    deleteAtTail();
+                }
+            }
+            current = current.next;
+            isRetain = false;
+        }
+
+        return isRetain;
     }
 
     //@Override
