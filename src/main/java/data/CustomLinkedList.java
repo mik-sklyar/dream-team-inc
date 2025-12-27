@@ -32,8 +32,18 @@ public class CustomLinkedList<E> implements List<E> {
     }
 
     @Override
-    public Iterator<E> iterator() {
-        return new CustomIterator();
+    public boolean containsAll(Collection<?> collection) {
+        if (collection.isEmpty()) {
+            return false;
+        }
+
+        HashSet<Boolean> set = new HashSet<>();
+
+        for (var i : collection) {
+            set.add(contains(i));
+        }
+
+        return !set.contains(false);
     }
 
     @Override
@@ -43,7 +53,7 @@ public class CustomLinkedList<E> implements List<E> {
         ListNode current = head;
 
         for (int i = 0; i < size; i++) {
-            arr[i] = current;
+            arr[i] = current.val;
             current = current.next;
         }
 
@@ -77,50 +87,26 @@ public class CustomLinkedList<E> implements List<E> {
     }
 
     @Override
-    public boolean remove(Object obj) {
-        if (head == null) {
-            return false;
-        }
+    public void add(int index, E val) {
+        if (index > 0 && index < size) {
+            ListNode current = head;
 
-        ListNode currentIn = head;
-
-        int i = 0;
-
-        for (; i < size; i++) {
-            if (obj.equals(currentIn.val)) {
-                break;
+            for (int i = 0; i < index - 1; i++) {
+                current = current.next;
             }
-            currentIn = currentIn.next;
-        }
 
-        if (currentIn == null) {
-            return false;
+            ListNode buffer = current.next;
+            current = current.next = new ListNode(val);
+            current.next = buffer;
+
+            size++;
+        } else if (index == size) {
+            add(val);
+        } else if (index == 0) {
+            addAtHead(val);
         } else {
-            deleteAtIndex(i);
-            return true;
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> collection) {
-        if (collection == null) {return false;}
-
-        HashMap<Object, Integer> map = new HashMap<>();
-        for (var i : collection) {
-            map.put(i, 0);
-        }
-
-        ListNode current = head;
-        for (int i = 0; i < size; i++) {
-            if (map.containsKey(current.val)) {
-                map.put(current.val, map.get(current.val) + 1);
-            }
-            current = current.next;
-        }
-
-        HashSet<Integer> set = new HashSet<>(map.values());
-
-        return !set.contains(0);
     }
 
     @Override
@@ -137,51 +123,52 @@ public class CustomLinkedList<E> implements List<E> {
     }
 
     @Override
-    public boolean addAll(int i, Collection<? extends E> someCollection) {
-        if (someCollection == null || i < 0 || i >= size) {return false;}
-
-        ListNode current = head;
-
-        for (int j = 0; j < i; j++) {
-            current = current.next;
+    public boolean addAll(int index, Collection<? extends E> someCollection) {
+        if (someCollection == null) {
+            return false;
         }
 
-        ListNode afterShiftNode = current;
+        var arr = (E[])someCollection.toArray();
 
-        for (var j : someCollection) {
-            current.next = new ListNode(j);
-            current = current.next;
+        for (int j = arr.length - 1; j >= 0; j--) {
+            add(index, arr[j]);
         }
-
-        current.next = afterShiftNode;
-
         return true;
     }
 
     @Override
-    public E set(int i, E e) {
-        if (i < 0 || i >= size) {return null;}
+    public boolean remove(Object obj) {
+        if (head == null) {
+            return false;
+        }
 
         ListNode current = head;
 
-        for (int j = 0; j < i; j++) {
+        int i = 0;
+
+        for (; i < size; i++) {
+            if (obj.equals(current.val)) {
+                break;
+            }
             current = current.next;
         }
 
-        E oldValue = current.val;
-        current.val = e;
-
-        return oldValue;
-    }
-
-    @Override
-    public void add(int i, E e) {
-        addAtIndex(i, e);
+        if (current == null) {
+            return false;
+        } else {
+            deleteAtIndex(i);
+            return true;
+        }
     }
 
     @Override
     public E remove(int index) {
+        if (index < 0 || index > size - 1) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+
         E old = null;
+
         if (index > 0 && index < size - 1) {
             ListNode current = head;
 
@@ -225,6 +212,24 @@ public class CustomLinkedList<E> implements List<E> {
     }
 
     @Override
+    public E set(int i, E e) {
+        if (i < 0 || i > size - 1) {
+            throw new IndexOutOfBoundsException("Index: " + i + ", Size: " + size);
+        }
+
+        ListNode current = head;
+
+        for (int j = 0; j < i; j++) {
+            current = current.next;
+        }
+
+        E oldValue = current.val;
+        current.val = e;
+
+        return oldValue;
+    }
+
+    @Override
     public int indexOf(Object obj) {
         ListNode current = head;
 
@@ -253,6 +258,11 @@ public class CustomLinkedList<E> implements List<E> {
     }
 
     @Override
+    public Iterator<E> iterator() {
+        return new CustomIterator();
+    }
+
+    @Override
     public ListIterator<E> listIterator() {
         return new CustomListIterator(0);
     }
@@ -272,7 +282,7 @@ public class CustomLinkedList<E> implements List<E> {
             current = current.next;
         }
 
-        for (;start <= end; start++) {
+        for (; start <= end; start++) {
             list.add(current.val);
             current = current.next;
         }
@@ -335,26 +345,6 @@ public class CustomLinkedList<E> implements List<E> {
             tail = head = new ListNode(val);
         }
         size++;
-    }
-
-    public void addAtIndex(int index, E val) {
-        if (index > 0 && index < size) {
-            ListNode current = head;
-
-            for (int i = 0; i < index - 1; i++) {
-                current = current.next;
-            }
-
-            ListNode buffer = current.next;
-            current = current.next = new ListNode(val);
-            current.next = buffer;
-
-            size++;
-        } else if (index == size) {
-            add(val);
-        } else if (index == 0) {
-            addAtHead(val);
-        }
     }
 
     public void deleteAtIndex(int index) {
@@ -432,13 +422,10 @@ public class CustomLinkedList<E> implements List<E> {
 
     private class CustomIterator implements Iterator<E> {
         ListNode current;
-        ListNode previous;
 
         int cursor;
 
         CustomIterator() {
-            cursor = 0;
-            previous = null;
             current = head;
         }
 
@@ -453,7 +440,6 @@ public class CustomLinkedList<E> implements List<E> {
                 throw new NoSuchElementException();
             } else {
                 E data = current.val;
-                previous = current;
                 current = current.next;
                 cursor++;
                 return data;
@@ -462,12 +448,17 @@ public class CustomLinkedList<E> implements List<E> {
     }
 
     private class CustomListIterator extends CustomLinkedList<E>.CustomIterator implements ListIterator<E> {
+        ListNode previous;
 
         CustomListIterator(int index) {
-            if (index < 0 || index > size()) {
-                throw new IndexOutOfBoundsException();
+            super();
+
+            cursor = index;
+            previous = head;
+
+            for (int i = 0; i < cursor; i++) {
+                current = current.next;
             }
-            this.cursor = index;
         }
 
         @Override
@@ -487,6 +478,10 @@ public class CustomLinkedList<E> implements List<E> {
 
         @Override
         public E previous() {
+            for (int i = 0; i < cursor; i++) {
+                previous = previous.next;
+            }
+            this.cursor--;
             return previous.val;
         }
 
@@ -503,7 +498,7 @@ public class CustomLinkedList<E> implements List<E> {
 
         @Override
         public void add(E e) {
-            addAtIndex(cursor, e);
+            CustomLinkedList.this.add(cursor, e);
         }
 
         @Override
