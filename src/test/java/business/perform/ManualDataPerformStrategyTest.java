@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Юнит-тесты для класса {@link ManualDataPerformStrategy}.
+ * Юнит-тесты для класса {@link ManualDataPerformStrategy}
  */
 class ManualDataPerformStrategyTest {
 
