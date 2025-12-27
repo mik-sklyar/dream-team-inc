@@ -10,12 +10,15 @@ public final class Employee {
     private final String email;
     private final String password;
 
+    private final int hashCode;
+
     private Employee(Builder builder) {
         this.name = builder.name;
         this.email = builder.email;
         this.password = builder.password;
         this.id = builder.getId();
         this.order = builder.getOrder();
+        this.hashCode = makeHashCodeOnce();
     }
 
     public int getOrder() {
@@ -41,6 +44,30 @@ public final class Employee {
     @Override
     public String toString() {
         return "Сотрудник №" + order + " {id: " + id + ", имя: '" + name + "', email: " + email + "}";
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Employee another = (Employee) obj;
+        return (order == another.order &&
+                id == another.id &&
+                name.equals(another.name)
+                && email.equals(another.email)
+                && password.equals(another.password)
+        );
+    }
+
+    @Override
+    public int hashCode() {
+        // Т.к. объект не меняется никак после создания, можно хэш так же сгенерить один раз и просто выдавать
+        return hashCode;
+    }
+
+    private int makeHashCodeOnce() {
+        return (String.format("%010d", order) + String.format("%020d", id) + name + email + password).hashCode();
     }
 
     @SuppressWarnings({"rawtypes", "unused"})
