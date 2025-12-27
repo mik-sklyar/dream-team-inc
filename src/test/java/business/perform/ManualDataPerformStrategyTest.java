@@ -17,10 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Юнит-тесты для класса {@link ManualDataPerformStrategy}.
- *
- * <p><b>ВАЖНОЕ ПРИМЕЧАНИЕ:</b>
- * Эти тесты напрямую зависят от глобального статического сканера ({@code presentation.Utils.INPUT}).
- * Запускать отдельными тестами.
  */
 class ManualDataPerformStrategyTest {
 
