@@ -73,7 +73,13 @@ public class DataActionsMenu {
 
     private enum DataActionMenuItems {
 
-        PRINT("1", "Вывести список на экран"), SORT_BY_ORDER("2", "Сортировать по порядку"), SORT_BY_ID("3", "Сортировать по id"), SORT_BY_NAME("4", "Сортировать по имени"), SORT_BY_EMAIL("5", "Сортировать по email"), RETURN("9", "Эти не годятся, начать заново набирать команду"), EXIT("0", "Отказаться от всего этого и уйти"), UNKNOWN("", "");
+        PRINT("1", "Вывести список на экран"),
+        SORT_BY_ORDER("2", "Сортировать по порядку"),
+        SORT_BY_ID("3", "Сортировать по id"),
+        SORT_BY_NAME("4", "Сортировать по имени"),
+        SORT_BY_EMAIL("5", "Сортировать по email"),
+        RETURN("9", "Эти не годятся, начать заново набирать команду"),
+        EXIT("0", "Отказаться от всего этого и уйти"), UNKNOWN("", "");
 
         private static final Map<String, DataActionMenuItems> MAP = new HashMap<>();
 
