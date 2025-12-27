@@ -1,9 +1,8 @@
 package data;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-class CustomLinkedList<E> implements List<E> {
+public class CustomLinkedList<E> implements List<E> {
     private ListNode head;
     private ListNode tail;
 
