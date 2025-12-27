@@ -7,12 +7,7 @@ import business.sorting.EmployeeSortStrategy;
 import data.Employee;
 import data.Employee.SortingFields;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import static presentation.Utils.INPUT;
+import java.util.*;
 
 /**
  * Реализует меню для интерактивной работы со списком сотрудников.
@@ -30,6 +25,7 @@ public class DataActionsMenu {
     }
 
     public void display() {
+        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n--- Меню обработки данных ---");
             System.out.println("К работе готовы " + employees.size() + " сотрудников.");
@@ -40,7 +36,7 @@ public class DataActionsMenu {
             System.out.print("Выберите действие: ");
 
             ActionContext context = new ActionContext();
-            DataActionMenuItems choice = DataActionMenuItems.fromString(INPUT.nextLine().strip());
+            DataActionMenuItems choice = DataActionMenuItems.fromString(scanner.nextLine().strip());
             switch (choice) {
                 case PRINT:
                     context.setStrategy(new EmployeePrintStrategy(employees));
@@ -77,14 +73,7 @@ public class DataActionsMenu {
 
     private enum DataActionMenuItems {
 
-        PRINT("1", "Вывести список на экран"),
-        SORT_BY_ORDER("2", "Сортировать по порядку"),
-        SORT_BY_ID("3", "Сортировать по id"),
-        SORT_BY_NAME("4", "Сортировать по имени"),
-        SORT_BY_EMAIL("5", "Сортировать по email"),
-        RETURN("9", "Эти не годятся, начать заново набирать команду"),
-        EXIT("0", "Отказаться от всего этого и уйти"),
-        UNKNOWN("", "");
+        PRINT("1", "Вывести список на экран"), SORT_BY_ORDER("2", "Сортировать по порядку"), SORT_BY_ID("3", "Сортировать по id"), SORT_BY_NAME("4", "Сортировать по имени"), SORT_BY_EMAIL("5", "Сортировать по email"), RETURN("9", "Эти не годятся, начать заново набирать команду"), EXIT("0", "Отказаться от всего этого и уйти"), UNKNOWN("", "");
 
         private static final Map<String, DataActionMenuItems> MAP = new HashMap<>();
 
