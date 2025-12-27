@@ -4,6 +4,7 @@ import business.ActionContext;
 import business.EmployeePrintStrategy;
 import business.ExitStrategy;
 import business.sorting.EmployeeSortStrategy;
+import business.sorting.EmployeeSortXStrategy;
 
 import data.CustomLinkedList;
 import data.Employee;
@@ -59,6 +60,9 @@ public class DataActionsMenu {
                 case SORT_BY_EMAIL:
                     context.setStrategy(new EmployeeSortStrategy(employees, SortingFields.EMAIL, this::handleSortResult));
                     break;
+                case SORT_SPECIAL:
+                    context.setStrategy(new EmployeeSortXStrategy(employees, this::handleSortResult));
+                    break;
                 case EXIT:
                     context.setStrategy(new ExitStrategy());
                     break;
@@ -84,6 +88,7 @@ public class DataActionsMenu {
         SORT_BY_ID("3", "Сортировать по id"),
         SORT_BY_NAME("4", "Сортировать по имени"),
         SORT_BY_EMAIL("5", "Сортировать по email"),
+        SORT_SPECIAL("6", "Сортировать c переподвыподвертом"),
         RETURN("9", "Эти не годятся, начать заново набирать команду"),
         EXIT("0", "Отказаться от всего этого и уйти"), UNKNOWN("", "");
 
