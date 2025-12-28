@@ -1,11 +1,14 @@
 package business.perform;
 
+import business.EmployeeOperationStrategy;
 import data.Employee;
 import data.perform.EmployeeFileReader;
-import business.EmployeeOperationStrategy;
+import presentation.EmployeeNumberPrompt;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -19,43 +22,36 @@ public class FileDataPerformStrategy extends EmployeeOperationStrategy {
 
     @Override
     protected List<Employee> performOperation() {
-        Scanner scanner = new Scanner(System.in);
-
-        EmployeeFileReader fileReader = new EmployeeFileReader();
-
         System.out.println("\n=== ЗАГРУЗКА СОТРУДНИКОВ ИЗ ФАЙЛА ===");
 
-        System.out.print("Введите количество сотрудников для загрузки (0 - выйти): ");
-        int count;
-        try {
-            count = Integer.parseInt(scanner.nextLine());
-            if (count < 0) {
-                System.out.println("Ошибка: число должно быть неотрицательным");
-                return new ArrayList<>();
-            }
-            if (count == 0) {
-                System.out.println("Возвращаемся в меню...");
-                return new ArrayList<>();
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка: введите целое число");
-            return new ArrayList<>();
+        EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(
+                "Введите количество сотрудников для загрузки (или 0 для выхода): "
+        );
+
+        int count = numberPrompt.getCount();
+        if (count == 0) {
+            System.out.println("Отмена операции. Возврат в предыдущее меню.");
+            return Collections.emptyList();
         }
 
-        System.out.println("Введите имя файла или 0 для выхода в меню");
-        System.out.print(">> ");
-        String filename = scanner.nextLine().trim();
-
+        String filename;
+        while (true) {
+            System.out.println("Введите имя файла или 0 для выхода в меню");
+            System.out.print(">> ");
+            Scanner scanner = new Scanner(System.in);
+            filename = scanner.nextLine().trim();
+            if (filename.isEmpty()) {
+                System.out.println("Ошибка: имя файла не может быть пустым");
+                continue;
+            }
+            break;
+        }
         if (filename.equals("0")) {
-            System.out.println("Возвращаемся в меню...");
+            System.out.println("Отмена операции. Возврат в предыдущее меню.");
             return new ArrayList<>();
         }
 
-        if (filename.isEmpty()) {
-            System.out.println("Ошибка: имя файла не может быть пустым");
-            return new ArrayList<>();
-        }
-
+        EmployeeFileReader fileReader = new EmployeeFileReader();
         File file = fileReader.findFile(filename);
 
         if (file == null || !file.exists()) {
@@ -65,7 +61,6 @@ public class FileDataPerformStrategy extends EmployeeOperationStrategy {
         }
 
         try {
-
             List<Employee> allEmployees = fileReader.readEmployeesFromFile(file);
 
             if (allEmployees.isEmpty()) {
@@ -79,8 +74,7 @@ public class FileDataPerformStrategy extends EmployeeOperationStrategy {
                 System.out.println("Загружено: " + count + " сотрудников из файла");
             } else {
                 selectedEmployees = allEmployees;
-                System.out.println("В файле только " + allEmployees.size() +
-                        " сотрудников. Загружены все.");
+                System.out.println("В файле только " + allEmployees.size() + " сотрудников. Загружены все.");
             }
 
             return selectedEmployees;
