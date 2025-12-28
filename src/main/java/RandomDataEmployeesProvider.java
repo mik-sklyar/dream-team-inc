@@ -1,3 +1,4 @@
+import data.CustomLinkedList;
 import data.Employee;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class RandomDataEmployeesProvider {
 
         int w, d;
 
-        List<String> emails = new ArrayList<>(count);
+        List<String> emails = new CustomLinkedList<>();
 
         while (emails.size() < count) {
             w = random.nextInt(works.size());
@@ -29,7 +30,7 @@ public class RandomDataEmployeesProvider {
                 throw new IllegalArgumentException("Ошибка в соответствии входящих значений");
             }
 
-            List<String> passwords = new ArrayList<>(count);
+            List<String> passwords = new CustomLinkedList<>();
             StringBuilder builder = new StringBuilder();
 
             char[] symbols = passwordSymbols();
