@@ -13,11 +13,15 @@ import java.util.function.Function;
 
 /**
  * Реализует стратегию для ручного ввода данных о сотрудниках через консоль.
+ * Пользователю последовательно предлагается ввести данные для каждого сотрудника.
+ * В случае ошибки ввода для какого-либо поля, запрос повторяется до корректного ввода.
  */
 public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
 
     /**
      * Конструктор для стратегии ручного ввода.
+     *
+     * @param callback Функция, которая будет вызвана с результатом операции (списком сотрудников).
      */
     public ManualDataPerformStrategy(Consumer<List<Employee>> callback) {
         super(callback);
@@ -25,6 +29,8 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
 
     /**
      * Основной метод, выполняющий операцию по сбору данных о сотрудниках.
+     *
+     * @return Список созданных сотрудников.
      */
     @Override
     protected List<Employee> performOperation() {
@@ -32,9 +38,9 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
 
         Scanner scanner = new Scanner(System.in);
 
-        // Создаем EmployeeNumberPrompt локально в методе
         EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(
-                "Введите количество сотрудников для ввода (или 0 для выхода): "
+                "Введите количество сотрудников для ввода (или 0 для выхода): ",
+                scanner
         );
 
         int arrayLength = numberPrompt.getCount();
@@ -75,13 +81,15 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
                 System.out.println("Пожалуйста, попробуйте ввести данные для этого сотрудника еще раз.");
             }
         }
-
-        System.out.println("\nУспешно добавлено " + employees.size() + " сотрудников.");
         return employees;
     }
 
     /**
      * Запрашивает у пользователя ввод данных до тех пор, пока они не пройдут валидацию.
+     *
+     * @param scanner   Экземпляр Scanner для чтения ввода.
+     * @param prompt    Сообщение для пользователя.
+     * @param validator Функция-валидатор, которая применяет значение.
      */
     private void inputValidField(Scanner scanner, String prompt, Function<String, Boolean> validator) {
         while (true) {
@@ -92,6 +100,7 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
                     return;
                 }
             } catch (IllegalArgumentException | IllegalStateException e) {
+                // Ловим исключения валидации из сеттеров и просим пользователя повторить ввод.
                 System.out.println("Ошибка валидации: " + e.getMessage());
             }
         }

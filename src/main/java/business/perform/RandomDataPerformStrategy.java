@@ -20,16 +20,13 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
     protected List<Employee> performOperation() {
         System.out.println("\n=== ГЕНЕРАЦИЯ СЛУЧАЙНЫХ СОТРУДНИКОВ ===");
 
-        // Используем EmployeeNumberPrompt вместо getEmployeeCount()
         EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(
-                "Введите количество случайных сотрудников для создания: "
+                "Введите количество сотрудников для создания (или 0 для выхода): "
         );
 
         int count = numberPrompt.getCount();
-
-        // Проверяем что число положительное (EmployeeNumberPrompt уже проверяет >= 0)
-        if (count <= 0) {
-            System.out.println("Количество должно быть больше нуля.");
+        if (count == 0) {
+            System.out.println("Отмена операции. Возврат в предыдущее меню.");
             return Collections.emptyList();
         }
 
@@ -37,8 +34,6 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
         for (int i = 0; i < count; i++) {
             employees.add(generateRandomEmployee());
         }
-
-        System.out.println("Сгенерировано " + employees.size() + " случайных сотрудников.");
         return employees;
     }
 

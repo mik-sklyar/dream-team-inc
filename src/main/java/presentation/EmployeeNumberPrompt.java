@@ -6,9 +6,12 @@ public class EmployeeNumberPrompt {
     private final String promptMessage;
     private final Scanner scanner;
 
-    public EmployeeNumberPrompt(String promptMessage) {
+    public EmployeeNumberPrompt(String promptMessage, Scanner scanner) {
         this.promptMessage = promptMessage;
-        this.scanner = new Scanner(System.in);
+        this.scanner = scanner;
+    }
+    public EmployeeNumberPrompt(String promptMessage) {
+        this(promptMessage, new Scanner(System.in));
     }
 
     public int getCount() {
