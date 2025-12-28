@@ -274,6 +274,8 @@ public class CustomLinkedList<E> implements List<E> {
 
     @Override
     public List<E> subList(int start, int end) {
+        if (start < 0) {throw new IndexOutOfBoundsException("fromIndex = " + start);}
+
         CustomLinkedList<E> list = new CustomLinkedList<>();
 
         ListNode current = head;
@@ -282,14 +284,13 @@ public class CustomLinkedList<E> implements List<E> {
             current = current.next;
         }
 
-        for (; start <= end; start++) {
+        for (; start < end; start++) {
             list.add(current.val);
             current = current.next;
         }
 
         return list;
     }
-
 
     @Override
     public boolean removeAll(Collection<?> someCollection) {
@@ -304,38 +305,39 @@ public class CustomLinkedList<E> implements List<E> {
 
     @Override
     public boolean retainAll(Collection<?> someCollection) {
-        boolean isRetain = false;
-        ListNode current = head;
-        //some = 3,2,1 this = 1.2,4,5
+        Objects.requireNonNull(someCollection);
+        boolean modified = false;
+        Iterator<E> iterator = this.iterator();
 
-        for (int i = 0; i < size; i++) {
-            for (var safe : someCollection) {
-                if (current.val.equals(safe)) {
-                    isRetain = true;
-                    break;
-                }
+        while(iterator.hasNext()) {
+            if (!someCollection.contains(iterator.next())) {
+                iterator.remove();
+                modified = true;
             }
-            if (!isRetain) {
-                if (i > 0 && i < size - 1) {
-                    current.next = current.next.next;
-                    size--;
-                } else if (i == 0) {
-                    deleteAtStart();
-                } else if (i == size - 1) {
-                    deleteAtTail();
-                }
-            }
-            current = current.next;
-            isRetain = false;
         }
 
-        return isRetain;
+        return modified;
     }
 
     @Override
     public void clear() {
         head = tail = null;
         size = 0;
+    }
+
+    @Override
+    public E get(int index) {
+        if (index < 0 || index >= size) {
+            return null;
+        }
+
+        ListNode current = head;
+
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+
+        return current.val;
     }
 
     public void addAtHead(E val) {
@@ -391,21 +393,6 @@ public class CustomLinkedList<E> implements List<E> {
         }
     }
 
-    @Override
-    public E get(int index) {
-        if (index < 0 || index >= size) {
-            return null;
-        }
-
-        ListNode current = head;
-
-        for (int i = 0; i < index; i++) {
-            current = current.next;
-        }
-
-        return current.val;
-    }
-
     private final class ListNode {
         ListNode next;
         E val;
@@ -422,7 +409,6 @@ public class CustomLinkedList<E> implements List<E> {
 
     private class CustomIterator implements Iterator<E> {
         ListNode current;
-
         int cursor;
 
         CustomIterator() {
@@ -448,13 +434,10 @@ public class CustomLinkedList<E> implements List<E> {
     }
 
     private class CustomListIterator extends CustomLinkedList<E>.CustomIterator implements ListIterator<E> {
-        ListNode previous;
-
         CustomListIterator(int index) {
             super();
 
             cursor = index;
-            previous = head;
 
             for (int i = 0; i < cursor; i++) {
                 current = current.next;
@@ -478,11 +461,7 @@ public class CustomLinkedList<E> implements List<E> {
 
         @Override
         public E previous() {
-            for (int i = 0; i < cursor; i++) {
-                previous = previous.next;
-            }
-            this.cursor--;
-            return previous.val;
+            return CustomLinkedList.this.get(--cursor);
         }
 
         @Override
