@@ -7,7 +7,6 @@ import data.perform.EmployeeFileReader;
 import presentation.EmployeeNumberPrompt;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
@@ -58,23 +57,18 @@ public class FileDataPerformStrategy extends EmployeeOperationStrategy {
             return null;
         }
 
-        try {
-            CustomLinkedList<Employee> employees = fileReader.readEmployeesFromFile(file, count);
+        CustomLinkedList<Employee> employees = fileReader.readEmployeesFromFile(file, count);
 
-            if (employees.isEmpty()) {
-                System.out.println("Ошибка: в файле нет корректных данных");
-                return null;
-            }
-            if (employees.size() >= count) {
-                System.out.println("Загружено: " + count + " сотрудников из файла");
-            } else {
-                System.out.println("В файле только " + employees.size() + " сотрудников. Загружены все.");
-            }
-            return employees;
-
-        } catch (IOException e) {
-            System.out.println("Ошибка чтения файла: " + e.getMessage());
+        if (employees.isEmpty()) {
+            System.out.println("Ошибка: в файле нет корректных данных");
             return null;
         }
+        if (employees.size() >= count) {
+            System.out.println("Загружено: " + count + " сотрудников из файла");
+        } else {
+            System.out.println("В файле только " + employees.size() + " сотрудников. Загружены все.");
+        }
+        return employees;
+
     }
 }

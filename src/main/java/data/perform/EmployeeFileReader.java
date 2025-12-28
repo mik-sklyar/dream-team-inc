@@ -7,70 +7,60 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class EmployeeFileReader {
 
-    public CustomLinkedList<Employee> readEmployeesFromFile(File file, int count) throws IOException {
+    public CustomLinkedList<Employee> readEmployeesFromFile(File file, int count) {
+        var stat = new Object() {
+            final AtomicInteger lineNumber = new AtomicInteger(0);
+            final AtomicInteger successfulCount = new AtomicInteger(0);
+            final AtomicInteger errorCount = new AtomicInteger(0);
+        };
         CustomLinkedList<Employee> employees = new CustomLinkedList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            int lineNumber = 0;
-            int successfulCount = 0;
-            int errorCount = 0;
+        System.out.println("\n---- Начинаем чтение файла ----");
+        System.out.println("-------------------------------");
 
-            System.out.println("Начинаем чтение файла: " + file.getAbsolutePath());
-            System.out.println("--------------------------------------------------");
-
-            while ((line = reader.readLine()) != null) {
-                lineNumber++;
-                line = line.trim();
-
-                if (line.isEmpty() || line.startsWith("#")) {
-                    continue;
+        try (Stream<String> lines = new BufferedReader(new FileReader(file)).lines()) {
+            //noinspection ResultOfMethodCallIgnored
+            lines.anyMatch(line -> {
+                stat.lineNumber.getAndIncrement();
+                if (line.isBlank() || line.startsWith("#")) {
+                    return false;
                 }
-
-                String[] parts = line.split("[;,\\t]");
-
-                if (parts.length != 3) {
-                    System.out.println("Ошибка в строке " + lineNumber +
-                            ": неверный формат. Ожидается: Имя;email;пароль");
-                    System.out.println("   Содержимое строки: " + line);
-                    errorCount++;
-                    continue;
-                }
-
                 try {
+                    String[] parts = line.split("[;,\\t]");
+                    if (parts.length != 3) {
+                        throw new IllegalStateException("неверный формат");
+                    }
                     Employee employee = new Employee.Builder()
                             .setName(parts[0].trim())
                             .setEmail(parts[1].trim())
                             .setPassword(parts[2].trim())
                             .build();
                     employees.add(employee);
-                    successfulCount++;
-                    if (successfulCount == count) {
-                        break;
+                    stat.successfulCount.getAndIncrement();
+                    if (stat.successfulCount.intValue() == count) {
+                        return true;
                     }
-
-                } catch (IllegalArgumentException | IllegalStateException e) {
-                    System.out.println("Ошибка в строке " + lineNumber + ": " + e.getMessage());
-                    System.out.println("   Содержимое строки: " + line);
-                    errorCount++;
+                } catch (Exception e) {
+                    System.out.println("Ошибка в строке " + stat.lineNumber + ": " + e.getMessage());
+                    System.out.println("Содержимое строки: " + line);
+                    stat.errorCount.getAndIncrement();
                 }
-            }
-
-            System.out.println("--------------------------------------------------");
-            System.out.println("СТАТИСТИКА ЧТЕНИЯ ФАЙЛА:");
-            System.out.println("   Успешно распознано: " + successfulCount + " сотрудников");
-            System.out.println("   Ошибок при чтении: " + errorCount + " строк");
-            System.out.println("   Всего обработано строк: " + lineNumber);
-            System.out.println("--------------------------------------------------");
-
+                return false;
+            });
         } catch (IOException e) {
-            System.out.println("Ошибка при чтении файла: " + e.getMessage());
-            throw e;
+            System.err.println("Файл не найден: " + e);
         }
 
+        System.out.println("\n--- Статистика чтения файла ---");
+        System.out.println("Успешно распознано: " + stat.successfulCount + " сотрудников");
+        System.out.println("Ошибок при чтении: " + stat.errorCount + " строк");
+        System.out.println("Всего обработано строк: " + stat.lineNumber);
+        System.out.println("-------------------------------");
         return employees;
     }
 
