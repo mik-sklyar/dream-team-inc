@@ -61,23 +61,18 @@ public class FileDataPerformStrategy extends EmployeeOperationStrategy {
         }
 
         try {
-            List<Employee> allEmployees = fileReader.readEmployeesFromFile(file);
+            List<Employee> employees = fileReader.readEmployeesFromFile(file, count);
 
-            if (allEmployees.isEmpty()) {
+            if (employees.isEmpty()) {
                 System.out.println("Ошибка: в файле нет корректных данных");
                 return new ArrayList<>();
             }
-
-            List<Employee> selectedEmployees;
-            if (count <= allEmployees.size()) {
-                selectedEmployees = allEmployees.subList(0, count);
+            if (employees.size() >= count) {
                 System.out.println("Загружено: " + count + " сотрудников из файла");
             } else {
-                selectedEmployees = allEmployees;
-                System.out.println("В файле только " + allEmployees.size() + " сотрудников. Загружены все.");
+                System.out.println("В файле только " + employees.size() + " сотрудников. Загружены все.");
             }
-
-            return selectedEmployees;
+            return employees;
 
         } catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + e.getMessage());

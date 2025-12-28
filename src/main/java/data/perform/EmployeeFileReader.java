@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EmployeeFileReader {
 
-    public List<Employee> readEmployeesFromFile(File file) throws IOException {
+    public List<Employee> readEmployeesFromFile(File file, int count) throws IOException {
         List<Employee> employees = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -48,6 +48,9 @@ public class EmployeeFileReader {
                             .build();
                     employees.add(employee);
                     successfulCount++;
+                    if (successfulCount == count) {
+                        break;
+                    }
 
                 } catch (IllegalArgumentException | IllegalStateException e) {
                     System.out.println("Ошибка в строке " + lineNumber + ": " + e.getMessage());
