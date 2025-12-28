@@ -1,3 +1,5 @@
+package business.perform;
+
 import business.EmployeeOperationStrategy;
 import data.Employee;
 
@@ -13,7 +15,7 @@ import java.util.function.Function;
  * Пользователю последовательно предлагается ввести данные для каждого сотрудника.
  * В случае ошибки ввода для какого-либо поля, запрос повторяется до корректного ввода.
  */
-class ManualDataPerformStrategy extends EmployeeOperationStrategy {
+public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
 
     /**
      * Конструктор для стратегии ручного ввода.
@@ -31,11 +33,10 @@ class ManualDataPerformStrategy extends EmployeeOperationStrategy {
      */
     @Override
     protected List<Employee> performOperation() {
-        // Создаем единственный экземпляр Scanner для всего процесса ввода.
+
         Scanner scanner = new Scanner(System.in);
         int arrayLength = getArrayLength(scanner);
 
-        // Если пользователь ввел 0, отменяем операцию и возвращаем пустой список.
         if (arrayLength == 0) {
             System.out.println("Отмена операции. Возврат в предыдущее меню.");
             return Collections.emptyList();
