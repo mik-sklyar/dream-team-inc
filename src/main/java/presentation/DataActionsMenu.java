@@ -4,10 +4,16 @@ import business.ActionContext;
 import business.EmployeePrintStrategy;
 import business.ExitStrategy;
 import business.sorting.EmployeeSortStrategy;
+
+import data.CustomLinkedList;
 import data.Employee;
 import data.Employee.SortingFields;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Scanner;
+
 
 /**
  * Реализует меню для интерактивной работы со списком сотрудников.
@@ -18,9 +24,9 @@ import java.util.*;
  */
 public class DataActionsMenu {
 
-    private List<Employee> employees;
+    private CustomLinkedList<Employee> employees;
 
-    public DataActionsMenu(List<Employee> employees) {
+    public DataActionsMenu(CustomLinkedList<Employee> employees) {
         this.employees = employees;
     }
 
@@ -66,7 +72,7 @@ public class DataActionsMenu {
         }
     }
 
-    private void handleSortResult(List<Employee> sortedEmployees) {
+    private void handleSortResult(CustomLinkedList<Employee> sortedEmployees) {
         System.out.println("\n--- Обработано " + sortedEmployees.size() + " сотрудников ---");
         this.employees = sortedEmployees;
     }

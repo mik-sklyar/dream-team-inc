@@ -1,24 +1,24 @@
 package business.perform;
 
 import business.EmployeeOperationStrategy;
+import data.CustomLinkedList;
 import data.Employee;
 import data.perform.RandomDataEmployeesProvider;
 import presentation.EmployeeNumberPrompt;
-import java.util.function.Consumer;
 
-import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Реализует стратегию создания случайного количества сотрудников со случайными данными.
  */
 public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
 
-    public RandomDataPerformStrategy(Consumer<List<Employee>> callback) {
+    public RandomDataPerformStrategy(Consumer<CustomLinkedList<Employee>> callback) {
         super(callback);
     }
 
     @Override
-    protected List<Employee> performOperation() {
+    protected CustomLinkedList<Employee> performOperation() {
         System.out.println("\n=== ГЕНЕРАЦИЯ СЛУЧАЙНЫХ СОТРУДНИКОВ ===");
 
         EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(
@@ -28,7 +28,7 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
         int count = numberPrompt.getCount();
         if (count == 0) {
             System.out.println("Отмена операции. Возврат в предыдущее меню.");
-            return Collections.emptyList();
+            return null;
         }
 
         System.out.println("Богиня жизни \"Гея\" призвала новых сотрудников");
