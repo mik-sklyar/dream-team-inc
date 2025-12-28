@@ -1,5 +1,6 @@
 package data.perform;
 
+import data.CustomLinkedList;
 import data.Employee;
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,8 +11,8 @@ import java.util.List;
 
 public class EmployeeFileReader {
 
-    public List<Employee> readEmployeesFromFile(File file, int count) throws IOException {
-        List<Employee> employees = new ArrayList<>();
+    public CustomLinkedList<Employee> readEmployeesFromFile(File file, int count) throws IOException {
+        CustomLinkedList<Employee> employees = new CustomLinkedList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;

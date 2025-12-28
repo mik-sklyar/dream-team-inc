@@ -1,5 +1,7 @@
 package data.perform;
 
+import data.CustomLinkedList;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,10 +10,10 @@ import java.util.List;
 
 public final class RandomDataResourceLoader {
     private final Path directory;
-    private final List<String> maleNames;
-    private final List<String> femaleNames;
-    private final List<String> domains;
-    private final List<String> works;
+    private final CustomLinkedList<String> maleNames;
+    private final CustomLinkedList<String> femaleNames;
+    private final CustomLinkedList<String> domains;
+    private final CustomLinkedList<String> works;
 
     public RandomDataResourceLoader(Path directory) {
         this.directory = directory;
@@ -21,27 +23,27 @@ public final class RandomDataResourceLoader {
         works = loadFileToList("work-list.txt");
     }
 
-    List<String> getMaleNames() {
+    CustomLinkedList<String> getMaleNames() {
         return maleNames;
     }
 
-    List<String> getFemaleNames() {
+    CustomLinkedList<String> getFemaleNames() {
         return femaleNames;
     }
 
-    List<String> getDomains() {
+    CustomLinkedList<String> getDomains() {
         return domains;
     }
 
-    List<String> getWorks() {
+    CustomLinkedList<String> getWorks() {
         return works;
     }
 
-    private List<String> loadFileToList(String fileName) {
-        List<String> list = null;
+    private CustomLinkedList<String> loadFileToList(String fileName) {
+        CustomLinkedList<String> list = null;
 
         try {
-            list = Files.readAllLines(
+            list = (CustomLinkedList<String>) Files.readAllLines(
                     Paths.get(System.getProperty("user.dir"), directory.toString(), fileName).normalize()
             );
         } catch (IOException e) {

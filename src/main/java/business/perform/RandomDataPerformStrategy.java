@@ -1,24 +1,28 @@
 package business.perform;
 
 import business.EmployeeOperationStrategy;
+import data.CustomLinkedList;
 import data.Employee;
 import data.perform.RandomDataEmployeesProvider;
 import presentation.EmployeeNumberPrompt;
 import java.util.function.Consumer;
 
-import java.util.*;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Реализует стратегию создания случайного количества сотрудников со случайными данными.
  */
 public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
 
-    public RandomDataPerformStrategy(Consumer<List<Employee>> callback) {
+    public RandomDataPerformStrategy(Consumer<CustomLinkedList<Employee>> callback) {
         super(callback);
     }
 
     @Override
-    protected List<Employee> performOperation() {
+    protected CustomLinkedList<Employee> performOperation() {
         System.out.println("\n=== ГЕНЕРАЦИЯ СЛУЧАЙНЫХ СОТРУДНИКОВ ===");
 
         EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(

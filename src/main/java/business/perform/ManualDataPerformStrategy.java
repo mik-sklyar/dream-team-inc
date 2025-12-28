@@ -1,12 +1,12 @@
 package business.perform;
 
 import business.EmployeeOperationStrategy;
+import data.CustomLinkedList;
 import data.Employee;
 import presentation.EmployeeNumberPrompt;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -23,7 +23,7 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
      *
      * @param callback Функция, которая будет вызвана с результатом операции (списком сотрудников).
      */
-    public ManualDataPerformStrategy(Consumer<List<Employee>> callback) {
+    public ManualDataPerformStrategy(Consumer<CustomLinkedList<Employee>> callback) {
         super(callback);
     }
 
@@ -33,7 +33,7 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
      * @return Список созданных сотрудников.
      */
     @Override
-    protected List<Employee> performOperation() {
+    protected CustomLinkedList<Employee> performOperation() {
         System.out.println("\n=== РУЧНОЙ ВВОД СОТРУДНИКОВ ===");
 
         Scanner scanner = new Scanner(System.in);
@@ -47,10 +47,10 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
 
         if (arrayLength == 0) {
             System.out.println("Отмена операции. Возврат в предыдущее меню.");
-            return Collections.emptyList();
+            return new CustomLinkedList<>();
         }
 
-        List<Employee> employees = new ArrayList<>(arrayLength);
+        CustomLinkedList<Employee> employees = new CustomLinkedList<>();
         System.out.println("\nВведите данные для " + arrayLength + " сотрудников.");
 
         for (int i = 0; i < arrayLength; ) {
