@@ -1,12 +1,11 @@
 package business.perform;
 
 import business.EmployeeOperationStrategy;
+
 import data.CustomLinkedList;
 import data.Employee;
 import presentation.EmployeeNumberPrompt;
 
-import java.util.Collections;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.Function;
