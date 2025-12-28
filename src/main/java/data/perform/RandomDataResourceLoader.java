@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 public final class RandomDataResourceLoader {
     private final Path directory;
@@ -39,16 +40,13 @@ public final class RandomDataResourceLoader {
     }
 
     private CustomLinkedList<String> loadFileToList(String fileName) {
-        CustomLinkedList<String> list = null;
-
-        try {
-            list = (CustomLinkedList<String>) Files.readAllLines(
-                    Paths.get(System.getProperty("user.dir"), directory.toString(), fileName).normalize()
-            );
+        CustomLinkedList<String> list = new CustomLinkedList<>();
+        Path filePath = Paths.get(System.getProperty("user.dir"), directory.toString(), fileName).normalize();
+        try (Stream<String> lines = Files.lines(filePath)) {
+            lines.forEach(list::add);
         } catch (IOException e) {
             System.err.println("Файл не найден: " + e);
         }
-
         return list;
     }
 }

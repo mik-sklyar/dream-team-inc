@@ -1,16 +1,11 @@
 package business.perform;
 
 import business.EmployeeOperationStrategy;
-
 import data.CustomLinkedList;
 import data.Employee;
 import data.perform.RandomDataEmployeesProvider;
 import presentation.EmployeeNumberPrompt;
-import java.util.function.Consumer;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -33,7 +28,7 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
         int count = numberPrompt.getCount();
         if (count == 0) {
             System.out.println("Отмена операции. Возврат в предыдущее меню.");
-            return Collections.emptyList();
+            return null;
         }
 
         System.out.println("Богиня жизни \"Гея\" призвала новых сотрудников");

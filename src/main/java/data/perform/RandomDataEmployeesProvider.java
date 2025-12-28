@@ -59,10 +59,10 @@ public class RandomDataEmployeesProvider {
 
     public static CustomLinkedList<Employee> provideRandomEmployees(int employeesCount) {
         try {
-            List<String> maleNames = loader.getMaleNames();
-            List<String> femaleNames = loader.getFemaleNames();
-            List<String> domains = loader.getDomains();
-            List<String> works = loader.getWorks();
+            CustomLinkedList<String> maleNames = loader.getMaleNames();
+            CustomLinkedList<String> femaleNames = loader.getFemaleNames();
+            CustomLinkedList<String> domains = loader.getDomains();
+            CustomLinkedList<String> works = loader.getWorks();
 
             if (employeesCount == 0) {
                 return new CustomLinkedList<>();

@@ -1,7 +1,6 @@
 package business.perform;
 
 import business.EmployeeOperationStrategy;
-
 import data.CustomLinkedList;
 import data.Employee;
 import presentation.EmployeeNumberPrompt;
@@ -46,7 +45,7 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
 
         if (arrayLength == 0) {
             System.out.println("Отмена операции. Возврат в предыдущее меню.");
-            return new CustomLinkedList<>();
+            return null;
         }
 
         CustomLinkedList<Employee> employees = new CustomLinkedList<>();

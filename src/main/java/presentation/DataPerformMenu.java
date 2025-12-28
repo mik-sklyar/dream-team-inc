@@ -5,7 +5,6 @@ import business.ExitStrategy;
 import business.perform.FileDataPerformStrategy;
 import business.perform.ManualDataPerformStrategy;
 import business.perform.RandomDataPerformStrategy;
-
 import data.CustomLinkedList;
 import data.Employee;
 
@@ -52,12 +51,10 @@ public class DataPerformMenu {
     }
 
     private void handleEmployees(CustomLinkedList<Employee> employees) {
-        if (employees.isEmpty()) {
-            System.out.println("А никто не пришёл... Попробуем ещё раз?");
-        } else {
-            DataActionsMenu menu = new DataActionsMenu(employees);
-            menu.display();
+        if (employees == null || employees.isEmpty()) {
+            return;
         }
+        new DataActionsMenu(employees).display();
     }
 
     private enum DataPerformMenuItems {
