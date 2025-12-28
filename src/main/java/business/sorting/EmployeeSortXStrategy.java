@@ -6,12 +6,11 @@ import data.Employee;
 
 import java.util.function.Consumer;
 
-import static data.Employee.SortingFields;
+import static business.sorting.EmployeeQuickSorter.FilterConfiguration;
+import static business.sorting.EmployeeQuickSorter.FilterFields.FILTER_ORDER;
+import static business.sorting.EmployeeQuickSorter.SortingFields.EMAIL;
 
 public class EmployeeSortXStrategy extends EmployeeOperationStrategy {
-    final protected SortingFields sortingField = SortingFields.EMAIL;
-    final protected SortingFields filterField = SortingFields.ORDER;
-    final protected boolean filterByEven = true;
 
     public EmployeeSortXStrategy(CustomLinkedList<Employee> input, Consumer<CustomLinkedList<Employee>> callback) {
         super(input, callback);
@@ -19,81 +18,13 @@ public class EmployeeSortXStrategy extends EmployeeOperationStrategy {
 
     @Override
     protected CustomLinkedList<Employee> performOperation() {
-        if (inputData == null || inputData.isEmpty()) {
-            return inputData;
-        }
+        FilterConfiguration config = new FilterConfiguration(FILTER_ORDER, value -> value % 2 == 0);
+        EmployeeQuickSorter sorter = new EmployeeQuickSorter(EMAIL, true, config);
+
 //        inputData.stream().filter(it -> it.getOrder() % 2 == 0).forEach(System.out::println);
-        CustomLinkedList<Employee> list = new CustomLinkedList<>(inputData);
-        quickSort(list, 0, list.size() - 1);
-//        System.out.println("----");
+        var list = sorter.sortEmployees(inputData);
+//        System.out.println("---");
 //        list.stream().filter(it -> it.getOrder() % 2 == 0).forEach(System.out::println);
         return list;
-    }
-
-    private void quickSort(CustomLinkedList<Employee> list, int low, int high) {
-        if (low < high) {
-            int pivotIndex = partition(list, low, high);
-            quickSort(list, low, pivotIndex - 1);
-            quickSort(list, pivotIndex + 1, high);
-        }
-    }
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private int partition(CustomLinkedList<Employee> list, int low, int high) {
-        // Находим первый элемент удовлетворяющий условию фильтрации с конца
-        int pivotIndex = high;
-        while (pivotIndex >= low && !isSortableEmployee(list.get(pivotIndex))) {
-            pivotIndex--;
-        }
-        if (pivotIndex < low) return high;
-
-        Employee pivot = list.get(pivotIndex);
-        Comparable pivotField = sortingField.getMethod().apply(pivot);
-        int i = low - 1;
-        for (int j = low; j < pivotIndex; j++) {
-            // Обрабатываем только элементы удовлетворяющие условию фильтрации
-            if (isSortableEmployee(list.get(j))) {
-                if (sortingField.getMethod().apply(list.get(j)).compareTo(pivotField) <= 0) {
-                    i++;
-                    // Пропускаем элементы не удовлетворяющие
-                    while (i < j && !isSortableEmployee(list.get(i))) {
-                        i++;
-                    }
-                    // И наконец меняем местами подходящие элементы
-                    if (i != j && isSortableEmployee(list.get(i))) {
-                        swap(list, i, j);
-                    }
-                }
-            }
-        }
-        // Находим позицию для опорного элемента
-        i++;
-        while (i < pivotIndex && !isSortableEmployee(list.get(i))) {
-            i++;
-        }
-        // Меняем местами опорный элемент
-        if (i != pivotIndex) {
-            swap(list, i, pivotIndex);
-        }
-        return i;
-    }
-
-    private long getFilterField(Employee em) {
-        Object obj = filterField.getMethod().apply(em);
-        if (obj.getClass() == Integer.class) {
-            return ((Integer) obj).longValue();
-        }
-        return (Long) obj;
-    }
-
-    private boolean isSortableEmployee(Employee em) {
-        long field = getFilterField(em);
-        return (field % 2 == 0) == filterByEven;
-    }
-
-    private void swap(CustomLinkedList<Employee> list, int i, int j) {
-        Employee temp = list.get(i);
-        list.set(i, list.get(j));
-        list.set(j, temp);
     }
 }

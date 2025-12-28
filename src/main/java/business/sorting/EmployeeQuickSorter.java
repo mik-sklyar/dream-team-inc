@@ -28,9 +28,15 @@ public class EmployeeQuickSorter {
             quickSort(list, 0, list.size() - 1);
 
         } else {
-            // x
+            quickSortFiltered(list, 0, list.size() - 1);
         }
         return list;
+    }
+
+    private void swap(CustomLinkedList<Employee> list, int i, int j) {
+        Employee temp = list.get(i);
+        list.set(i, list.get(j));
+        list.set(j, temp);
     }
 
     private void quickSort(CustomLinkedList<Employee> list, int low, int high) {
@@ -47,7 +53,7 @@ public class EmployeeQuickSorter {
         int i = low - 1;
 
         for (int j = low; j < high; j++) {
-            if (sortingField.getMethod().apply(list.get(j)).compareTo(pivot) <= 0) {
+            if ((sortingField.getMethod().apply(list.get(j)).compareTo(pivot) <= 0) == acceding) {
                 i++;
                 swap(list, i, j);
             }
@@ -56,10 +62,66 @@ public class EmployeeQuickSorter {
         return i + 1;
     }
 
-    private void swap(CustomLinkedList<Employee> list, int i, int j) {
-        Employee temp = list.get(i);
-        list.set(i, list.get(j));
-        list.set(j, temp);
+
+    private void quickSortFiltered(CustomLinkedList<Employee> list, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partitionFiltered(list, low, high);
+            quickSortFiltered(list, low, pivotIndex - 1);
+            quickSortFiltered(list, pivotIndex + 1, high);
+        }
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private int partitionFiltered(CustomLinkedList<Employee> list, int low, int high) {
+        // Находим первый элемент удовлетворяющий условию фильтрации с конца
+        int pivotIndex = high;
+        while (pivotIndex >= low && !isSortableEmployee(list.get(pivotIndex))) {
+            pivotIndex--;
+        }
+        if (pivotIndex < low) return high;
+
+        Employee pivot = list.get(pivotIndex);
+        Comparable pivotField = sortingField.getMethod().apply(pivot);
+        int i = low - 1;
+        for (int j = low; j < pivotIndex; j++) {
+            // Обрабатываем только элементы удовлетворяющие условию фильтрации
+            if (isSortableEmployee(list.get(j))) {
+                if ((sortingField.getMethod().apply(list.get(j)).compareTo(pivotField) <= 0) == acceding) {
+                    i++;
+                    // Пропускаем элементы не удовлетворяющие
+                    while (i < j && !isSortableEmployee(list.get(i))) {
+                        i++;
+                    }
+                    // И наконец меняем местами подходящие элементы
+                    if (i != j && isSortableEmployee(list.get(i))) {
+                        swap(list, i, j);
+                    }
+                }
+            }
+        }
+        // Находим позицию для опорного элемента
+        i++;
+        while (i < pivotIndex && !isSortableEmployee(list.get(i))) {
+            i++;
+        }
+        // Меняем местами опорный элемент
+        if (i != pivotIndex) {
+            swap(list, i, pivotIndex);
+        }
+        return i;
+    }
+
+    private long getFilterField(Employee em) {
+        Object obj = filterConfig.field.getMethod().apply(em);
+        if (obj.getClass() == Integer.class) {
+            return ((Integer) obj).longValue();
+        }
+        return (Long) obj;
+    }
+
+    private boolean isSortableEmployee(Employee em) {
+        long field = getFilterField(em);
+        return filterConfig.condition.apply(field);
     }
 
     @SuppressWarnings({"rawtypes", "unused"})
@@ -119,12 +181,12 @@ public class EmployeeQuickSorter {
         }
     }
 
-    public class FilterConfiguration {
-        private final FilterFields filterField;
+    public static class FilterConfiguration {
+        private final FilterFields field;
         private final Function<Long, Boolean> condition;
 
-        public FilterConfiguration(FilterFields filterField, Function<Long, Boolean> condition) {
-            this.filterField = filterField;
+        public FilterConfiguration(FilterFields field, Function<Long, Boolean> condition) {
+            this.field = field;
             this.condition = condition;
         }
     }
