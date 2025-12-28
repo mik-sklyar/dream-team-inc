@@ -2,6 +2,7 @@ package business.perform;
 
 import business.EmployeeOperationStrategy;
 import data.Employee;
+import presentation.EmployeeNumberPrompt;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,9 +34,16 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
      */
     @Override
     protected List<Employee> performOperation() {
+        System.out.println("\n=== РУЧНОЙ ВВОД СОТРУДНИКОВ ===");
 
         Scanner scanner = new Scanner(System.in);
-        int arrayLength = getArrayLength(scanner);
+
+        EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(
+                "Введите количество сотрудников для ввода (или 0 для выхода): ",
+                scanner
+        );
+
+        int arrayLength = numberPrompt.getCount();
 
         if (arrayLength == 0) {
             System.out.println("Отмена операции. Возврат в предыдущее меню.");
@@ -94,30 +102,6 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
             } catch (IllegalArgumentException | IllegalStateException e) {
                 // Ловим исключения валидации из сеттеров и просим пользователя повторить ввод.
                 System.out.println("Ошибка валидации: " + e.getMessage());
-            }
-        }
-    }
-
-    /**
-     * Запрашивает у пользователя количество сотрудников для ввода.
-     *
-     * @param scanner Экземпляр Scanner для чтения ввода.
-     * @return Количество сотрудников или 0 для отмены.
-     */
-    private int getArrayLength(Scanner scanner) {
-        int length;
-        while (true) {
-            System.out.print("Введите количество сотрудников для ввода (или 0 для выхода): ");
-            String line = scanner.nextLine();
-            try {
-                length = Integer.parseInt(line);
-                if (length >= 0) {
-                    return length; // Возвращаем корректное значение.
-                } else {
-                    System.out.println("Ошибка: количество не может быть отрицательным.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Ошибка: введено не число. Пожалуйста, попробуйте снова.");
             }
         }
     }

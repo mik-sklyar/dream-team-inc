@@ -2,9 +2,10 @@ package business.perform;
 
 import business.EmployeeOperationStrategy;
 import data.Employee;
+import presentation.EmployeeNumberPrompt;
+import java.util.function.Consumer;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * Реализует стратегию создания случайного количества сотрудников со случайными данными.
@@ -17,29 +18,23 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
 
     @Override
     protected List<Employee> performOperation() {
-        int count = getEmployeeCount();
+        System.out.println("\n=== ГЕНЕРАЦИЯ СЛУЧАЙНЫХ СОТРУДНИКОВ ===");
+
+        EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(
+                "Введите количество сотрудников для создания (или 0 для выхода): "
+        );
+
+        int count = numberPrompt.getCount();
+        if (count == 0) {
+            System.out.println("Отмена операции. Возврат в предыдущее меню.");
+            return Collections.emptyList();
+        }
+
         List<Employee> employees = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             employees.add(generateRandomEmployee());
         }
         return employees;
-    }
-
-    private int getEmployeeCount() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.print("Введите количество случайных сотрудников для создания: ");
-            try {
-                int count = Integer.parseInt(scanner.nextLine());
-                if (count > 0) {
-                    return count;
-                } else {
-                    System.out.println("Количество должно быть больше нуля.");
-                }
-            } catch (NumberFormatException | InputMismatchException e) {
-                System.out.println("Неверный ввод. Пожалуйста, введите целое число.");
-            }
-        }
     }
 
     private Employee generateRandomEmployee() {
