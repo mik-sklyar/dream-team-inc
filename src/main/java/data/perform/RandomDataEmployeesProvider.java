@@ -3,18 +3,16 @@ package data.perform;
 import data.CustomLinkedList;
 import data.Employee;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class RandomDataEmployeesProvider {
 
-    private static List<String> provideRandomEmails(List<String> domains, List<String> works, int count) {
+    private static CustomLinkedList<String> provideRandomEmails(CustomLinkedList<String> domains, CustomLinkedList<String> works, int count) {
         Random random = new Random();
 
         int w, d;
 
-        List<String> emails = new CustomLinkedList<>();
+        CustomLinkedList<String> emails = new CustomLinkedList<>();
 
         while (emails.size() < count) {
             w = random.nextInt(works.size());
@@ -26,13 +24,13 @@ public class RandomDataEmployeesProvider {
         return emails;
     }
 
-    private static List<String> provideRandomPasswords(int minLength, int maxLength, int count) {
+    private static CustomLinkedList<String> provideRandomPasswords(int minLength, int maxLength, int count) {
         try {
             if (minLength < 6 || minLength > maxLength) {
                 throw new IllegalArgumentException("Ошибка в соответствии входящих значений");
             }
 
-            List<String> passwords = new CustomLinkedList<>();
+            CustomLinkedList<String> passwords = new CustomLinkedList<>();
             StringBuilder builder = new StringBuilder();
 
             char[] symbols = passwordSymbols();
@@ -55,22 +53,22 @@ public class RandomDataEmployeesProvider {
         return null;
     }
 
-    static List<Employee> provideRandomEmployees(List<String> maleNames, List<String> femaleNames,
-                                                 List<String> domains, List<String> works,
-                                                 int employeesCount) {
+    static CustomLinkedList<Employee> provideRandomEmployees(CustomLinkedList<String> maleNames, CustomLinkedList<String> femaleNames,
+                                                             CustomLinkedList<String> domains, CustomLinkedList<String> works,
+                                                             int employeesCount) {
         try {
             if (employeesCount == 0) {
-                return new ArrayList<>();
+                return new CustomLinkedList<>();
             }
 
             int passwordCount = maleNames.size() + femaleNames.size();
             int emailsCount = maleNames.size() + femaleNames.size();
 
-            List<String> passwords = RandomDataEmployeesProvider.provideRandomPasswords(6, 20, passwordCount);
-            List<String> emails = RandomDataEmployeesProvider.provideRandomEmails(domains, works, emailsCount);
+            CustomLinkedList<String> passwords = RandomDataEmployeesProvider.provideRandomPasswords(6, 20, passwordCount);
+            CustomLinkedList<String> emails = RandomDataEmployeesProvider.provideRandomEmails(domains, works, emailsCount);
 
             Employee.Builder builder = new Employee.Builder();
-            List<Employee> list = new ArrayList<>(employeesCount);
+            CustomLinkedList<Employee> list = new CustomLinkedList<>();
 
             Random random = new Random();
 

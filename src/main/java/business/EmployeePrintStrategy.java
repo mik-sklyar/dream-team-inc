@@ -1,16 +1,15 @@
 package business;
 
+import data.CustomLinkedList;
 import data.Employee;
 
-import java.util.List;
-
 public class EmployeePrintStrategy extends EmployeeOperationStrategy {
-    public EmployeePrintStrategy(List<Employee> input) {
+    public EmployeePrintStrategy(CustomLinkedList<Employee> input) {
         super(input, null);
     }
 
     @Override
-    protected List<Employee> performOperation() {
+    protected CustomLinkedList<Employee> performOperation() {
         if (inputData.isEmpty()) {
             System.out.println("Список сотрудников пуст.");
         } else {
