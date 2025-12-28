@@ -1,10 +1,9 @@
 package business.sorting;
 
 import business.EmployeeOperationStrategy;
+import data.CustomLinkedList;
 import data.Employee;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.function.Consumer;
 
 import static data.Employee.SortingFields;
@@ -14,24 +13,24 @@ public class EmployeeSortXStrategy extends EmployeeOperationStrategy {
     final protected SortingFields filterField = SortingFields.ORDER;
     final protected boolean filterByEven = true;
 
-    public EmployeeSortXStrategy(List<Employee> input, Consumer<List<Employee>> callback) {
+    public EmployeeSortXStrategy(CustomLinkedList<Employee> input, Consumer<CustomLinkedList<Employee>> callback) {
         super(input, callback);
     }
 
     @Override
-    protected List<Employee> performOperation() {
+    protected CustomLinkedList<Employee> performOperation() {
         if (inputData == null || inputData.isEmpty()) {
             return inputData;
         }
 //        inputData.stream().filter(it -> it.getOrder() % 2 == 0).forEach(System.out::println);
-        LinkedList<Employee> mutableList = new LinkedList<>(this.inputData);
-        quickSort(mutableList, 0, mutableList.size() - 1);
+        CustomLinkedList<Employee> list = new CustomLinkedList<>(inputData);
+        quickSort(list, 0, list.size() - 1);
 //        System.out.println("----");
-//        mutableList.stream().filter(it -> it.getOrder() % 2 == 0).forEach(System.out::println);
-        return List.copyOf(mutableList);
+//        list.stream().filter(it -> it.getOrder() % 2 == 0).forEach(System.out::println);
+        return list;
     }
 
-    private void quickSort(List<Employee> list, int low, int high) {
+    private void quickSort(CustomLinkedList<Employee> list, int low, int high) {
         if (low < high) {
             int pivotIndex = partition(list, low, high);
             quickSort(list, low, pivotIndex - 1);
@@ -40,7 +39,7 @@ public class EmployeeSortXStrategy extends EmployeeOperationStrategy {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private int partition(List<Employee> list, int low, int high) {
+    private int partition(CustomLinkedList<Employee> list, int low, int high) {
         // Находим первый элемент удовлетворяющий условию фильтрации с конца
         int pivotIndex = high;
         while (pivotIndex >= low && !isSortableEmployee(list.get(pivotIndex))) {
@@ -86,12 +85,13 @@ public class EmployeeSortXStrategy extends EmployeeOperationStrategy {
         }
         return (Long) obj;
     }
+
     private boolean isSortableEmployee(Employee em) {
         long field = getFilterField(em);
         return (field % 2 == 0) == filterByEven;
     }
 
-    private void swap(List<Employee> list, int i, int j) {
+    private void swap(CustomLinkedList<Employee> list, int i, int j) {
         Employee temp = list.get(i);
         list.set(i, list.get(j));
         list.set(j, temp);
