@@ -2,6 +2,7 @@ package business.perform;
 
 import business.EmployeeOperationStrategy;
 import data.Employee;
+import presentation.EmployeeNumberPrompt;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,15 +13,11 @@ import java.util.function.Function;
 
 /**
  * Реализует стратегию для ручного ввода данных о сотрудниках через консоль.
- * Пользователю последовательно предлагается ввести данные для каждого сотрудника.
- * В случае ошибки ввода для какого-либо поля, запрос повторяется до корректного ввода.
  */
 public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
 
     /**
      * Конструктор для стратегии ручного ввода.
-     *
-     * @param callback Функция, которая будет вызвана с результатом операции (списком сотрудников).
      */
     public ManualDataPerformStrategy(Consumer<List<Employee>> callback) {
         super(callback);
@@ -28,14 +25,19 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
 
     /**
      * Основной метод, выполняющий операцию по сбору данных о сотрудниках.
-     *
-     * @return Список созданных сотрудников.
      */
     @Override
     protected List<Employee> performOperation() {
+        System.out.println("\n=== РУЧНОЙ ВВОД СОТРУДНИКОВ ===");
 
         Scanner scanner = new Scanner(System.in);
-        int arrayLength = getArrayLength(scanner);
+
+        // Создаем EmployeeNumberPrompt локально в методе
+        EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(
+                "Введите количество сотрудников для ввода (или 0 для выхода): "
+        );
+
+        int arrayLength = numberPrompt.getCount();
 
         if (arrayLength == 0) {
             System.out.println("Отмена операции. Возврат в предыдущее меню.");
@@ -73,15 +75,13 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
                 System.out.println("Пожалуйста, попробуйте ввести данные для этого сотрудника еще раз.");
             }
         }
+
+        System.out.println("\nУспешно добавлено " + employees.size() + " сотрудников.");
         return employees;
     }
 
     /**
      * Запрашивает у пользователя ввод данных до тех пор, пока они не пройдут валидацию.
-     *
-     * @param scanner   Экземпляр Scanner для чтения ввода.
-     * @param prompt    Сообщение для пользователя.
-     * @param validator Функция-валидатор, которая применяет значение.
      */
     private void inputValidField(Scanner scanner, String prompt, Function<String, Boolean> validator) {
         while (true) {
@@ -92,32 +92,7 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
                     return;
                 }
             } catch (IllegalArgumentException | IllegalStateException e) {
-                // Ловим исключения валидации из сеттеров и просим пользователя повторить ввод.
                 System.out.println("Ошибка валидации: " + e.getMessage());
-            }
-        }
-    }
-
-    /**
-     * Запрашивает у пользователя количество сотрудников для ввода.
-     *
-     * @param scanner Экземпляр Scanner для чтения ввода.
-     * @return Количество сотрудников или 0 для отмены.
-     */
-    private int getArrayLength(Scanner scanner) {
-        int length;
-        while (true) {
-            System.out.print("Введите количество сотрудников для ввода (или 0 для выхода): ");
-            String line = scanner.nextLine();
-            try {
-                length = Integer.parseInt(line);
-                if (length >= 0) {
-                    return length; // Возвращаем корректное значение.
-                } else {
-                    System.out.println("Ошибка: количество не может быть отрицательным.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Ошибка: введено не число. Пожалуйста, попробуйте снова.");
             }
         }
     }
