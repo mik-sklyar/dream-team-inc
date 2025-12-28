@@ -7,6 +7,7 @@ import business.sorting.EmployeeSortStrategy;
 import business.sorting.EmployeeSortXStrategy;
 import data.CustomLinkedList;
 import data.Employee;
+import business.perform.FindDuplicatePasswordsStrategy;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class DataActionsMenu {
 
     public void display() {
         Scanner scanner = new Scanner(System.in);
+
         while (true) {
             System.out.println("\n=== МЕНЮ ОБРАБОТКИ ДАННЫХ ===");
             System.out.println("К работе готовы " + employees.size() + " сотрудников.");
@@ -46,6 +48,9 @@ public class DataActionsMenu {
             switch (choice) {
                 case PRINT:
                     context.setStrategy(new EmployeePrintStrategy(employees));
+                    break;
+                case FIND_DUPLICATE_PASSWORDS:
+                    context.setStrategy(new FindDuplicatePasswordsStrategy(employees, this::handleDuplicateResult));
                     break;
                 case SORT_BY_ORDER:
                     context.setStrategy(new EmployeeSortStrategy(employees, SortingFields.ORDER, this::handleSortResult));
@@ -83,6 +88,11 @@ public class DataActionsMenu {
         this.employees = sortedEmployees;
     }
 
+    private void handleDuplicateResult(List<Employee> result) {
+        System.out.println("\n--- Поиск дубликатов завершен ---");
+
+    }
+
     private enum DataActionMenuItems {
 
         PRINT("1", "Вывести список на экран"),
@@ -108,7 +118,6 @@ public class DataActionsMenu {
         DataActionMenuItems(String key, String description) {
             this.key = key;
             this.description = description;
-
         }
 
         static private DataActionMenuItems fromString(String input) {
