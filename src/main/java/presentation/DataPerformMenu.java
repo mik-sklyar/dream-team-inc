@@ -5,10 +5,15 @@ import business.ExitStrategy;
 import business.perform.FileDataPerformStrategy;
 import business.perform.ManualDataPerformStrategy;
 import business.perform.RandomDataPerformStrategy;
+
 import data.CustomLinkedList;
 import data.Employee;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Scanner;
+
 
 public class DataPerformMenu {
 

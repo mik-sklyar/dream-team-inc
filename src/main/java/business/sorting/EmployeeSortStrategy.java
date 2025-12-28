@@ -1,6 +1,7 @@
 package business.sorting;
 
 import business.EmployeeOperationStrategy;
+
 import data.CustomLinkedList;
 import data.Employee;
 import data.Employee.SortingFields;

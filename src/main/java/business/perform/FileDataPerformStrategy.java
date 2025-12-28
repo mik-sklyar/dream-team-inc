@@ -1,9 +1,11 @@
 package business.perform;
 
+import business.EmployeeOperationStrategy;
+
 import data.CustomLinkedList;
 import data.Employee;
 import data.perform.EmployeeFileReader;
-import business.EmployeeOperationStrategy;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
