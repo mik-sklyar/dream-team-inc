@@ -2,6 +2,7 @@ package business.perform;
 
 import business.EmployeeOperationStrategy;
 import data.Employee;
+import data.perform.RandomDataEmployeesProvider;
 import presentation.EmployeeNumberPrompt;
 import java.util.function.Consumer;
 
@@ -21,7 +22,7 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
         System.out.println("\n=== ГЕНЕРАЦИЯ СЛУЧАЙНЫХ СОТРУДНИКОВ ===");
 
         EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(
-                "Введите количество сотрудников для создания (или 0 для выхода): "
+                "Введите количество сотрудников для призыва (или 0 для выхода): "
         );
 
         int count = numberPrompt.getCount();
@@ -30,19 +31,7 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
             return Collections.emptyList();
         }
 
-        List<Employee> employees = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            employees.add(generateRandomEmployee());
-        }
-        return employees;
-    }
-
-    private Employee generateRandomEmployee() {
-        String randomUUID = UUID.randomUUID().toString();
-        return new Employee.Builder()
-                .setName("Random " + randomUUID.substring(0, 8))
-                .setEmail(randomUUID.substring(9, 13) + "@random.com")
-                .setPassword(randomUUID.substring(14, 23))
-                .build();
+        System.out.println("Богиня жизни \"Гея\" призвала новых сотрудников");
+        return RandomDataEmployeesProvider.provideRandomEmployees(count);
     }
 }
