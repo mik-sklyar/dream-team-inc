@@ -5,16 +5,15 @@ import business.EmployeePrintStrategy;
 import business.ExitStrategy;
 import business.sorting.EmployeeSortStrategy;
 import business.sorting.EmployeeSortXStrategy;
-
 import data.CustomLinkedList;
 import data.Employee;
-import data.Employee.SortingFields;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static business.sorting.EmployeeQuickSorter.SortingFields;
 
 /**
  * Реализует меню для интерактивной работы со списком сотрудников.

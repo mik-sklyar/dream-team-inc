@@ -1,7 +1,6 @@
 package data;
 
 import java.security.SecureRandom;
-import java.util.function.Function;
 
 public final class Employee {
     private final int order;
@@ -68,38 +67,6 @@ public final class Employee {
 
     private int makeHashCodeOnce() {
         return (String.format("%010d", order) + String.format("%020d", id) + name + email + password).hashCode();
-    }
-
-    @SuppressWarnings({"rawtypes", "unused"})
-    public enum SortingFields {
-        ORDER("order", Employee::getOrder, "Порядковый номер сотрудника"),
-        ID("id", Employee::getId, "Уникальный идентификатор"),
-        NAME("name", Employee::getName, "Имя"),
-        EMAIL("email", Employee::getEmail, "Электронная почта"),
-        PASSWORD("password", Employee::getPassword, "Пароль");
-
-        private final String key;
-        private final String description;
-        private final Function<Employee, Comparable> method;
-
-        SortingFields(String key, Function<Employee, Comparable> method, String description) {
-            this.key = key;
-            this.method = method;
-            this.description = description;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public Function<Employee, Comparable> getMethod() {
-            return method;
-        }
-
-        @Override
-        public String toString() {
-            return this.description;
-        }
     }
 
     public static class Builder {
