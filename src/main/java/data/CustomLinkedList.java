@@ -128,7 +128,7 @@ public class CustomLinkedList<E> implements List<E> {
             return false;
         }
 
-        var arr = (E[])someCollection.toArray();
+        var arr = (E[]) someCollection.toArray();
 
         for (int j = arr.length - 1; j >= 0; j--) {
             add(index, arr[j]);
@@ -274,7 +274,9 @@ public class CustomLinkedList<E> implements List<E> {
 
     @Override
     public List<E> subList(int start, int end) {
-        if (start < 0) {throw new IndexOutOfBoundsException("fromIndex = " + start);}
+        if (start < 0) {
+            throw new IndexOutOfBoundsException("fromIndex = " + start);
+        }
 
         CustomLinkedList<E> list = new CustomLinkedList<>();
 
@@ -309,7 +311,7 @@ public class CustomLinkedList<E> implements List<E> {
         boolean modified = false;
         Iterator<E> iterator = this.iterator();
 
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             if (!someCollection.contains(iterator.next())) {
                 iterator.remove();
                 modified = true;
