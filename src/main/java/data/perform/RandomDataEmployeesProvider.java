@@ -1,23 +1,20 @@
 package data.perform;
 
+import data.CustomLinkedList;
 import data.Employee;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class RandomDataEmployeesProvider {
 
-    private static final RandomDataResourceLoader loader = new RandomDataResourceLoader(
-            Path.of("src", "main", "resources", "random")
-    );
     private static List<String> provideRandomEmails(List<String> domains, List<String> works, int count) {
         Random random = new Random();
 
         int w, d;
 
-        List<String> emails = new ArrayList<>(count);
+        List<String> emails = new CustomLinkedList<>();
 
         while (emails.size() < count) {
             w = random.nextInt(works.size());
@@ -35,7 +32,7 @@ public class RandomDataEmployeesProvider {
                 throw new IllegalArgumentException("Ошибка в соответствии входящих значений");
             }
 
-            List<String> passwords = new ArrayList<>(count);
+            List<String> passwords = new CustomLinkedList<>();
             StringBuilder builder = new StringBuilder();
 
             char[] symbols = passwordSymbols();
@@ -58,13 +55,10 @@ public class RandomDataEmployeesProvider {
         return null;
     }
 
-    public static List<Employee> provideRandomEmployees(int employeesCount) {
+    static List<Employee> provideRandomEmployees(List<String> maleNames, List<String> femaleNames,
+                                                 List<String> domains, List<String> works,
+                                                 int employeesCount) {
         try {
-            List<String> maleNames = loader.getMaleNames();
-            List<String> femaleNames = loader.getFemaleNames();
-            List<String> domains = loader.getDomains();
-            List<String> works = loader.getWorks();
-
             if (employeesCount == 0) {
                 return new ArrayList<>();
             }
