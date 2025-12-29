@@ -76,6 +76,9 @@ public class DataActionsMenu {
     }
 
     private void handleSortResult(CustomLinkedList<Employee> sortedEmployees) {
+        if (sortedEmployees == null) {
+            return;
+        }
         System.out.println("\n--- Обработано " + sortedEmployees.size() + " сотрудников ---");
         this.employees = sortedEmployees;
     }

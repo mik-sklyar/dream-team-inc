@@ -19,19 +19,18 @@ public class EmployeeSortXStrategy extends EmployeeOperationStrategy {
     @Override
     protected CustomLinkedList<Employee> performOperation() {
         System.out.println("\n=== СОРТИРОВОЧКА С НАСТРОЙКАМИ ===");
-        
-        EmployeeQuickSorter.SortingFields sf = SortingConfigurationPrompt.getSortingField();
-        boolean acceding = SortingConfigurationPrompt.getAcceding();
-        EmployeeQuickSorter.FilterFields ff = SortingConfigurationPrompt.getFilterField();
-        Function<Long, Boolean> condition = SortingConfigurationPrompt.getConditionForField(ff.getKey());
+        try {
+            EmployeeQuickSorter.SortingFields sf = SortingConfigurationPrompt.getSortingField();
+            boolean acceding = SortingConfigurationPrompt.getAcceding();
+            EmployeeQuickSorter.FilterFields ff = SortingConfigurationPrompt.getFilterField();
+            Function<Long, Boolean> condition = SortingConfigurationPrompt.getConditionForField(ff.getKey());
 
-        FilterConfiguration config = new FilterConfiguration(ff, condition);
-        EmployeeQuickSorter sorter = new EmployeeQuickSorter(sf, acceding, config);
+            FilterConfiguration config = new FilterConfiguration(ff, condition);
+            EmployeeQuickSorter sorter = new EmployeeQuickSorter(sf, acceding, config);
 
-//        inputData.stream().filter(it -> it.getOrder() % 2 == 0).forEach(System.out::println);
-        var list = sorter.sortEmployees(inputData);
-//        System.out.println("---");
-//        list.stream().filter(it -> it.getOrder() % 2 == 0).forEach(System.out::println);
-        return list;
+            return sorter.sortEmployees(inputData);
+        } catch (SortingConfigurationPrompt.ExitException e) {
+            return null;
+        }
     }
 }
