@@ -3,7 +3,7 @@ package presentation;
 import business.ActionContext;
 import business.EmployeePrintStrategy;
 import business.ExitStrategy;
-import business.perform.FindDuplicatePasswordsStrategy;
+import business.search.FindDuplicatePasswordsStrategy;
 import business.sorting.EmployeeSortStrategy;
 import business.sorting.EmployeeSortXStrategy;
 import data.CustomLinkedList;
