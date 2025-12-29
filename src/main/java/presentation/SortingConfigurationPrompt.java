@@ -4,6 +4,7 @@ import business.sorting.EmployeeQuickSorter;
 
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -50,7 +51,7 @@ public class SortingConfigurationPrompt {
     public static boolean getAcceding() throws ExitException {
         Scanner scanner = new Scanner(System.in);
         Map<String, Boolean> map = Map.of("1", true, "2", false);
-        Map<String, String> mapDesc = Map.of("1", "по возрастанию", "2", "по убыванию");
+        TreeMap<String, String> mapDesc = new TreeMap<>(Map.of("1", "по возрастанию", "2", "по убыванию"));
 
         while (true) {
             System.out.println("Выберите как сортировать: ");
@@ -70,10 +71,10 @@ public class SortingConfigurationPrompt {
                 "1", EmployeeQuickSorter.FilterConfiguration::isLongEvenNumber,
                 "2", EmployeeQuickSorter.FilterConfiguration::isLongNotEvenNumber
         );
-        Map<String, String> mapDesc = Map.of(
+        TreeMap<String, String> mapDesc = new TreeMap<>(Map.of(
                 "1", "только с чётными значениями",
                 "2", "только с нечётными значениями"
-        );
+        ));
 
         while (true) {
             System.out.println("Выберите как сортировать по значению поля \"" + fieldName + "\": ");
