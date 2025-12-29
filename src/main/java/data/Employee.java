@@ -81,6 +81,10 @@ public final class Employee {
             return order;
         }
 
+        public static void resetOrder() {
+            order = 0;
+        }
+
         private long getId() {
             return Integer.toUnsignedLong(uidProvider.nextInt());
         }
