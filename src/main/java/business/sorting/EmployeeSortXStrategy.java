@@ -4,6 +4,7 @@ import business.EmployeeOperationStrategy;
 import data.CustomLinkedList;
 import data.Employee;
 import presentation.SortingConfigurationPrompt;
+import presentation.Utils;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -18,7 +19,7 @@ public class EmployeeSortXStrategy extends EmployeeOperationStrategy {
 
     @Override
     protected CustomLinkedList<Employee> performOperation() {
-        System.out.println("\n=== СОРТИРОВОЧКА С НАСТРОЙКАМИ ===");
+        System.out.println(Utils.veryWhiteString("\n=== СОРТИРОВОЧКА С НАСТРОЙКАМИ ==="));
         try {
             EmployeeQuickSorter.SortingFields sf = SortingConfigurationPrompt.getSortingField();
             boolean acceding = SortingConfigurationPrompt.getAcceding();

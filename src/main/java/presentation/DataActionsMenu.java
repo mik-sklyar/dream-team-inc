@@ -35,7 +35,7 @@ public class DataActionsMenu {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\n=== МЕНЮ ОБРАБОТКИ ДАННЫХ ===");
+            System.out.println(Utils.veryWhiteString("\n=== МЕНЮ ОБРАБОТКИ ДАННЫХ ==="));
             System.out.println("К работе готовы " + employees.size() + " сотрудников.");
             for (DataActionMenuItems action : DataActionMenuItems.values()) {
                 if (action == DataActionMenuItems.UNKNOWN) continue;

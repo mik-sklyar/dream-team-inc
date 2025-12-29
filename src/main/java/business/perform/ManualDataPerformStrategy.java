@@ -4,6 +4,7 @@ import business.EmployeeOperationStrategy;
 import data.CustomLinkedList;
 import data.Employee;
 import presentation.EmployeeNumberPrompt;
+import presentation.Utils;
 
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -32,7 +33,7 @@ public class ManualDataPerformStrategy extends EmployeeOperationStrategy {
      */
     @Override
     protected CustomLinkedList<Employee> performOperation() {
-        System.out.println("\n=== РУЧНОЙ ВВОД СОТРУДНИКОВ ===");
+        System.out.println(Utils.veryWhiteString("\n=== РУЧНОЙ ВВОД СОТРУДНИКОВ ==="));
 
         Scanner scanner = new Scanner(System.in);
 

@@ -5,6 +5,7 @@ import data.CustomLinkedList;
 import data.Employee;
 import data.perform.RandomDataEmployeesProvider;
 import presentation.EmployeeNumberPrompt;
+import presentation.Utils;
 
 import java.util.function.Consumer;
 
@@ -19,7 +20,7 @@ public class RandomDataPerformStrategy extends EmployeeOperationStrategy {
 
     @Override
     protected CustomLinkedList<Employee> performOperation() {
-        System.out.println("\n=== ГЕНЕРАЦИЯ СЛУЧАЙНЫХ СОТРУДНИКОВ ===");
+        System.out.println(Utils.veryWhiteString("\n=== ГЕНЕРАЦИЯ СЛУЧАЙНЫХ СОТРУДНИКОВ ==="));
 
         EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(
                 "Введите количество сотрудников для призыва (или 0 для выхода): "

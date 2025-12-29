@@ -1,14 +1,14 @@
 import presentation.DataPerformMenu;
-
-import static java.lang.System.out;
+import presentation.Utils;
 
 public class Main {
     private static final DataPerformMenu menu = new DataPerformMenu();
 
     public static void main(String[] args) {
+        Utils.drawTree();
 
-        out.println("Добро пожаловать в Dream-Team inc.");
-        out.println("Амбициозный стартап набирает сотрудников для захвата мира.");
+        System.out.println(Utils.veryLightBlueString("Добро пожаловать в Dream-Team inc."));
+        System.out.println("Амбициозный стартап набирает сотрудников для захвата мира.");
 
         menu.display();
     }

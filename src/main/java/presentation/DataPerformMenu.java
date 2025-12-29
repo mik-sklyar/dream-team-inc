@@ -21,7 +21,7 @@ public class DataPerformMenu {
         //noinspection InfiniteLoopStatement
         while (true) {
             Employee.Builder.resetOrder();
-            System.out.println("\n=== МЕНЮ ПОЛУЧЕНИЯ ДАННЫХ ===");
+            System.out.println(Utils.veryWhiteString("\n=== МЕНЮ ПОЛУЧЕНИЯ ДАННЫХ ==="));
             for (DataPerformMenuItems value : DataPerformMenuItems.values()) {
                 if (value == DataPerformMenuItems.UNKNOWN) continue;
                 System.out.println(value);

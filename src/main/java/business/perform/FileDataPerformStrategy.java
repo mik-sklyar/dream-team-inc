@@ -5,6 +5,7 @@ import data.CustomLinkedList;
 import data.Employee;
 import data.perform.EmployeeFileReader;
 import presentation.EmployeeNumberPrompt;
+import presentation.Utils;
 
 import java.io.File;
 import java.util.Scanner;
@@ -19,7 +20,7 @@ public class FileDataPerformStrategy extends EmployeeOperationStrategy {
 
     @Override
     protected CustomLinkedList<Employee> performOperation() {
-        System.out.println("\n=== ЗАГРУЗКА СОТРУДНИКОВ ИЗ ФАЙЛА ===");
+        System.out.println(Utils.veryWhiteString("\n=== ЗАГРУЗКА СОТРУДНИКОВ ИЗ ФАЙЛА ==="));
 
         EmployeeNumberPrompt numberPrompt = new EmployeeNumberPrompt(
                 "Введите количество сотрудников для загрузки (или 0 для выхода): "
