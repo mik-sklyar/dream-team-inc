@@ -50,9 +50,6 @@ public class DataActionsMenu {
                 case PRINT:
                     context.setStrategy(new EmployeePrintStrategy(employees));
                     break;
-                case FIND_DUPLICATE_PASSWORDS:
-                    context.setStrategy(new FindDuplicatePasswordsStrategy(employees));
-                    break;
                 case SORT_BY_ORDER:
                     context.setStrategy(new EmployeeSortStrategy(employees, SortingFields.ORDER, this::handleSortResult));
                     break;
@@ -67,6 +64,8 @@ public class DataActionsMenu {
                     break;
                 case SORT_SPECIAL:
                     context.setStrategy(new EmployeeSortXStrategy(employees, this::handleSortResult));
+                case FIND_DUPLICATE_PASSWORDS:
+                    context.setStrategy(new FindDuplicatePasswordsStrategy(employees));
                     break;
                 case EXIT:
                     context.setStrategy(new ExitStrategy());
@@ -97,8 +96,10 @@ public class DataActionsMenu {
         SORT_BY_NAME("4", "Сортировать по имени"),
         SORT_BY_EMAIL("5", "Сортировать по email"),
         SORT_SPECIAL("6", "Сортировать c переподвыподвертом"),
+        FIND_DUPLICATE_PASSWORDS("7", "Найти одинаковые пароли"),
         RETURN("0", "Эти не годятся, начать заново набирать команду"),
-        EXIT("Q", "Отказаться от всего этого и уйти"), UNKNOWN("", "");
+        EXIT("Q", "Отказаться от всего этого и уйти"),
+		UNKNOWN("", "");
 
         private static final Map<String, DataActionMenuItems> MAP = new HashMap<>();
 
