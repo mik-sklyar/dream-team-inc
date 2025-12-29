@@ -62,10 +62,10 @@
 Игорь Федоров;igor@company.com,161616
 
 # 21. Email с подчеркиваниями - нормально
-Алина_Попова;alina_popova@dreamteam.com;171717
+Алина_Попова;alina_popova@dreamteam.com;pass123
 
 # 22. Email с дефисами - нормально
-Евгений-Иванов;evgeniy-ivanov@company.com;181818
+Евгений-Иванов;evgeniy-ivanov@company.com;pass123
 
 # 23. Имя с апострофом - нормально
 Д'Артаньян;dartanyan@dreamteam.com;191919
