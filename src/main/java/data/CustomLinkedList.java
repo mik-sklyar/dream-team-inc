@@ -8,6 +8,11 @@ public class CustomLinkedList<E> implements List<E> {
 
     private int size;
 
+    public CustomLinkedList() {}
+    public CustomLinkedList(CustomLinkedList<E> list) {
+        this.addAll(list);
+    }
+
     @Override
     public int size() {
         return size;

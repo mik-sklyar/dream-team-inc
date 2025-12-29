@@ -4,16 +4,16 @@ import business.ActionContext;
 import business.EmployeePrintStrategy;
 import business.ExitStrategy;
 import business.sorting.EmployeeSortStrategy;
-
+import business.sorting.EmployeeSortXStrategy;
 import data.CustomLinkedList;
 import data.Employee;
-import data.Employee.SortingFields;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static business.sorting.EmployeeQuickSorter.SortingFields;
 
 /**
  * Реализует меню для интерактивной работы со списком сотрудников.
@@ -33,7 +33,7 @@ public class DataActionsMenu {
     public void display() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\n--- Меню обработки данных ---");
+            System.out.println("\n=== МЕНЮ ОБРАБОТКИ ДАННЫХ ===");
             System.out.println("К работе готовы " + employees.size() + " сотрудников.");
             for (DataActionMenuItems action : DataActionMenuItems.values()) {
                 if (action == DataActionMenuItems.UNKNOWN) continue;
@@ -59,6 +59,9 @@ public class DataActionsMenu {
                 case SORT_BY_EMAIL:
                     context.setStrategy(new EmployeeSortStrategy(employees, SortingFields.EMAIL, this::handleSortResult));
                     break;
+                case SORT_SPECIAL:
+                    context.setStrategy(new EmployeeSortXStrategy(employees, this::handleSortResult));
+                    break;
                 case EXIT:
                     context.setStrategy(new ExitStrategy());
                     break;
@@ -73,6 +76,9 @@ public class DataActionsMenu {
     }
 
     private void handleSortResult(CustomLinkedList<Employee> sortedEmployees) {
+        if (sortedEmployees == null) {
+            return;
+        }
         System.out.println("\n--- Обработано " + sortedEmployees.size() + " сотрудников ---");
         this.employees = sortedEmployees;
     }
@@ -84,14 +90,15 @@ public class DataActionsMenu {
         SORT_BY_ID("3", "Сортировать по id"),
         SORT_BY_NAME("4", "Сортировать по имени"),
         SORT_BY_EMAIL("5", "Сортировать по email"),
-        RETURN("9", "Эти не годятся, начать заново набирать команду"),
-        EXIT("0", "Отказаться от всего этого и уйти"), UNKNOWN("", "");
+        SORT_SPECIAL("6", "Сортировать c переподвыподвертом"),
+        RETURN("0", "Эти не годятся, начать заново набирать команду"),
+        EXIT("Q", "Отказаться от всего этого и уйти"), UNKNOWN("", "");
 
         private static final Map<String, DataActionMenuItems> MAP = new HashMap<>();
 
         static {
             for (DataActionMenuItems action : DataActionMenuItems.values()) {
-                MAP.put(action.key, action);
+                MAP.put(action.key.toLowerCase(), action);
             }
         }
 
@@ -105,7 +112,7 @@ public class DataActionsMenu {
         }
 
         static private DataActionMenuItems fromString(String input) {
-            return Objects.requireNonNullElse(MAP.get(input), UNKNOWN);
+            return Objects.requireNonNullElse(MAP.get(input.toLowerCase()), UNKNOWN);
         }
 
         @Override
