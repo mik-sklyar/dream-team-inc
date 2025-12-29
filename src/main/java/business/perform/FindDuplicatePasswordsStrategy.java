@@ -1,10 +1,9 @@
 package business.perform;
 
 import business.EmployeeOperationStrategy;
+import data.CustomLinkedList;
 import data.Employee;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -17,12 +16,12 @@ import java.util.stream.Collectors;
  */
 public class FindDuplicatePasswordsStrategy extends EmployeeOperationStrategy {
 
-    public FindDuplicatePasswordsStrategy(List<Employee> input) {
+    public FindDuplicatePasswordsStrategy(CustomLinkedList<Employee> input) {
         super(input, null);
     }
 
     @Override
-    protected List<Employee> performOperation() {
+    protected CustomLinkedList<Employee> performOperation() {
         System.out.println("\n--- Поиск одинаковых паролей в 2 потоках ---");
 
         if (inputData == null || inputData.isEmpty()) {
@@ -30,7 +29,7 @@ public class FindDuplicatePasswordsStrategy extends EmployeeOperationStrategy {
             return null;
         }
 
-        Map<String, List<Employee>> duplicates = findDuplicatePasswordsTwoThreads();
+        Map<String, CustomLinkedList<Employee>> duplicates = findDuplicatePasswordsTwoThreads();
         if (duplicates.isEmpty()) {
             System.out.println("\nВсё хорошо: сотрудники используют уникальные пароли.");
         } else {
@@ -43,11 +42,11 @@ public class FindDuplicatePasswordsStrategy extends EmployeeOperationStrategy {
         return null;
     }
 
-    private Map<String, List<Employee>> findDuplicatePasswordsTwoThreads() {
+    private Map<String, CustomLinkedList<Employee>> findDuplicatePasswordsTwoThreads() {
         int middle = inputData.size() / 2;
-        List<Employee> firstHalf = inputData.subList(0, middle);
-        List<Employee> secondHalf = inputData.subList(middle, inputData.size());
-        ConcurrentHashMap<String, List<Employee>> passwordMap = new ConcurrentHashMap<>();
+        CustomLinkedList<Employee> firstHalf = (CustomLinkedList<Employee>) inputData.subList(0, middle);
+        CustomLinkedList<Employee> secondHalf = (CustomLinkedList<Employee>) inputData.subList(middle, inputData.size());
+        ConcurrentHashMap<String, CustomLinkedList<Employee>> passwordMap = new ConcurrentHashMap<>();
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         executorService.submit(() -> processBatch(firstHalf, passwordMap, "Поток 1"));
@@ -71,7 +70,7 @@ public class FindDuplicatePasswordsStrategy extends EmployeeOperationStrategy {
     }
 
 
-    private void processBatch(List<Employee> batch, ConcurrentHashMap<String, List<Employee>> passwordMap, String threadName) {
+    private void processBatch(CustomLinkedList<Employee> batch, ConcurrentHashMap<String, CustomLinkedList<Employee>> passwordMap, String threadName) {
         Thread.currentThread().setName(threadName);
         System.out.println(threadName + ": начал обработку " + batch.size() + " сотрудников");
 
@@ -80,13 +79,10 @@ public class FindDuplicatePasswordsStrategy extends EmployeeOperationStrategy {
 
             passwordMap.compute(password, (key, existingNames) -> {
                 if (existingNames == null) {
-                    List<Employee> newList = new ArrayList<>();
-                    newList.add(employee);
-                    return newList;
-                } else {
-                    existingNames.add(employee);
-                    return existingNames;
+                    existingNames = new CustomLinkedList<>();
                 }
+                existingNames.add(employee);
+                return existingNames;
             });
         }
 
