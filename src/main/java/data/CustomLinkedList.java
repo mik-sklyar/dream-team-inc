@@ -2,6 +2,7 @@ package data;
 
 import java.util.*;
 
+@SuppressWarnings({"unchecked", "SuspiciousSystemArraycopy"})
 public class CustomLinkedList<E> implements List<E> {
     private ListNode head;
     private ListNode tail;
@@ -9,8 +10,10 @@ public class CustomLinkedList<E> implements List<E> {
     private int size;
 
     public CustomLinkedList() {}
-    public CustomLinkedList(CustomLinkedList<E> list) {
-        this.addAll(list);
+    public CustomLinkedList(List<E> list) {
+        if (list != null && !list.isEmpty()) {
+            this.addAll(list);
+        }
     }
 
     @Override

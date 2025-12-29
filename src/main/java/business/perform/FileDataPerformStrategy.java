@@ -33,7 +33,7 @@ public class FileDataPerformStrategy extends EmployeeOperationStrategy {
 
         String filename;
         while (true) {
-            System.out.println("Введите имя файла или 0 для выхода в меню");
+            System.out.println("Введите имя файла (или 0 для выхода)");
             System.out.print(">> ");
             Scanner scanner = new Scanner(System.in);
             filename = scanner.nextLine().trim();

@@ -3,6 +3,7 @@ package presentation;
 import business.ActionContext;
 import business.EmployeePrintStrategy;
 import business.ExitStrategy;
+import business.search.FindDuplicatePasswordsStrategy;
 import business.sorting.EmployeeSortStrategy;
 import business.sorting.EmployeeSortXStrategy;
 import data.CustomLinkedList;
@@ -32,6 +33,7 @@ public class DataActionsMenu {
 
     public void display() {
         Scanner scanner = new Scanner(System.in);
+
         while (true) {
             System.out.println("\n=== МЕНЮ ОБРАБОТКИ ДАННЫХ ===");
             System.out.println("К работе готовы " + employees.size() + " сотрудников.");
@@ -62,6 +64,9 @@ public class DataActionsMenu {
                 case SORT_SPECIAL:
                     context.setStrategy(new EmployeeSortXStrategy(employees, this::handleSortResult));
                     break;
+                case FIND_DUPLICATE_PASSWORDS:
+                    context.setStrategy(new FindDuplicatePasswordsStrategy(employees));
+                    break;
                 case EXIT:
                     context.setStrategy(new ExitStrategy());
                     break;
@@ -91,8 +96,10 @@ public class DataActionsMenu {
         SORT_BY_NAME("4", "Сортировать по имени"),
         SORT_BY_EMAIL("5", "Сортировать по email"),
         SORT_SPECIAL("6", "Сортировать c переподвыподвертом"),
+        FIND_DUPLICATE_PASSWORDS("7", "Найти одинаковые пароли"),
         RETURN("0", "Эти не годятся, начать заново набирать команду"),
-        EXIT("Q", "Отказаться от всего этого и уйти"), UNKNOWN("", "");
+        EXIT("Q", "Отказаться от всего этого и уйти"),
+		UNKNOWN("", "");
 
         private static final Map<String, DataActionMenuItems> MAP = new HashMap<>();
 
@@ -108,7 +115,6 @@ public class DataActionsMenu {
         DataActionMenuItems(String key, String description) {
             this.key = key;
             this.description = description;
-
         }
 
         static private DataActionMenuItems fromString(String input) {
