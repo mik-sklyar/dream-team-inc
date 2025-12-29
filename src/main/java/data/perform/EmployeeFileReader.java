@@ -65,7 +65,7 @@ public class EmployeeFileReader {
     }
 
     public File findFile(String filename) {
-        File file = new File(filename);
+        File file = new File(filename.replaceFirst("~", System.getProperty("user.home")));
 
         if (file.exists() && file.isFile()) {
             System.out.println("Файл найден по указанному пути: " + file.getAbsolutePath());
