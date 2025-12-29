@@ -3,11 +3,12 @@ package presentation;
 import business.ActionContext;
 import business.EmployeePrintStrategy;
 import business.ExitStrategy;
+import business.perform.FindDuplicatePasswordsStrategy;
 import business.sorting.EmployeeSortStrategy;
 import business.sorting.EmployeeSortXStrategy;
 import data.CustomLinkedList;
 import data.Employee;
-import business.perform.FindDuplicatePasswordsStrategy;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class DataActionsMenu {
                     context.setStrategy(new EmployeePrintStrategy(employees));
                     break;
                 case FIND_DUPLICATE_PASSWORDS:
-                    context.setStrategy(new FindDuplicatePasswordsStrategy(employees, this::handleDuplicateResult));
+                    context.setStrategy(new FindDuplicatePasswordsStrategy(employees));
                     break;
                 case SORT_BY_ORDER:
                     context.setStrategy(new EmployeeSortStrategy(employees, SortingFields.ORDER, this::handleSortResult));
@@ -86,11 +87,6 @@ public class DataActionsMenu {
         }
         System.out.println("\n--- Обработано " + sortedEmployees.size() + " сотрудников ---");
         this.employees = sortedEmployees;
-    }
-
-    private void handleDuplicateResult(List<Employee> result) {
-        System.out.println("\n--- Поиск дубликатов завершен ---");
-
     }
 
     private enum DataActionMenuItems {
