@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Стратегия для многопоточного поиска повторяющихся паролей
@@ -26,17 +27,27 @@ public class FindDuplicatePasswordsStrategy extends EmployeeOperationStrategy {
 
         if (inputData == null || inputData.isEmpty()) {
             System.out.println("Список сотрудников пуст.");
-        } else {
-            printDuplicateResults(findDuplicatePasswordsTwoThreads());
+            return null;
         }
+
+        Map<String, List<Employee>> duplicates = findDuplicatePasswordsTwoThreads();
+        if (duplicates.isEmpty()) {
+            System.out.println("\nВсё хорошо: сотрудники используют уникальные пароли.");
+        } else {
+            duplicates.forEach((key, employees) -> {
+                System.out.printf("%nПароль '%s' используется %d сотрудниками:%n", key, employees.size());
+                employees.forEach(it -> System.out.println("  " + it));
+            });
+        }
+
         return null;
     }
 
-    private Map<String, List<String>> findDuplicatePasswordsTwoThreads() {
+    private Map<String, List<Employee>> findDuplicatePasswordsTwoThreads() {
         int middle = inputData.size() / 2;
         List<Employee> firstHalf = inputData.subList(0, middle);
         List<Employee> secondHalf = inputData.subList(middle, inputData.size());
-        ConcurrentHashMap<String, List<String>> passwordMap = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String, List<Employee>> passwordMap = new ConcurrentHashMap<>();
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         executorService.submit(() -> processBatch(firstHalf, passwordMap, "Поток 1"));
@@ -54,46 +65,31 @@ public class FindDuplicatePasswordsStrategy extends EmployeeOperationStrategy {
             System.out.println("Поиск был прерван.");
             executorService.shutdownNow();
         }
-        return passwordMap;
+        return passwordMap.entrySet().stream()
+                .filter(entry -> entry.getValue().size() > 1)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 
-    private void processBatch(List<Employee> batch, ConcurrentHashMap<String, List<String>> passwordMap, String threadName) {
+    private void processBatch(List<Employee> batch, ConcurrentHashMap<String, List<Employee>> passwordMap, String threadName) {
         Thread.currentThread().setName(threadName);
         System.out.println(threadName + ": начал обработку " + batch.size() + " сотрудников");
 
         for (Employee employee : batch) {
             String password = employee.getPassword();
-            String name = employee.getName();
 
             passwordMap.compute(password, (key, existingNames) -> {
                 if (existingNames == null) {
-                    List<String> newList = new ArrayList<>();
-                    newList.add(name);
+                    List<Employee> newList = new ArrayList<>();
+                    newList.add(employee);
                     return newList;
                 } else {
-                    existingNames.add(name);
+                    existingNames.add(employee);
                     return existingNames;
                 }
             });
         }
 
         System.out.println(threadName + ": завершил обработку");
-    }
-
-
-    private void printDuplicateResults(Map<String, List<String>> map) {
-        long duplicatesCount = map.entrySet().stream()
-                .filter(entry -> entry.getValue().size() > 1)
-                .peek(entry -> {
-            List<String> names = entry.getValue();
-
-            System.out.printf("%nПароль '%s' используется %d сотрудниками:%n", entry.getKey(), names.size());
-            names.forEach(name -> System.out.println("  " + name));
-        }).count();
-
-        if (duplicatesCount == 0) {
-            System.out.println("\nВсё хорошо: сотрудники используют уникальные пароли.");
-        }
     }
 }
