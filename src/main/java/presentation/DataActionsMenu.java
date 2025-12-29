@@ -33,7 +33,7 @@ public class DataActionsMenu {
     public void display() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\n--- Меню обработки данных ---");
+            System.out.println("\n=== МЕНЮ ОБРАБОТКИ ДАННЫХ ===");
             System.out.println("К работе готовы " + employees.size() + " сотрудников.");
             for (DataActionMenuItems action : DataActionMenuItems.values()) {
                 if (action == DataActionMenuItems.UNKNOWN) continue;
@@ -91,14 +91,14 @@ public class DataActionsMenu {
         SORT_BY_NAME("4", "Сортировать по имени"),
         SORT_BY_EMAIL("5", "Сортировать по email"),
         SORT_SPECIAL("6", "Сортировать c переподвыподвертом"),
-        RETURN("9", "Эти не годятся, начать заново набирать команду"),
-        EXIT("0", "Отказаться от всего этого и уйти"), UNKNOWN("", "");
+        RETURN("0", "Эти не годятся, начать заново набирать команду"),
+        EXIT("Q", "Отказаться от всего этого и уйти"), UNKNOWN("", "");
 
         private static final Map<String, DataActionMenuItems> MAP = new HashMap<>();
 
         static {
             for (DataActionMenuItems action : DataActionMenuItems.values()) {
-                MAP.put(action.key, action);
+                MAP.put(action.key.toLowerCase(), action);
             }
         }
 
@@ -112,7 +112,7 @@ public class DataActionsMenu {
         }
 
         static private DataActionMenuItems fromString(String input) {
-            return Objects.requireNonNullElse(MAP.get(input), UNKNOWN);
+            return Objects.requireNonNullElse(MAP.get(input.toLowerCase()), UNKNOWN);
         }
 
         @Override

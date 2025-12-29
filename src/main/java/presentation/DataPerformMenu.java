@@ -20,7 +20,7 @@ public class DataPerformMenu {
         Scanner scanner = new Scanner(System.in);
         //noinspection InfiniteLoopStatement
         while (true) {
-            System.out.println("\n--- Меню получения данных ---");
+            System.out.println("\n=== МЕНЮ ПОЛУЧЕНИЯ ДАННЫХ ===");
             for (DataPerformMenuItems value : DataPerformMenuItems.values()) {
                 if (value == DataPerformMenuItems.UNKNOWN) continue;
                 System.out.println(value);
@@ -62,14 +62,14 @@ public class DataPerformMenu {
         FILE("1", "Устроить партию сотрудников из файла биржи труда"),
         MANUAL("2", "Заполнить сотрудников по очереди вручную"),
         RANDOM("3", "Получить сотрудников из параллельной вселенной \"Рандомии\""),
-        EXIT("0", "Отказаться от амбиций и выйти"),
+        EXIT("Q", "Отказаться от амбиций и выйти"),
         UNKNOWN("", "");
 
         private static final Map<String, DataPerformMenuItems> MAP = new HashMap<>();
 
         static {
             for (DataPerformMenuItems value : DataPerformMenuItems.values()) {
-                MAP.put(value.key, value);
+                MAP.put(value.key.toLowerCase(), value);
             }
         }
 
@@ -83,7 +83,7 @@ public class DataPerformMenu {
         }
 
         static private DataPerformMenuItems fromString(String input) {
-            return Objects.requireNonNullElse(MAP.get(input), UNKNOWN);
+            return Objects.requireNonNullElse(MAP.get(input.toLowerCase()), UNKNOWN);
         }
 
         @Override
