@@ -189,5 +189,13 @@ public class EmployeeQuickSorter {
             this.field = field;
             this.condition = condition;
         }
+
+        public static boolean isLongEvenNumber(long value) {
+            return value % 2 == 0;
+        }
+
+        public static boolean isLongNotEvenNumber(long value) {
+            return !isLongEvenNumber(value);
+        }
     }
 }
